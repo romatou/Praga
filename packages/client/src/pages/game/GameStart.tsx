@@ -1,8 +1,5 @@
+import Button from '@mui/material/Button';
 
 export default function GameStart() {
-  return (
-    <>
-      <h1>Главное окно игры</h1>
-    </>
-  )
+  return <Button variant="contained">Hello World</Button>;
 }
