@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Grid, IconButton, Box, Avatar, TextField } from '@mui/material';
+import * as RB from '@mui/material'
 import { LoadingButton } from '@mui/lab';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 
@@ -13,11 +13,20 @@ const inputForm = [
 ]
 
 const Profile = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const methods = useForm();
   const { register, handleSubmit } = methods;
   return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <IconButton
+      <RB.Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <RB.IconButton
           color='primary'
           aria-label='upload picture'
           component='label'
@@ -29,41 +38,36 @@ const Profile = () => {
         >
           <input hidden accept='image/*' type='file' /*onChange={""}*/ />
 
-          <Avatar
-            //title={MENU_ITEMS.profile.title}
+          <RB.Avatar
             sx={{ width: 120, height: 120 }}
-           // src={ENDPOINTS.RESOURCES + (user?.avatar ?? '')}
+           // src={}
           />
-        </IconButton>
+        </RB.IconButton>
 
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit((data) => console.log(data))}>
-            <Grid
+            <RB.Grid
               container
               direction="column"
               justifyContent="center"
               alignItems="center"
               spacing={2}
             >
-              {inputForm.map((item) => {
+              {inputForm.map((item, i) => {
                 return (
-                  <Grid item xs={12}>
-                    <Controller
+                  <RB.Grid item xs={12} key={i}>
+                    <RB.TextField
+                      /*{...register(item.name, {
+                        pattern: /[A-Za-z]{3}/
+                      })}*/ //для валидации если нужно будет
+                      type='text'
                       name={item.name}
-                      control={methods.control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type='text'
-                          name={item.name}
-                          label={item.label}
-                        />
-                      )}
+                      label={item.label}
                     />
-                  </Grid>
+                  </RB.Grid>
                 )
               })}
-              <Grid item xs={12}>
+              <RB.Grid item xs={12}>
                 <LoadingButton
                   size='small'
                   type='submit'
@@ -71,12 +75,56 @@ const Profile = () => {
                 >
                   Сохранить
                 </LoadingButton>
-              </Grid>
-            </Grid>
+              </RB.Grid>
+              <RB.Grid item xs={12}>
+                <RB.Button 
+                  variant="text"
+                  size='small'
+                  onClick={handleClickOpen}
+                >
+                    Изменить пароль
+                </RB.Button>
+                <RB.Dialog open={open} onClose={handleClose}>
+                  <RB.DialogTitle>Изменить пароль</RB.DialogTitle>
+                  <FormProvider {...methods}>
+                    <RB.DialogContent>
+                      <RB.DialogContentText>
+                        {}
+                      </RB.DialogContentText>
+                      <RB.Grid
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={2}
+                      >
+                        <RB.Grid item xs={12}>
+                          <RB.TextField
+                            type='text'
+                            name='oldPassword'
+                            label='Текущий пароль'
+                          />
+                        </RB.Grid>
+                        <RB.Grid item xs={12}>
+                          <RB.TextField
+                            type='text'
+                            name='newPassword'
+                            label='Новый пароль'
+                          />
+                        </RB.Grid>
+                      </RB.Grid>
+                    </RB.DialogContent>
+                    <RB.DialogActions>
+                      <RB.Button onClick={handleClose}>Сохранить</RB.Button>
+                    </RB.DialogActions>
+                  </FormProvider>
+                </RB.Dialog>
+              </RB.Grid>
+            </RB.Grid>
           </form>
 
         </FormProvider>
-      </Box>
+      </RB.Box>
   )
 }
 
