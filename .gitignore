@@ -1,6 +1,7 @@
 node_modules/
 .env
 .idea
+.nova
 *.log
 .vscode
 dist
