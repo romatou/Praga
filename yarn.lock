@@ -1550,6 +1550,20 @@
   resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.10.11.tgz#e91640dfd2bd62c7f5b27da7e540f5d07e5cbc50"
   integrity sha512-u5ff+UCFDHcR8MoQ8tuJR4c35vt7T/ki3aMEE2O3XQoGs8KJSrBiisFpFKyldg9/W2NSyoZxN+kxEGIfRxh+9Q==
 
+"@mui/lab@^5.0.0-alpha.105":
+  version "5.0.0-alpha.105"
+  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.105.tgz#acba780daeede3edaa0bcf5d4d143b3c47cff932"
+  integrity sha512-W4AUf8juwPfOomOGHL1Jasr6LW1mlcZUMlad/uf8AKYFOILX1Toonvdqi00iP+xMRndX88/RmLbJy0+nDZiKsg==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+    "@mui/base" "5.0.0-alpha.103"
+    "@mui/system" "^5.10.10"
+    "@mui/types" "^7.2.0"
+    "@mui/utils" "^5.10.9"
+    clsx "^1.2.1"
+    prop-types "^15.8.1"
+    react-is "^18.2.0"
+
 "@mui/material@^5.10.11":
   version "5.10.11"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.10.11.tgz#73c38b29d2df5e2f9a0825b363279bb0a2aa40df"
@@ -6757,6 +6771,11 @@ react-dom@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-hook-form@^7.38.0:
+  version "7.38.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.38.0.tgz#53d6a68df587ce4ce88352f63e0ecc7fc8779320"
+  integrity sha512-gxWW1kMeru9xR1GoR+Iw4hA+JBOM3SHfr4DWCUKY0xc7Vv1MLsF109oHtBeWl9shcyPFx67KHru44DheN0XY5A==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
