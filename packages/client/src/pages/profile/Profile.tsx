@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as RB from '@mui/material'
+import axios from 'axios'
 import { LoadingButton } from '@mui/lab';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
+import API from '../../services/UserService';
 
 const inputForm = [
   {name: 'firstName', label: 'Имя'},
@@ -14,6 +16,7 @@ const inputForm = [
 
 const Profile = () => {
   const [open, setOpen] = React.useState(false);
+  const [appState, setAppState] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,7 +24,18 @@ const Profile = () => {
 
   const handleClose = () => {
     setOpen(false);
+    console.log(appState)
   };
+  
+  
+  useEffect(() => {
+    API.get('/auth/user').then((resp) => {
+      console.log(resp);
+      const getUser = resp.data;
+      setAppState(getUser);
+    });
+  }, []);
+
   const methods = useForm();
   const { register, handleSubmit } = methods;
   return (
