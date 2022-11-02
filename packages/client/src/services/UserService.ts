@@ -1,8 +1,16 @@
-import axios from 'axios'
-const http = 'https://ya-praktikum.tech/api/v2';
+import API from './BaseApi';
 
-export default axios.create({
-  baseURL: http,
-  headers: {'Content-Type': 'application/json'},
-  responseType: 'json'
-});
+export const editAvatarApi = (formData: any) => {
+    try {
+      const response = API.put('/user/profile/avatar', formData);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+}
+export const editProfile = (formData: any) => {
+  return API.put('/user/profile', formData)
+}
+export const getUser = async () => {
+  return await API.get('/auth/user')
+}
