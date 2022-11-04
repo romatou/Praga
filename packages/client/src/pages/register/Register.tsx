@@ -1,8 +1,9 @@
 import { Container, Box, TextField, Typography, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { apiService, SignupData } from "../../services/ApiService";
+
 export default function Register() {
- 
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
@@ -12,29 +13,29 @@ export default function Register() {
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get('firstName'),
-      secondName: data.get('secondName'),
-      email: data.get('email'),
-      phone: data.get('phone'),
+    apiService.getRegister({
+      first_name: data.get('firstName'),
+      second_name: data.get('secondName'),
       login: data.get('login'),
+      email: data.get('email'),
       password: data.get('password'),
-    });
+      phone: data.get('phone'),
+    } as SignupData);
   };
   return (
     <ThemeProvider theme={theme}>
-    <Container component='main' maxWidth='xs'>
-      <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-      >
-      <Typography component="h1" variant="h5">Регистрация</Typography>
-      <Box component="form"  onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
-      <TextField
+      <Container component='main' maxWidth='xs'>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">Регистрация</Typography>
+          <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -104,8 +105,8 @@ export default function Register() {
               </Link>
             </Stack>
           </Box>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
     </ThemeProvider>
   )
 }
