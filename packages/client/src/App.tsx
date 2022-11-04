@@ -11,7 +11,7 @@ import GameResult from '@pages/game/GameResult'
 import Intro from '@pages/intro/Intro'
 import Forum from '@pages/forum/Forum'
 import ForumDetail from '@pages/forum/ForumDetail'
-import Ranking from '@pages/ranking/Ranking'
+import Ranking from '@pages/ranking'
 import NotFound from '@pages/not-found/NotFound'
 import ServerError from '@pages/server-error/ServerError'
 
