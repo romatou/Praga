@@ -7,23 +7,18 @@ import { editAvatarApi, editProfile, editPassword, getUser, userType, passwordTy
 import ModalPassword from '../../components/ModalPassword';
 import InstantMessage  from '../../components/Alert';
 
-const inputForm = [
-  {name: 'first_name', label: 'Имя'},
-  {name: 'second_name', label: 'Фамилия'},
-  {name: 'display_name', label: 'Имя в чате'},
-  {name: 'email', label: 'Почта'},
-  {name: 'phone', label: 'Телефон'},
-  {name: 'login', label: 'Логин'}
-]
-
 const Profile = () => {
-  const [error, setError] = useState(false);
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
+  const [alert, setAlert] = useState(
+    {
+      error: false,
+      message: '',
+      status: ''
+    }
+  )
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [appState, setAppState] = useState(
     {
-      loading: false,
       user: {
         avatar: '',
         display_name: '',
@@ -43,9 +38,11 @@ const Profile = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  
+  const handleCloseModal = () => {
+    setAlert({error: false, message: '', status: ''})
+  };
   const onSubmitAvatar = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-    setAppState({loading: true, user: appState.user})
+    setLoading(true)
     const payload = evt.target.files
     const image = payload && payload[0]
     if (image !== null) {
@@ -53,54 +50,54 @@ const Profile = () => {
       console.log(image)
       formData.append('avatar', image);
       editAvatarApi(formData)
+        .then(() => {
+          getUserData()
+          setAlert({error: true, message: 'Аватар изменен', status: 'success'})
+        })
+        .catch(() => {
+          setAlert({error: true, message: 'Ошибка', status: 'error'})
+        });
+      setLoading(false)
     }
   }, [])
-  const onSubmitFormData = useCallback(async (value: userType) => {
-    await editProfile(value)
-      .then((resp) => {
+  const onSubmitFormData = useCallback((value: userType) => {
+    setLoading(true)
+    editProfile(value)
+      .then(() => {
         getUserData()
-        setMessage('Сохранено')
-        setStatus('success')
-        setError(true); 
+        setAlert({error: true, message: 'Сохранено', status: 'success'})
       })
-      .catch((error) => {
-        setMessage('Ошибка')
-        setStatus('error')
-        setError(true); 
+      .catch(() => {
+        setAlert({error: true, message: 'Ошибка', status: 'error'})
       });
+    setLoading(false)
   }, [])
 
-  const onSubmitPassword = useCallback(async (value: passwordType) => {
-    await editPassword(value)
-      .then((resp) => {
-        setMessage('Сохранено')
-        setStatus('success')
-        setError(true); 
+  const onSubmitPassword = useCallback((value: passwordType) => {
+    setLoading(true)
+    editPassword(value)
+      .then(() => {
+        setAlert({error: true, message: 'Сохранено', status: 'success'})
       })
-      .catch((error) => {
-        setMessage('Ошибка')
-        setStatus('error')
-        setError(true); 
+      .catch(() => {
+        setAlert({error: true, message: 'Ошибка', status: 'error'})
       });
+    setLoading(false)
   }, [])
 
   const getUserData = () => {
+    setLoading(true)
     getUser()
     .then((resp) => {
       const getUser = resp.data;
-      setAppState({
-        loading: false,
-        user: getUser
-      });
+      setAppState({user: getUser});
     })
-    .catch((error) => {
-      setMessage('Ошибка в получении данных')
-      setStatus('error')
-      setError(true); 
+    .catch(() => {
+      setAlert({error: true, message: 'Ошибка в получении данных', status: 'error'})
     });
+    setLoading(false)
   }
   useEffect(() => {
-    setAppState({loading: true, user: appState.user})
     getUserData()
   }, []);
 
@@ -131,6 +128,7 @@ const Profile = () => {
             alignSelf: 'center',
             marginBottom: 4
           }}
+          disabled={loading}
         >
           <input id='avatar' name='avatar' hidden accept='image/*' type='file' onChange={onSubmitAvatar} />
 
@@ -227,6 +225,17 @@ const Profile = () => {
                   size='small'
                 />
               </RB.Grid>
+              <RB.Grid item xs={12}>
+                <LoadingButton
+                  size='small'
+                  type='submit'
+                  variant='outlined'
+                  loading={loading}
+                  loadingIndicator="Загрузка…"
+                >
+                  Сохранить
+                </LoadingButton>
+              </RB.Grid>
               {/*inputForm.map((inp: any, i) => {
                 return (
                   <RB.Grid item xs={12} key={i}>
@@ -242,29 +251,21 @@ const Profile = () => {
                   </RB.Grid>
                 )
               })*/}
-              <RB.Grid item xs={12}>
-                <LoadingButton
-                  size='small'
-                  type='submit'
-                  variant='outlined'
-                >
-                  Сохранить
-                </LoadingButton>
-              </RB.Grid>
-              <RB.Grid item xs={12}>
-                <RB.Button 
-                  variant='text'
-                  size='small'
-                  onClick={handleClickOpen}
-                >
-                    Изменить пароль
-                </RB.Button>
-                <ModalPassword isopen={open} handleClose={handleClose} onSubmitPassword={onSubmitPassword}/>
-              </RB.Grid>
             </RB.Grid>
           </form>
         </FormProvider>
-      {error ?  <InstantMessage message = {message} severity={status}/> : `` }
+        <RB.Button 
+          variant='text'
+          size='small'
+          sx={{
+            marginTop: 1
+          }}
+          onClick={handleClickOpen}
+        >
+            Изменить пароль
+        </RB.Button>
+        <ModalPassword isopen={open} handleClose={handleClose} onSubmitPassword={onSubmitPassword}/>
+        <InstantMessage message = {alert.message} severity={alert.status} open={alert.error} handleClose={handleCloseModal}/>
       </RB.Container>
   )
 }

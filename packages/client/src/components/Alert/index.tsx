@@ -1,10 +1,12 @@
-import React, {useState, forwardRef} from 'react'
+import React from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 export interface props {
   message: string,
-  severity: string
+  severity: string,
+  open: boolean,
+  handleClose: () => void
 }
 
 const Alert = React.forwardRef(function Alert(props:any, ref:any) {
@@ -12,21 +14,15 @@ const Alert = React.forwardRef(function Alert(props:any, ref:any) {
 });
 
 const InstantMessage = (props: props) =>  {
-    
-    const [open, setOpen] = useState(true); 
-
-    const handleClose = () => {
-        setOpen(false);
-      };
 
     return (
         <Snackbar
-            open={open} 
+            open={props.open} 
             autoHideDuration={6000} 
-            onClose={handleClose}
+            onClose={props.handleClose}
         >
             <Alert
-              onClose={handleClose} 
+              onClose={props.handleClose} 
               severity={props.severity}
             >
                 {props.message}
