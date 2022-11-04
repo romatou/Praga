@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import * as RB from '@mui/material'
 import { LoadingButton } from '@mui/lab';
-import { useForm, FormProvider, Controller } from 'react-hook-form';
-import API from '../../services/BaseApi';
-import { editAvatarApi, editProfile, getUser } from '../../services/UserService';
+import { useForm, FormProvider} from 'react-hook-form';
 
+import { editAvatarApi, editProfile, editPassword, getUser, userType, passwordType } from '../../services/UserService';
+import ModalPassword from '../../components/ModalPassword';
+import InstantMessage  from '../../components/Alert';
 
 const inputForm = [
   {name: 'first_name', label: 'Имя'},
@@ -16,6 +17,9 @@ const inputForm = [
 ]
 
 const Profile = () => {
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
   const [open, setOpen] = React.useState(false);
   const [appState, setAppState] = useState(
     {
@@ -29,7 +33,7 @@ const Profile = () => {
         login: '',
         phone: '',
         second_name: ''
-      },
+      }
     }
   )
   const handleClickOpen = () => {
@@ -51,10 +55,32 @@ const Profile = () => {
       editAvatarApi(formData)
     }
   }, [])
-  const onSubmitFormData = useCallback(async (value: any) => {
+  const onSubmitFormData = useCallback(async (value: userType) => {
     await editProfile(value)
       .then((resp) => {
         getUserData()
+        setMessage('Сохранено')
+        setStatus('success')
+        setError(true); 
+      })
+      .catch((error) => {
+        setMessage('Ошибка')
+        setStatus('error')
+        setError(true); 
+      });
+  }, [])
+
+  const onSubmitPassword = useCallback(async (value: passwordType) => {
+    await editPassword(value)
+      .then((resp) => {
+        setMessage('Сохранено')
+        setStatus('success')
+        setError(true); 
+      })
+      .catch((error) => {
+        setMessage('Ошибка')
+        setStatus('error')
+        setError(true); 
       });
   }, [])
 
@@ -66,6 +92,11 @@ const Profile = () => {
         loading: false,
         user: getUser
       });
+    })
+    .catch((error) => {
+      setMessage('Ошибка в получении данных')
+      setStatus('error')
+      setError(true); 
     });
   }
   useEffect(() => {
@@ -86,8 +117,9 @@ const Profile = () => {
     }
   }, [appState.user]); 
 
-  const methods = useForm();
+  const methods = useForm<userType>();
   const { register, handleSubmit, reset  } = methods;
+
   return (
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.IconButton
@@ -104,8 +136,8 @@ const Profile = () => {
 
           <RB.Avatar
             sx={{ width: 120, height: 120 }}
-            alt="avatar"
-            src={"https://ya-praktikum.tech/api/v2/resources" + (appState.user?.avatar ?? '')}
+            alt='avatar'
+            src={'https://ya-praktikum.tech/api/v2/resources' + (appState.user?.avatar ?? '')}
           />
         </RB.IconButton>
 
@@ -113,9 +145,9 @@ const Profile = () => {
           <form onSubmit={handleSubmit(onSubmitFormData)}>
             <RB.Grid
               container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
+              direction='column'
+              justifyContent='center'
+              alignItems='center'
               spacing={2}
             >
               <RB.Grid item xs={12}>
@@ -127,7 +159,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, first_name: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               <RB.Grid item xs={12}>
@@ -140,7 +172,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, second_name: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               <RB.Grid item xs={12}>
@@ -153,7 +185,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, display_name: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               <RB.Grid item xs={12}>
@@ -166,7 +198,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, email: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               <RB.Grid item xs={12}>
@@ -179,7 +211,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, login: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               <RB.Grid item xs={12}>
@@ -192,7 +224,7 @@ const Profile = () => {
                   onChange={e => setAppState((prevState) => (
                     {user: {...prevState.user, phone: e.target.value}, loading: false}
                   ))}
-                  size="small"
+                  size='small'
                 />
               </RB.Grid>
               {/*inputForm.map((inp: any, i) => {
@@ -221,52 +253,18 @@ const Profile = () => {
               </RB.Grid>
               <RB.Grid item xs={12}>
                 <RB.Button 
-                  variant="text"
+                  variant='text'
                   size='small'
                   onClick={handleClickOpen}
                 >
                     Изменить пароль
                 </RB.Button>
-                <RB.Dialog open={open} onClose={handleClose}>
-                  <RB.DialogTitle>Изменить пароль</RB.DialogTitle>
-                  <FormProvider {...methods}>
-                    <RB.DialogContent>
-                      <RB.DialogContentText>
-                        {}
-                      </RB.DialogContentText>
-                      <RB.Grid
-                        container
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <RB.Grid item xs={12}>
-                          <RB.TextField
-                            type='text'
-                            name='oldPassword'
-                            label='Текущий пароль'
-                          />
-                        </RB.Grid>
-                        <RB.Grid item xs={12}>
-                          <RB.TextField
-                            type='text'
-                            name='newPassword'
-                            label='Новый пароль'
-                          />
-                        </RB.Grid>
-                      </RB.Grid>
-                    </RB.DialogContent>
-                    <RB.DialogActions>
-                      <RB.Button onClick={handleClose}>Сохранить</RB.Button>
-                    </RB.DialogActions>
-                  </FormProvider>
-                </RB.Dialog>
+                <ModalPassword isopen={open} handleClose={handleClose} onSubmitPassword={onSubmitPassword}/>
               </RB.Grid>
             </RB.Grid>
           </form>
-
         </FormProvider>
+      {error ?  <InstantMessage message = {message} severity={status}/> : `` }
       </RB.Container>
   )
 }
