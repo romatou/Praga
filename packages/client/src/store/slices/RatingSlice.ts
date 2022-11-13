@@ -1,10 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {
+  fetchLeaderboard,
+  sendDataToLeaderboard,
+} from '@store/actions/RatingActionCreators'
 
+import { useAppSelector } from '../index'
 import {
   StatusLoading,
   RequestDataState,
   RequestData,
-  FetchingKey,
   RankingResponse,
   Ranking,
 } from '../types'
@@ -25,30 +29,41 @@ const initialState: RatingState = {
 export const ratingSlice = createSlice({
   name: 'rating',
   initialState,
-  reducers: {
-    fetching(state, { payload }: { payload: FetchingKey }) {
-      state.requestData[payload].status = StatusLoading.IN_PROGRESS
-    },
-    fetchSuccess(state, { payload }: { payload: FetchingKey }) {
-      state.requestData[payload].status = StatusLoading.SUCCESS
-    },
-    fetchError(
+  reducers: {},
+  extraReducers: {
+    [fetchLeaderboard.fulfilled.type]: (
       state,
-      {
-        payload: { key, errorMessage },
-      }: { payload: { key: FetchingKey; errorMessage: string } }
-    ) {
-      state.requestData[key].errorMessage = errorMessage
-      state.requestData[key].status = StatusLoading.ERROR
+      { payload }: PayloadAction<RankingResponse[]>
+    ) => {
+      state.ratingData = payload
+      state.requestData.getLeaderboard.status = StatusLoading.SUCCESS
     },
-    fetchLeaderboard(
+    [fetchLeaderboard.pending.type]: state => {
+      state.requestData.getLeaderboard.status = StatusLoading.IN_PROGRESS
+    },
+    [fetchLeaderboard.rejected.type]: (
       state,
-      { payload: { key, data } }: { payload: { key: FetchingKey; data: any } }
-    ) {
-      state.requestData[key].data = data
-      state.ratingData = data
+      { payload }: PayloadAction<string>
+    ) => {
+      state.requestData.getLeaderboard.errorMessage = payload
+      state.requestData.getLeaderboard.status = StatusLoading.ERROR
+    },
+    [sendDataToLeaderboard.fulfilled.type]: state => {
+      state.requestData.addToLeaderboard.status = StatusLoading.SUCCESS
+    },
+    [sendDataToLeaderboard.pending.type]: state => {
+      state.requestData.addToLeaderboard.status = StatusLoading.IN_PROGRESS
+    },
+    [sendDataToLeaderboard.rejected.type]: state => {
+      state.requestData.addToLeaderboard.status = StatusLoading.ERROR
     },
   },
 })
+
+export const selectRatingData = () => {
+  const { ratingData } = useAppSelector(state => state.rating)
+
+  return ratingData
+}
 
 export default ratingSlice.reducer

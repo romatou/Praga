@@ -13,18 +13,19 @@ import {
   Typography,
 } from '@mui/material'
 import avatarStub from '@assets/avatar-stub.svg'
-import { useAppDispatch, useAppSelector } from '@store/index'
-import { getLeaderboard } from '@store/actions/RatingActions'
+import { useAppDispatch } from '@store/index'
+import { fetchLeaderboard } from '@store/actions/RatingActionCreators'
+import { selectRatingData } from '@store/slices/RatingSlice'
 
 export default function Ranking() {
   const dispatch = useAppDispatch()
-  const { ratingData } = useAppSelector(state => state.rating)
+  const ratingData = selectRatingData()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
   useEffect(() => {
-    dispatch(getLeaderboard())
+    dispatch(fetchLeaderboard())
   }, [])
 
   const handleChangePage = (

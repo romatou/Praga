@@ -3,15 +3,13 @@ export enum StatusLoading {
   IN_PROGRESS = 'IN_PROGRESS',
   ERROR = 'ERROR',
 }
-export interface RequestDataState<T = Record<string, unknown>> {
+export interface RequestDataState<T = Record<string, any>> {
   data?: T
   status: StatusLoading
   errorMessage: string
 }
 
-export type FetchingKey = 'addToLeaderboard' | 'getLeaderboard'
-
-export type RequestData = Record<FetchingKey, RequestDataState>
+export type RequestData = Record<string, RequestDataState>
 
 export interface RankingResponse {
   data: {
