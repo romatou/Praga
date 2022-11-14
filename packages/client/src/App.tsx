@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
-import Login from '@pages/Login/Login'
+import Login from '@pages/LoginPage/Login'
 import Register from '@pages/register/Register'
 import Profile from '@pages/profile/Profile'
 import GameStart from '@pages/game/GameStart'
