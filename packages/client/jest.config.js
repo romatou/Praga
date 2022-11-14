@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const path = '<rootDir>/src/$1'
+const path = '<rootDir>/$1'
 
 export default {
   preset: 'ts-jest',
