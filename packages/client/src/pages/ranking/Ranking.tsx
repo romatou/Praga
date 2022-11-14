@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Box,
   TableRow,
@@ -13,23 +13,20 @@ import {
   Typography,
 } from '@mui/material'
 import avatarStub from '@assets/avatar-stub.svg'
-
-const rows = [
-  { place: '1', player: { avatar: avatarStub, name: 'Игрок 1' }, score: '50' },
-  { place: '2', player: { avatar: avatarStub, name: 'Игрок 2' }, score: '40' },
-  { place: '3', player: { avatar: avatarStub, name: 'Игрок 3' }, score: '30' },
-  { place: '4', player: { avatar: avatarStub, name: 'Игрок 4' }, score: '20' },
-  { place: '5', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-  { place: '6', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-  { place: '7', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-  { place: '8', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-  { place: '9', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-  { place: '10', player: { avatar: avatarStub, name: 'Игрок 5' }, score: '10' },
-]
+import { useAppDispatch } from '@store/index'
+import { fetchLeaderboard } from '@store/actions/RatingActionCreators'
+import { selectRatingData } from '@store/slices/RatingSlice'
 
 export default function Ranking() {
+  const dispatch = useAppDispatch()
+  const ratingData = selectRatingData()
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
+
+  useEffect(() => {
+    dispatch(fetchLeaderboard())
+  }, [])
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -69,11 +66,12 @@ export default function Ranking() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {ratingData
+              .sort((a, b) => a.data.score - b.data.score)
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map(({ place, player: { avatar, name }, score }) => (
-                <TableRow key={place} sx={{ padding: '8px 0' }}>
-                  <TableCell>{place}</TableCell>
+              .map(({ data: { score, id, name } }, index) => (
+                <TableRow key={id} sx={{ padding: '8px 0' }}>
+                  <TableCell>{index + 1}</TableCell>
                   <TableCell
                     align="center"
                     sx={{
@@ -82,7 +80,7 @@ export default function Ranking() {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Box component="img" src={avatar} alt="аватар" />
+                    <Box component="img" src={avatarStub} alt="аватар" />
                     <Box>{name}</Box>
                   </TableCell>
                   <TableCell align="right">{score}</TableCell>
@@ -94,7 +92,7 @@ export default function Ranking() {
               <TablePagination
                 rowsPerPageOptions={[5, { label: 'Все', value: -1 }]}
                 colSpan={3}
-                count={rows.length}
+                count={ratingData.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
