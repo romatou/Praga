@@ -2,8 +2,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const path = '<rootDir>/$1'
-
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
@@ -13,9 +11,9 @@ export default {
   },
   moduleNameMapper: {
     '\\.(css)$': 'identity-obj-proxy',
-    '^@pages/(.*)$': path,
-    '^@components/(.*)$': path,
-    '^@assets/(.*)$': path,
-    '^@store/(.*)$': path,
+    '^@pages/(.*)$': '<rootDir>/@pages/$1',
+    '^@components/(.*)$': '<rootDir>/@components/$1',
+    '^@assets/(.*)$': '<rootDir>/@assets/$1',
+    '^@store/(.*)$': '<rootDir>/@store/$1',
   },
 }
