@@ -11,9 +11,9 @@ export default {
   },
   moduleNameMapper: {
     '\\.(css)$': 'identity-obj-proxy',
-    '^@pages/(.*)$': '<rootDir>/@pages/$1',
-    '^@components/(.*)$': '<rootDir>/@components/$1',
-    '^@assets/(.*)$': '<rootDir>/@assets/$1',
-    '^@store/(.*)$': '<rootDir>/@store/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
+    '^@store/(.*)$': '<rootDir>/src/store/$1',
   },
 }
