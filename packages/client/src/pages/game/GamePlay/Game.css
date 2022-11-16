@@ -8,21 +8,61 @@
 
 .game-board {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 10px;
+  height: 28rem;
 }
 
 .container_area {
   margin: 0 5rem;
 }
 
+.container_area_board {
+  position: relative;
+}
+
 .status1 {
   margin-bottom: 10px;
 }
+
 .status2 {
   margin-bottom: 15px;
+}
+
+.letterCoords {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.letterCoord {
+  width: 37px;
+  text-align: center;
+}
+
+.numberCoords {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 22px;
+  left: -23px;
+}
+
+.numberCoord {
+  height: 37px;
+  text-align: right;
+}
+
+.canvas {
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 0 0 1px #000;
+  background-color: #eee;
+}
+
+.computerCanvas {
+  cursor: pointer;
 }
 
 .nameBoard {
@@ -30,38 +70,4 @@
   margin-top: 10px;
   text-align: center;
   background: burlywood;
-}
-
-.computer {
-  background: #d1d1d1;
-}
-
-.colorize {
-  background: green;
-}
-
-#reload {
-  margin-top: 20px;
-}
-
-#reload:hover {
-  color: red;
-  cursor: pointer;
-  transform: scale(1.1);
-}
-
-.square {
-  background: rgb(243, 243, 243);
-  border: 1px solid rgb(73, 126, 249);
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 30px;
-  width: 30px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  cursor: pointer;
 }
