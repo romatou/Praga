@@ -1,51 +1,51 @@
 export type ShipsSet = {
-  size: number;
-  quantity: number;
-};
+  size: number
+  quantity: number
+}
 
 export type CellArgs = {
-  x: number;
-  y: number;
-};
+  x: number
+  y: number
+}
 
 type ContextArgs = {
-  context: CanvasRenderingContext2D;
-  cellSize: number;
-};
+  context: CanvasRenderingContext2D
+  cellSize: number
+}
 
-export type DrawCellArgs = ContextArgs & CellArgs;
+export type DrawCellArgs = ContextArgs & CellArgs
 
 export type DrawCellsArgs = ContextArgs & {
-  dimMatr: number;
-};
+  dimMatr: number
+}
 
 export type GeneratedCoords = {
-  letterCoords: string[];
-  numberCoords: number[];
-};
+  letterCoords: string[]
+  numberCoords: number[]
+}
 
 export type CellIsEngagedArgs = {
-  cell: CellArgs;
-  engagedCells: CellArgs[];
-};
+  cell: CellArgs
+  engagedCells: CellArgs[]
+}
 
 export type TBoardProps = {
-  name: string;
-  nameBoard: string;
-  playerShips?: CellArgs[][];
-  compShips?: CellArgs[][];
-  coords: GeneratedCoords;
-  gameIsFinished: boolean;
-};
+  name: string
+  nameBoard: string
+  playerShips?: CellArgs[][]
+  compShips?: CellArgs[][]
+  coords: GeneratedCoords
+  gameIsFinished: boolean
+}
 
 export enum DirectionsOfGeneration {
-  Left = "Left",
-  Up = "Up",
-  Right = "Right",
-  Down = "Down",
+  Left = 'Left',
+  Up = 'Up',
+  Right = 'Right',
+  Down = 'Down',
 }
 
 export type CellIsWithinArgs = {
-  cell: CellArgs;
-  dimMatr: number;
-};
+  cell: CellArgs
+  dimMatr: number
+}

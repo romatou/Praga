@@ -6,19 +6,19 @@ import {
   GeneratedCoords,
   CellIsEngagedArgs,
   CellIsWithinArgs,
-} from "./types";
+} from './types'
 
 export enum DirectionsOfGeneration {
-  Left = "Left",
-  Up = "Up",
-  Right = "Right",
-  Down = "Down",
+  Left = 'Left',
+  Up = 'Up',
+  Right = 'Right',
+  Down = 'Down',
 }
 
-export const size = 300; // размер всей сетки при изм-и надо менять css .numberCoords
-export const dimMatr = 8; // Matrix dimension 8x8 (размерность)
-export const cellSize = size / dimMatr; //размер ячейки
-export const scaleBoard = 1; //масшатаб игрового поля
+export const size = 300 // размер всей сетки при изм-и надо менять css .numberCoords
+export const dimMatr = 8 // Matrix dimension 8x8 (размерность)
+export const cellSize = size / dimMatr //размер ячейки
+export const scaleBoard = 1 //масшатаб игрового поля
 
 export const shipsSet: ShipsSet[] = [
   //размеры кораблей и их количество на доске
@@ -26,19 +26,19 @@ export const shipsSet: ShipsSet[] = [
   { size: 3, quantity: 1 },
   { size: 2, quantity: 2 },
   { size: 1, quantity: 3 },
-];
+]
 
-const randomMovesComp: CellArgs[] = []; //рандомные ходы компьютера
+const randomMovesComp: CellArgs[] = [] //рандомные ходы компьютера
 
 //проверка трехбалубных яхт идущих исключительно вначале shipsSet!!!!!
 export const checkShipsLength3 = (arr: CellArgs[][]): boolean =>
-  arr[0][2].x === arr[0][0].x && arr[0][2].y === arr[0][0].y ? true : false;
+  arr[0][2].x === arr[0][0].x && arr[0][2].y === arr[0][0].y ? true : false
 
 //рисовать ячейку
 const drawCell = ({ context, cellSize, x, y }: DrawCellArgs): void => {
-  context.strokeStyle = "#aaa";
-  context.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
-};
+  context.strokeStyle = '#aaa'
+  context.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize)
+}
 
 // рисовать ячейки
 export const drawCells = ({
@@ -48,10 +48,10 @@ export const drawCells = ({
 }: DrawCellsArgs): void => {
   for (let x = 0; x < dimMatr; x++) {
     for (let y = 0; y < dimMatr; y++) {
-      drawCell({ context, cellSize, x, y });
+      drawCell({ context, cellSize, x, y })
     }
   }
-};
+}
 
 // Ячейка занята
 export const cellIsEngaged = ({
@@ -59,17 +59,17 @@ export const cellIsEngaged = ({
   engagedCells,
 }: CellIsEngagedArgs): boolean =>
   engagedCells &&
-  engagedCells.some(({ x, y }: CellArgs) => x === cell.x && y === cell.y);
+  engagedCells.some(({ x, y }: CellArgs) => x === cell.x && y === cell.y)
 
 // заполнить ячейку
 const fillCell = ({ context, cellSize, x, y }: DrawCellArgs): void => {
-  context.beginPath();
-  context.rect((x - 1) * cellSize, (y - 1) * cellSize, cellSize, cellSize);
-  context.closePath();
-  context.fillStyle = "#ddd";
-  context.fill();
-  context.stroke();
-};
+  context.beginPath()
+  context.rect((x - 1) * cellSize, (y - 1) * cellSize, cellSize, cellSize)
+  context.closePath()
+  context.fillStyle = '#ddd'
+  context.fill()
+  context.stroke()
+}
 
 //рисовать корабли
 export const drawShips = (
@@ -78,48 +78,48 @@ export const drawShips = (
   ships: CellArgs[][]
 ): void => {
   ships &&
-    ships.flat().forEach(({ x, y }) => fillCell({ context, cellSize, x, y }));
-};
+    ships.flat().forEach(({ x, y }) => fillCell({ context, cellSize, x, y }))
+}
 
 //генерация рандома ячеек
 const getRundomCell = (size: number, dimMatr: number): any[] => {
-  let currentSize = 1;
-  const ship = [];
-  let shipHead = {};
+  let currentSize = 1
+  const ship = []
+  let shipHead = {}
 
   while (currentSize <= size) {
     shipHead = {
       x: Math.round(Math.random() * (dimMatr - 1) + 1),
       y: Math.round(Math.random() * (dimMatr - 1) + 1),
-    };
+    }
 
-    ship.push(shipHead);
-    currentSize++;
+    ship.push(shipHead)
+    currentSize++
   }
 
-  return ship;
-};
+  return ship
+}
 
 //рандом-генерация кнопки, для произведения "выстрела" компьютером
 export const generateRandomCompShot = (): CellArgs => {
-  let i = 0;
-  let rand = getRundomCell(1, dimMatr)[0];
+  let i = 0
+  let rand = getRundomCell(1, dimMatr)[0]
 
   //проверка на отсутсвие элемента в глобальном randomMovesComp
   const engagedCompShot = randomMovesComp
     .map(({ x, y }) => x === rand.x && y === rand.y)
-    .find((el) => el === true);
+    .find(el => el === true)
 
   while (engagedCompShot !== undefined && engagedCompShot === true && i < 1) {
-    randomMovesComp.pop();
-    rand = getRundomCell(1, dimMatr)[0];
-    i++;
+    randomMovesComp.pop()
+    rand = getRundomCell(1, dimMatr)[0]
+    i++
   }
 
-  randomMovesComp.push(rand); //необходимо запоминать ранее произведенные "выстрелы"
+  randomMovesComp.push(rand) //необходимо запоминать ранее произведенные "выстрелы"
 
-  return rand;
-};
+  return rand
+}
 
 //затонувшие корабли
 export const drawSunkenShips = (
@@ -129,17 +129,18 @@ export const drawSunkenShips = (
 ): void => {
   sunkenShips &&
     sunkenShips.forEach(({ x, y }) => {
-      fillCell({ context, cellSize, x, y });
+      fillCell({ context, cellSize, x, y })
 
-      context.beginPath();
-      context.moveTo((x - 1) * cellSize, (y - 1) * cellSize);
-      context.lineTo(x * cellSize, y * cellSize);
-      context.closePath();
-      context.strokeStyle = "#aaa";
-      context.stroke();
-      context.closePath();
-    });
-};
+      context.beginPath()
+      context.moveTo((x - 1) * cellSize, (y - 1) * cellSize)
+      context.lineTo(x * cellSize, y * cellSize)
+      context.moveTo((x - 1) * cellSize + cellSize, (y - 1) * cellSize)
+      context.lineTo(x * cellSize - cellSize, y * cellSize)
+      context.strokeStyle = '#aaa'
+      context.stroke()
+      context.closePath()
+    })
+}
 
 //нарисовать ячейку мимо
 export const drawPastCells = (
@@ -149,48 +150,48 @@ export const drawPastCells = (
 ): void => {
   pastCells &&
     pastCells.forEach(({ x, y }) => {
-      context.beginPath();
+      context.beginPath()
       context.arc(
         x * cellSize - cellSize / 2,
         y * cellSize - cellSize / 2,
         4,
         0,
         2 * Math.PI
-      );
-      context.fillStyle = "#000";
-      context.stroke();
-      context.fill();
-      context.closePath();
-    });
-};
+      )
+      context.fillStyle = '#000'
+      context.stroke()
+      context.fill()
+      context.closePath()
+    })
+}
 
 //создает ячейку
 export const getCell = (coorX: number, coorY: number): CellArgs => {
   return {
     x: Math.ceil(coorX / cellSize / scaleBoard),
     y: Math.ceil(coorY / cellSize / scaleBoard),
-  };
-};
+  }
+}
 
 //генерировать координаты
 export const generateCoords = (cellCount: number): GeneratedCoords => {
-  const letterCoords = [];
-  const numberCoords = [];
+  const letterCoords = []
+  const numberCoords = []
 
   for (let i = 1; i <= cellCount; i++) {
-    letterCoords.push(String.fromCharCode(64 + i));
-    numberCoords.push(i);
+    letterCoords.push(String.fromCharCode(64 + i))
+    numberCoords.push(i)
   }
 
-  return { letterCoords, numberCoords };
-};
+  return { letterCoords, numberCoords }
+}
 
 //ячейка внутри сетки
 const cellIsWithin = ({
   cell,
   dimMatr,
 }: CellIsWithinArgs): boolean => //ячейка внутри
-  cell.x > 0 && cell.x <= dimMatr && cell.y > 0 && cell.y <= dimMatr;
+  cell.x > 0 && cell.x <= dimMatr && cell.y > 0 && cell.y <= dimMatr
 
 //удалить дубликаты
 const removeDuplicates = (array: CellArgs[]): CellArgs[] =>
@@ -201,7 +202,7 @@ const removeDuplicates = (array: CellArgs[]): CellArgs[] =>
         (element2: CellArgs) =>
           element2.x === element1.x && element2.y === element1.y
       )
-  );
+  )
 
 // ячейки вокруг корабля
 export const getEngagedCellsAroundShip = (
@@ -209,215 +210,215 @@ export const getEngagedCellsAroundShip = (
   engagedCells: CellArgs[],
   dimMatr: number
 ): CellArgs[] => {
-  const engagedCellsAroundShip: CellArgs[] = [];
+  const engagedCellsAroundShip: CellArgs[] = []
 
   for (let shipCell = 0; shipCell < ship.length; shipCell++) {
-    engagedCellsAroundShip.push({ x: ship[shipCell].x, y: ship[shipCell].y });
+    engagedCellsAroundShip.push({ x: ship[shipCell].x, y: ship[shipCell].y })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x - 1,
       y: ship[shipCell].y - 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x,
       y: ship[shipCell].y - 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x + 1,
       y: ship[shipCell].y - 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x + 1,
       y: ship[shipCell].y,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x + 1,
       y: ship[shipCell].y + 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x,
       y: ship[shipCell].y + 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x - 1,
       y: ship[shipCell].y + 1,
-    });
+    })
     engagedCellsAroundShip.push({
       x: ship[shipCell].x - 1,
       y: ship[shipCell].y,
-    });
+    })
   }
 
   return removeDuplicates(engagedCellsAroundShip).filter(
     (engagedCell: CellArgs) =>
       cellIsWithin({ cell: engagedCell, dimMatr }) &&
       !cellIsEngaged({ cell: engagedCell, engagedCells })
-  );
-};
+  )
+}
 
 //генерировать схему кораблей
 export const generateShipsLayout = (
   shipsSet: ShipsSet[],
   dimMatr: number
 ): CellArgs[][] => {
-  const ships: CellArgs[][] = [];
-  const engagedCells: CellArgs[] = [];
-  let directionOfGeneration: DirectionsOfGeneration;
-  let directionsOfGeneration: DirectionsOfGeneration[] = [];
+  const ships: CellArgs[][] = []
+  const engagedCells: CellArgs[] = []
+  let directionOfGeneration: DirectionsOfGeneration
+  let directionsOfGeneration: DirectionsOfGeneration[] = []
 
   shipsSet.forEach(({ size, quantity }: ShipsSet) => {
     for (let i = 1; i <= quantity; i++) {
-      let ship: CellArgs[] = [];
-      let currentSize = 1;
+      let ship: CellArgs[] = []
+      let currentSize = 1
 
       while (currentSize <= size) {
         if (currentSize === 1) {
-          ship = [];
+          ship = []
           directionsOfGeneration = Object.keys(DirectionsOfGeneration)
-            .map((direction) => ({ sort: Math.random(), direction }))
+            .map(direction => ({ sort: Math.random(), direction }))
             .sort((d1, d2) => d1.sort - d2.sort)
-            .map(({ direction }) => direction as DirectionsOfGeneration);
-          let shipHead: CellArgs = {} as CellArgs;
+            .map(({ direction }) => direction as DirectionsOfGeneration)
+          let shipHead: CellArgs = {} as CellArgs
 
           do {
             shipHead = {
               x: Math.round(Math.random() * (dimMatr - 1) + 1),
               y: Math.round(Math.random() * (dimMatr - 1) + 1),
-            };
-          } while (cellIsEngaged({ cell: shipHead, engagedCells }));
+            }
+          } while (cellIsEngaged({ cell: shipHead, engagedCells }))
 
-          ship.push(shipHead);
-          currentSize++;
+          ship.push(shipHead)
+          currentSize++
         } else if (currentSize === 2) {
-          let secondShipCell: CellArgs = {} as CellArgs;
+          let secondShipCell: CellArgs = {} as CellArgs
 
           do {
             /// @ts-ignore - no undefined!!!!
-            directionOfGeneration = directionsOfGeneration.pop();
+            directionOfGeneration = directionsOfGeneration.pop()
 
             switch (directionOfGeneration) {
               case DirectionsOfGeneration.Left: {
-                const shipCell: CellArgs = { x: ship[0].x - 1, y: ship[0].y };
+                const shipCell: CellArgs = { x: ship[0].x - 1, y: ship[0].y }
 
                 if (
                   cellIsWithin({ cell: shipCell, dimMatr }) &&
                   !cellIsEngaged({ cell: shipCell, engagedCells })
                 ) {
-                  secondShipCell = shipCell;
+                  secondShipCell = shipCell
                 }
-                break;
+                break
               }
               case DirectionsOfGeneration.Up: {
-                const shipCell: CellArgs = { x: ship[0].x, y: ship[0].y - 1 };
+                const shipCell: CellArgs = { x: ship[0].x, y: ship[0].y - 1 }
 
                 if (
                   cellIsWithin({ cell: shipCell, dimMatr }) &&
                   !cellIsEngaged({ cell: shipCell, engagedCells })
                 ) {
-                  secondShipCell = shipCell;
+                  secondShipCell = shipCell
                 }
-                break;
+                break
               }
               case DirectionsOfGeneration.Right: {
-                const shipCell: CellArgs = { x: ship[0].x + 1, y: ship[0].y };
+                const shipCell: CellArgs = { x: ship[0].x + 1, y: ship[0].y }
 
                 if (
                   cellIsWithin({ cell: shipCell, dimMatr }) &&
                   !cellIsEngaged({ cell: shipCell, engagedCells })
                 ) {
-                  secondShipCell = shipCell;
+                  secondShipCell = shipCell
                 }
-                break;
+                break
               }
               case DirectionsOfGeneration.Down: {
-                const shipCell: CellArgs = { x: ship[0].x, y: ship[0].y + 1 };
+                const shipCell: CellArgs = { x: ship[0].x, y: ship[0].y + 1 }
 
                 if (
                   cellIsWithin({ cell: shipCell, dimMatr }) &&
                   !cellIsEngaged({ cell: shipCell, engagedCells })
                 ) {
-                  secondShipCell = shipCell;
+                  secondShipCell = shipCell
                 }
-                break;
+                break
               }
             }
           } while (
             Object.keys(secondShipCell).length &&
             directionsOfGeneration.length
-          );
+          )
 
           if (Object.keys(secondShipCell).length) {
-            ship.push(secondShipCell);
-            currentSize++;
+            ship.push(secondShipCell)
+            currentSize++
           } else {
-            currentSize = 1;
+            currentSize = 1
           }
         } else {
-          let nextShipCell: CellArgs = {} as CellArgs;
+          let nextShipCell: CellArgs = {} as CellArgs
 
           switch (directionOfGeneration) {
             case DirectionsOfGeneration.Left: {
               const shipCell: CellArgs = {
                 x: ship[currentSize - 1 - 1].x - 1,
                 y: ship[currentSize - 1 - 1].y,
-              };
+              }
 
               if (
                 cellIsWithin({ cell: shipCell, dimMatr }) &&
                 !cellIsEngaged({ cell: shipCell, engagedCells })
               ) {
-                nextShipCell = shipCell;
+                nextShipCell = shipCell
               }
-              break;
+              break
             }
             case DirectionsOfGeneration.Up: {
               const shipCell: CellArgs = {
                 x: ship[currentSize - 1 - 1].x,
                 y: ship[currentSize - 1 - 1].y - 1,
-              };
+              }
 
               if (
                 cellIsWithin({ cell: shipCell, dimMatr }) &&
                 !cellIsEngaged({ cell: shipCell, engagedCells })
               ) {
-                nextShipCell = shipCell;
+                nextShipCell = shipCell
               }
-              break;
+              break
             }
             case DirectionsOfGeneration.Right: {
               const shipCell: CellArgs = {
                 x: ship[currentSize - 1 - 1].x + 1,
                 y: ship[currentSize - 1 - 1].y,
-              };
+              }
 
               if (
                 cellIsWithin({ cell: shipCell, dimMatr }) &&
                 !cellIsEngaged({ cell: shipCell, engagedCells })
               ) {
-                nextShipCell = shipCell;
+                nextShipCell = shipCell
               }
-              break;
+              break
             }
             case DirectionsOfGeneration.Down: {
               const shipCell: CellArgs = {
                 x: ship[currentSize - 1 - 1].x,
                 y: ship[currentSize - 1 - 1].y + 1,
-              };
+              }
 
               if (
                 cellIsWithin({ cell: shipCell, dimMatr }) &&
                 !cellIsEngaged({ cell: shipCell, engagedCells })
               ) {
-                nextShipCell = shipCell;
+                nextShipCell = shipCell
               }
-              break;
+              break
             }
           }
 
           if (Object.keys(nextShipCell).length) {
-            ship.push(nextShipCell);
-            currentSize++;
+            ship.push(nextShipCell)
+            currentSize++
           } else {
-            currentSize = 1;
+            currentSize = 1
           }
         }
       }
@@ -426,12 +427,12 @@ export const generateShipsLayout = (
         ship,
         engagedCells,
         dimMatr
-      );
+      )
 
-      engagedCells.push(...engagedCellsAroundShip);
-      ships.push(ship);
+      engagedCells.push(...engagedCellsAroundShip)
+      ships.push(ship)
     }
-  });
+  })
 
-  return ships;
-};
+  return ships
+}

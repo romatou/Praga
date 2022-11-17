@@ -5,7 +5,7 @@ import {
   useCallback,
   RefObject,
   ReactElement,
-} from "react";
+} from 'react'
 
 import {
   drawCells,
@@ -19,10 +19,24 @@ import {
   cellSize,
   scaleBoard,
   generateRandomCompShot,
-} from "./helper";
-import { CellArgs, TBoardProps } from "./types";
+} from './helper'
 
-let currentPlayer = "player"; //За кем текущий ход
+import {
+  containerArea,
+  containerAreaBoard,
+  status1,
+  status2,
+  letterCoord,
+  letterCoords,
+  numberCoords,
+  numberCoord,
+  namesBoard,
+} from './styles'
+
+import { Box, Typography } from '@mui/material'
+import { CellArgs, TBoardProps } from './types'
+
+let currentPlayer = 'player' //За кем текущий ход
 
 const Board = ({
   name,
@@ -32,36 +46,36 @@ const Board = ({
   compShips,
   coords,
 }: TBoardProps): ReactElement => {
-  const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]); //затонувшие корабли player
-  const [sunkenShipsComp, setSunkenShipsComp] = useState<CellArgs[]>([]); //затонувшие корабли comp
+  const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]) //затонувшие корабли player
+  const [sunkenShipsComp, setSunkenShipsComp] = useState<CellArgs[]>([]) //затонувшие корабли comp
 
-  const [pastCellsPlayer, setPastCellsPlayer] = useState<CellArgs[]>([]); // клетки мимо игрока
-  const [pastCellsComp, setPastCellsComp] = useState<CellArgs[]>([]); // клетки мимо компа
+  const [pastCellsPlayer, setPastCellsPlayer] = useState<CellArgs[]>([]) // клетки мимо игрока
+  const [pastCellsComp, setPastCellsComp] = useState<CellArgs[]>([]) // клетки мимо компа
 
-  const allPlayerShips = playerShips && playerShips.flat().length;
-  const allCompShips = compShips && compShips.flat().length;
+  const allPlayerShips = playerShips && playerShips.flat().length
+  const allCompShips = compShips && compShips.flat().length
 
-  const [countPlayerShips, setCountPlayerShips] = useState(allPlayerShips); //Количество кораблей для уничтожения
-  const [countCompShips, setCountCompShips] = useState(allCompShips); //Количество кораблей для уничтожения
+  const [countPlayerShips, setCountPlayerShips] = useState(allPlayerShips) //Количество кораблей для уничтожения
+  const [countCompShips, setCountCompShips] = useState(allCompShips) //Количество кораблей для уничтожения
 
   const canvasRef: RefObject<HTMLCanvasElement> =
-    useRef<HTMLCanvasElement | null>(null);
+    useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
     // масштаб
-    let localRef = null;
-    if (canvasRef.current) localRef = canvasRef.current;
-    const context: CanvasRenderingContext2D | null = localRef!.getContext("2d");
-    context?.scale(scaleBoard, scaleBoard);
-  }, []);
+    let localRef = null
+    if (canvasRef.current) localRef = canvasRef.current
+    const context: CanvasRenderingContext2D | null = localRef!.getContext('2d')
+    context?.scale(scaleBoard, scaleBoard)
+  }, [])
 
   const handleComp = useCallback(() => {
     //комп
     if (!(countCompShips === 0 || countPlayerShips === 0)) {
-      if (currentPlayer === name) return; //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
+      if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
-      if (currentPlayer === "computer") {
-        const cell = generateRandomCompShot() as CellArgs; //рандомная ячейка компа
+      if (currentPlayer === 'computer') {
+        const cell = generateRandomCompShot() as CellArgs //рандомная ячейка компа
 
         if (
           cellIsEngaged({
@@ -70,16 +84,16 @@ const Board = ({
           })
         ) {
           //проверка есть ли в кликнутой ячейки корабль игрока
-          if (cellIsEngaged({ cell, engagedCells: sunkenShipsPlayer })) return; //если клик был уже по потопл кораблю игрока
-          sunkenShipsPlayer.push(cell);
-          setSunkenShipsPlayer([...sunkenShipsPlayer]); //если найден корабль противника то внесем его ячейку в потопленные
-          setCountPlayerShips(countPlayerShips! - 1); //отнимем коли-во кораблей противника
-          currentPlayer = "computer"; //ход остается
+          if (cellIsEngaged({ cell, engagedCells: sunkenShipsPlayer })) return //если клик был уже по потопл кораблю игрока
+          sunkenShipsPlayer.push(cell)
+          setSunkenShipsPlayer([...sunkenShipsPlayer]) //если найден корабль противника то внесем его ячейку в потопленные
+          setCountPlayerShips(countPlayerShips! - 1) //отнимем коли-во кораблей противника
+          currentPlayer = 'computer' //ход остается
         } else {
-          if (cellIsEngaged({ cell, engagedCells: pastCellsComp })) return; // если клик по уже пустой клетке
-          pastCellsComp.push(cell);
-          setPastCellsComp([...pastCellsComp]); // сохранить пустую клетку
-          currentPlayer = "player"; //т к ход мимо переход стрельбы
+          if (cellIsEngaged({ cell, engagedCells: pastCellsComp })) return // если клик по уже пустой клетке
+          pastCellsComp.push(cell)
+          setPastCellsComp([...pastCellsComp]) // сохранить пустую клетку
+          currentPlayer = 'player' //т к ход мимо переход стрельбы
         }
       }
     }
@@ -90,34 +104,34 @@ const Board = ({
     pastCellsComp,
     playerShips,
     sunkenShipsPlayer,
-  ]);
+  ])
 
   useEffect(() => {
-    let localRef: HTMLCanvasElement | null = null;
+    let localRef: HTMLCanvasElement | null = null
 
     const drawGrid = (context: CanvasRenderingContext2D) => {
       //отрисовка сетки, краблей, клеток попадания, клеток мимо
-      context.clearRect(0, 0, size, size);
-      drawCells({ context, cellSize, dimMatr });
+      context.clearRect(0, 0, size, size)
+      drawCells({ context, cellSize, dimMatr })
 
-      drawShips(context, cellSize, playerShips!); //отрисовка караблей
-      // drawShips(context, cellSize, compShips!); //временно отрис корабл компа!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      drawShips(context, cellSize, playerShips!) //отрисовка караблей
+      // drawShips(context, cellSize, compShips!) //временно отрис корабл компа!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-      drawSunkenShips(context, cellSize, sunkenShipsPlayer); //отрис потопл-х кораблей
-      drawSunkenShips(context, cellSize, sunkenShipsComp); //отрис потопл-х кораблей
+      drawSunkenShips(context, cellSize, sunkenShipsPlayer) //отрис потопл-х кораблей
+      drawSunkenShips(context, cellSize, sunkenShipsComp) //отрис потопл-х кораблей
 
-      drawPastCells(context, cellSize, pastCellsPlayer); //отрис клетки мимо игрока
-      drawPastCells(context, cellSize, pastCellsComp); //отрис клетки мимо компа
-    };
+      drawPastCells(context, cellSize, pastCellsPlayer) //отрис клетки мимо игрока
+      drawPastCells(context, cellSize, pastCellsComp) //отрис клетки мимо компа
+    }
 
-    if (canvasRef.current) localRef = canvasRef.current;
-    const context: CanvasRenderingContext2D | null = localRef!.getContext("2d");
-    drawGrid(context!);
+    if (canvasRef.current) localRef = canvasRef.current
+    const context: CanvasRenderingContext2D | null = localRef!.getContext('2d')
+    drawGrid(context!)
 
-    currentPlayer === "computer" &&
-      canvasRef.current!.addEventListener("click", handleComp);
+    currentPlayer === 'computer' &&
+      canvasRef.current!.addEventListener('click', handleComp)
 
-    return () => localRef?.removeEventListener("click", handleComp);
+    return () => localRef?.removeEventListener('click', handleComp)
   }, [
     sunkenShipsPlayer,
     sunkenShipsComp,
@@ -126,18 +140,18 @@ const Board = ({
     handleComp,
     playerShips,
     compShips,
-  ]);
+  ])
 
   useEffect(() => {
     if (gameIsFinished) {
-      setSunkenShipsPlayer([]);
-      setSunkenShipsComp([]);
-      setPastCellsPlayer([]);
-      setPastCellsComp([]);
-      setCountPlayerShips(allPlayerShips);
-      setCountCompShips(allCompShips);
-      currentPlayer = "player";
-      return;
+      setSunkenShipsPlayer([])
+      setSunkenShipsComp([])
+      setPastCellsPlayer([])
+      setPastCellsComp([])
+      setCountPlayerShips(allPlayerShips)
+      setCountCompShips(allCompShips)
+      currentPlayer = 'player'
+      return
     }
   }, [
     sunkenShipsPlayer,
@@ -147,82 +161,83 @@ const Board = ({
     gameIsFinished,
     allCompShips,
     allPlayerShips,
-  ]);
+  ])
 
   // кликнул игрок
   const handleCellClick = (event: {
-    nativeEvent: { offsetX: number; offsetY: number };
+    nativeEvent: { offsetX: number; offsetY: number }
   }) => {
     if (!(countCompShips === 0 || countPlayerShips === 0)) {
-      if (currentPlayer === name) return; //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
+      if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
-      if (currentPlayer === "player") {
-        const { offsetX, offsetY } = event.nativeEvent; //определяется ячейка по которой кликнул игрок
-        const cell = getCell(offsetX, offsetY); //получил ячейку клика
+      if (currentPlayer === 'player') {
+        const { offsetX, offsetY } = event.nativeEvent //определяется ячейка по которой кликнул игрок
+        const cell = getCell(offsetX, offsetY) //получил ячейку клика
 
         if (cellIsEngaged({ cell, engagedCells: compShips!.flat() })) {
           //проверка есть ли в кликнутой ячейки корабль компа
-          if (cellIsEngaged({ cell, engagedCells: sunkenShipsComp })) return; //если клик был уже по потопл кораблю компа
+          if (cellIsEngaged({ cell, engagedCells: sunkenShipsComp })) return //если клик был уже по потопл кораблю компа
 
-          setSunkenShipsComp([...sunkenShipsComp, cell]); //если найден корабль противника то внесем его ячейку в потопленные
-          setCountCompShips(countCompShips! - 1); //отнимем коли-во кораблей противника
-          currentPlayer = "player"; // ход остается за игроком
+          setSunkenShipsComp([...sunkenShipsComp, cell]) //если найден корабль противника то внесем его ячейку в потопленные
+          setCountCompShips(countCompShips! - 1) //отнимем коли-во кораблей противника
+          currentPlayer = 'player' // ход остается за игроком
         } else {
-          if (cellIsEngaged({ cell, engagedCells: pastCellsPlayer })) return; // если клик по уже пустой клетке
-          setPastCellsPlayer([...pastCellsPlayer, cell]); // сохранить пустую клетку
-          currentPlayer = "computer"; // т к ход мимо переход стрельбы к компу
+          if (cellIsEngaged({ cell, engagedCells: pastCellsPlayer })) return // если клик по уже пустой клетке
+          setPastCellsPlayer([...pastCellsPlayer, cell]) // сохранить пустую клетку
+          currentPlayer = 'computer' // т к ход мимо переход стрельбы к компу
         }
       }
     }
-  };
+  }
 
   useEffect(
     //вызов клика компа
     () => {
-      const id = setInterval(handleComp, 100);
-      return () => clearInterval(id);
+      const id = setInterval(handleComp, 100)
+      return () => clearInterval(id)
     },
     [handleComp]
-  );
+  )
 
   return (
-    <div className="container_area">
-      <div className="container_area_board">
-        <div className="status1">
-          {name === "computer"
-            ? countCompShips === 0 && "Вы победитель!!!"
-            : countPlayerShips === 0 && "Компутер красавчик!!!"}
-        </div>
-        <div className="status2">
-          Осталось уничтожить:{" "}
-          {name === "computer" ? countCompShips : countPlayerShips}
-        </div>
+    <Box sx={containerArea}>
+      <Box sx={containerAreaBoard}>
+        <Box sx={status1}>
+          {name === 'computer'
+            ? countCompShips === 0 && 'Вы победитель!!!'
+            : countPlayerShips === 0 && 'Компутер красавчик!!!'}
+        </Box>
+        <Box sx={status2}>
+          Осталось уничтожить:{' '}
+          {name === 'computer' ? countCompShips : countPlayerShips}
+        </Box>
 
-        <div className="letterCoords">
-          {coords.letterCoords.map((letter) => (
-            <span key={letter} className="letterCoord">
+        <Box sx={letterCoords}>
+          {coords.letterCoords.map(letter => (
+            <Typography component="span" key={letter} sx={letterCoord}>
               {letter}
-            </span>
+            </Typography>
           ))}
-        </div>
-        <div className="numberCoords">
-          {coords.numberCoords.map((number) => (
-            <span key={number} className="numberCoord">
+        </Box>
+        <Box sx={numberCoords}>
+          {coords.numberCoords.map(number => (
+            <Typography component="span" key={number} sx={numberCoord}>
               {number}
-            </span>
+            </Typography>
           ))}
-        </div>
+        </Box>
+
         <canvas
           ref={canvasRef}
-          className={`'canvas' ${name === "computer" && "computerCanvas"}`}
+          className={`'canvas' ${name === 'computer' && 'computerCanvas'}`}
           width={size * scaleBoard}
           height={size * scaleBoard}
           onClick={handleCellClick}
         />
-        <div className="nameBoard">{nameBoard}</div>
-      </div>
-    </div>
-  );
-};
+        <Box sx={namesBoard}>{nameBoard}</Box>
+      </Box>
+    </Box>
+  )
+}
 
-export default Board;
+export default Board
