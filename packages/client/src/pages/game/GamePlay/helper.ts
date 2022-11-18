@@ -136,7 +136,14 @@ export const drawSunkenShips = (
       context.lineTo(x * cellSize, y * cellSize)
       context.moveTo((x - 1) * cellSize + cellSize, (y - 1) * cellSize)
       context.lineTo(x * cellSize - cellSize, y * cellSize)
-      context.strokeStyle = '#aaa'
+      context.strokeStyle = 'blue'
+      context.fillStyle = 'rgb(255, 82, 82)'
+      context.fillRect(
+        (x - 1) * cellSize,
+        (y - 1) * cellSize,
+        cellSize,
+        cellSize
+      )
       context.stroke()
       context.closePath()
     })
@@ -158,7 +165,7 @@ export const drawPastCells = (
         0,
         2 * Math.PI
       )
-      context.fillStyle = '#000'
+      context.fillStyle = 'rgb(57, 57, 97)'
       context.stroke()
       context.fill()
       context.closePath()

@@ -230,7 +230,9 @@ const Board = ({
         <canvas
           ref={canvasRef}
           style={
-            name === 'computer' ? { cursor: 'pointer' } : { cursor: 'progress' }
+            name === 'computer'
+              ? { cursor: 'crosshair' }
+              : { cursor: 'progress' }
           }
           width={size * scaleBoard}
           height={size * scaleBoard}
