@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useCallback }  from 'react'
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import MuiAlert, {AlertProps} from '@mui/material/Alert';
+import { useAppDispatch } from '@store/index'
+import { hideAlert, selectAlertState } from '@store/slices/AlertSlice'
 
 export interface props {
   message: string,
@@ -9,26 +11,34 @@ export interface props {
   handleClose: () => void
 }
 
-const Alert = React.forwardRef(function Alert(props:any, ref:any) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const InstantMessage = (props: props) =>  {
+const AlertMessage = () =>  {
+    const dispatch = useAppDispatch()
+    const { text, open, type } = selectAlertState();
 
+    const handleClose = useCallback((event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      dispatch(hideAlert());
+    }, []);
     return (
         <Snackbar
-            open={props.open} 
+            open={open} 
             autoHideDuration={6000} 
-            onClose={props.handleClose}
+            onClose={handleClose}
         >
             <Alert
-              onClose={props.handleClose} 
-              severity={props.severity}
+              onClose={handleClose} 
+              severity={type}
             >
-                {props.message}
+                {text}
             </Alert>
       </Snackbar>
     )
 }
 
-export default InstantMessage
+export default AlertMessage
