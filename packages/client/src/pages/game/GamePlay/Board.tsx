@@ -229,7 +229,9 @@ const Board = ({
 
         <canvas
           ref={canvasRef}
-          className={`'canvas' ${name === 'computer' && 'computerCanvas'}`}
+          style={
+            name === 'computer' ? { cursor: 'pointer' } : { cursor: 'progress' }
+          }
           width={size * scaleBoard}
           height={size * scaleBoard}
           onClick={handleCellClick}
