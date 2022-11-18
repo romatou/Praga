@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import * as RB from '@mui/material'
 import { useForm, FormProvider} from 'react-hook-form';
-import { passwordType } from '../../services/UserService';
+import { passwordType } from '../../pages/profile/types';
 
 
 const ModalPassword = (props: any) => {
