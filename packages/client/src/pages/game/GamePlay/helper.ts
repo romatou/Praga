@@ -15,10 +15,12 @@ export enum DirectionsOfGeneration {
   Down = 'Down',
 }
 
-export const size = 300 // размер всей сетки при изм-и надо менять css .numberCoords
+export const size = 300 // размер всей сетки при изм-и надо менять style numberCoords
 export const dimMatr = 8 // Matrix dimension 8x8 (размерность)
 export const cellSize = size / dimMatr //размер ячейки
 export const scaleBoard = 1 //масшатаб игрового поля
+export const canvasWidth = size + 70 //ширина всего канваса
+export const canvasHeight = size + 100 //высота всего канваса
 
 export const shipsSet: ShipsSet[] = [
   //размеры кораблей и их количество на доске
@@ -36,8 +38,110 @@ export const checkShipsLength3 = (arr: CellArgs[][]): boolean =>
 
 //рисовать ячейку
 const drawCell = ({ context, cellSize, x, y }: DrawCellArgs): void => {
+  context.beginPath()
   context.strokeStyle = '#aaa'
   context.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize)
+  context.closePath()
+}
+
+//рисовать имя доски
+export const drawNameBoard = (
+  context: CanvasRenderingContext2D,
+  font: string
+): void => {
+  context.beginPath()
+  context.clearRect(0, 340, 300, 60)
+  context.rect(0, 340, 300, 60)
+  context.fillStyle = 'burlywood'
+  context.fill()
+  context.fillStyle = 'blue'
+  context.font = 'italic ' + 12 + 'pt Arial'
+  context.fillText(`${font}`, 40, 360)
+  context.closePath()
+}
+
+//генерировать координаты
+export const generateCoords = (cellCount: number): GeneratedCoords => {
+  const letterCoords = []
+  const numberCoords = []
+
+  for (let i = 1; i <= cellCount; i++) {
+    letterCoords.push(String.fromCharCode(64 + i))
+    numberCoords.push(i)
+  }
+
+  return { letterCoords, numberCoords }
+}
+
+//прорисовать координаты букв сетки
+export const drawLatterCoords = (
+  context: CanvasRenderingContext2D,
+  font: string[]
+): void => {
+  let i = 15
+  context.beginPath()
+  context.fillStyle = 'blue'
+  context.font = 'italic ' + 12 + 'pt Arial'
+  font.forEach(el => {
+    context.fillText(`${el}`, i, 320)
+    i += 37
+  })
+  context.closePath()
+}
+
+//прорисовать координаты чисел сетки
+export const drawNumberCoords = (
+  context: CanvasRenderingContext2D,
+  font: number[]
+): void => {
+  let i = 24
+  context.beginPath()
+  context.fillStyle = 'blue'
+  context.font = 'italic ' + 13 + 'pt Arial'
+  font.forEach(el => {
+    context.fillText(`${el}`, 306, i)
+    i += 38
+  })
+  context.closePath()
+}
+
+//прорисовать количесвто оставшихся к уничтожению
+export const drawStatusShips = (
+  context: CanvasRenderingContext2D,
+  name: string,
+  countCompShips?: number,
+  countPlayerShips?: number
+): void => {
+  const num = name === 'computer' ? countCompShips : countPlayerShips
+
+  context.beginPath()
+  context.fillStyle = 'blue'
+  context.font = 'italic ' + 11 + 'pt Arial'
+  context.fillText(`Осталось уничтожить: ${num}`, 10, 395)
+  context.closePath()
+}
+
+//прорисовать кто победюн
+export const drawWhoWin = (
+  context: CanvasRenderingContext2D,
+  name: string,
+  countCompShips?: number,
+  countPlayerShips?: number
+): void => {
+  const str =
+    name === 'computer'
+      ? countCompShips === 0 && 'Вы победитель!!!'
+      : countPlayerShips === 0 && 'Компутер красавчик!!!'
+  if (!str) return
+  context.beginPath()
+  context.clearRect(0, 340, 300, 60)
+  context.rect(0, 340, 300, 60)
+  context.fillStyle = 'burlywood'
+  context.fill()
+  context.fillStyle = 'rgb(158, 0, 0)'
+  context.font = 'italic ' + 20 + 'pt Arial'
+  context.fillText(`${str}`, 10, 370)
+  context.closePath()
 }
 
 // рисовать ячейки
@@ -79,6 +183,29 @@ export const drawShips = (
 ): void => {
   ships &&
     ships.flat().forEach(({ x, y }) => fillCell({ context, cellSize, x, y }))
+}
+
+//нарисовать ячейку мимо
+export const drawPastCells = (
+  context: CanvasRenderingContext2D,
+  cellSize: number,
+  pastCells: CellArgs[]
+): void => {
+  pastCells &&
+    pastCells.forEach(({ x, y }) => {
+      context.beginPath()
+      context.arc(
+        x * cellSize - cellSize / 2,
+        y * cellSize - cellSize / 2,
+        4,
+        0,
+        2 * Math.PI
+      )
+      context.fillStyle = 'rgb(57, 57, 97)'
+      context.stroke()
+      context.fill()
+      context.closePath()
+    })
 }
 
 //генерация рандома ячеек
@@ -149,48 +276,12 @@ export const drawSunkenShips = (
     })
 }
 
-//нарисовать ячейку мимо
-export const drawPastCells = (
-  context: CanvasRenderingContext2D,
-  cellSize: number,
-  pastCells: CellArgs[]
-): void => {
-  pastCells &&
-    pastCells.forEach(({ x, y }) => {
-      context.beginPath()
-      context.arc(
-        x * cellSize - cellSize / 2,
-        y * cellSize - cellSize / 2,
-        4,
-        0,
-        2 * Math.PI
-      )
-      context.fillStyle = 'rgb(57, 57, 97)'
-      context.stroke()
-      context.fill()
-      context.closePath()
-    })
-}
-
 //создает ячейку
 export const getCell = (coorX: number, coorY: number): CellArgs => {
   return {
     x: Math.ceil(coorX / cellSize / scaleBoard),
     y: Math.ceil(coorY / cellSize / scaleBoard),
   }
-}
-
-//генерировать координаты
-export const generateCoords = (cellCount: number): GeneratedCoords => {
-  const letterCoords = []
-  const numberCoords = []
-
-  for (let i = 1; i <= cellCount; i++) {
-    letterCoords.push(String.fromCharCode(64 + i))
-    numberCoords.push(i)
-  }
-
-  return { letterCoords, numberCoords }
 }
 
 //ячейка внутри сетки

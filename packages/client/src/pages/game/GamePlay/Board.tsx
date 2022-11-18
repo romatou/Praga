@@ -5,6 +5,7 @@ import {
   useCallback,
   RefObject,
   ReactElement,
+  memo,
 } from 'react'
 
 import {
@@ -19,21 +20,15 @@ import {
   cellSize,
   scaleBoard,
   generateRandomCompShot,
+  drawNameBoard,
+  drawLatterCoords,
+  drawNumberCoords,
+  drawWhoWin,
+  drawStatusShips,
+  canvasWidth,
+  canvasHeight,
 } from './helper'
 
-import {
-  containerArea,
-  containerAreaBoard,
-  status1,
-  status2,
-  letterCoord,
-  letterCoords,
-  numberCoords,
-  numberCoord,
-  namesBoard,
-} from './styles'
-
-import { Box, Typography } from '@mui/material'
 import { CellArgs, TBoardProps } from './types'
 
 let currentPlayer = 'player' //За кем текущий ход
@@ -114,6 +109,12 @@ const Board = ({
       context.clearRect(0, 0, size, size)
       drawCells({ context, cellSize, dimMatr })
 
+      drawNameBoard(context, nameBoard) //отрисовка названия доски
+      drawLatterCoords(context, coords.letterCoords) //отрисовка координат букв доски
+      drawNumberCoords(context, coords.numberCoords) //отрисовка координат чисел доски
+      drawWhoWin(context, name, countCompShips, countPlayerShips) //who win
+      drawStatusShips(context, name, countCompShips, countPlayerShips) // кол-о к уничтож клеток
+
       drawShips(context, cellSize, playerShips!) //отрисовка караблей
       // drawShips(context, cellSize, compShips!) //временно отрис корабл компа!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -172,6 +173,8 @@ const Board = ({
 
       if (currentPlayer === 'player') {
         const { offsetX, offsetY } = event.nativeEvent //определяется ячейка по которой кликнул игрок
+
+        if (offsetX >= 300 || offsetY >= 300) return //выход за пределы при клике
         const cell = getCell(offsetX, offsetY) //получил ячейку клика
 
         if (cellIsEngaged({ cell, engagedCells: compShips!.flat() })) {
@@ -200,48 +203,18 @@ const Board = ({
   )
 
   return (
-    <Box sx={containerArea}>
-      <Box sx={containerAreaBoard}>
-        <Box sx={status1}>
-          {name === 'computer'
-            ? countCompShips === 0 && 'Вы победитель!!!'
-            : countPlayerShips === 0 && 'Компутер красавчик!!!'}
-        </Box>
-        <Box sx={status2}>
-          Осталось уничтожить:{' '}
-          {name === 'computer' ? countCompShips : countPlayerShips}
-        </Box>
-
-        <Box sx={letterCoords}>
-          {coords.letterCoords.map(letter => (
-            <Typography component="span" key={letter} sx={letterCoord}>
-              {letter}
-            </Typography>
-          ))}
-        </Box>
-        <Box sx={numberCoords}>
-          {coords.numberCoords.map(number => (
-            <Typography component="span" key={number} sx={numberCoord}>
-              {number}
-            </Typography>
-          ))}
-        </Box>
-
-        <canvas
-          ref={canvasRef}
-          style={
-            name === 'computer'
-              ? { cursor: 'crosshair' }
-              : { cursor: 'progress' }
-          }
-          width={size * scaleBoard}
-          height={size * scaleBoard}
-          onClick={handleCellClick}
-        />
-        <Box sx={namesBoard}>{nameBoard}</Box>
-      </Box>
-    </Box>
+    <canvas
+      ref={canvasRef}
+      style={
+        name === 'computer'
+          ? { cursor: 'crosshair', margin: '0 3rem .1rem 0' }
+          : { cursor: 'progress', marginBottom: '.1rem' }
+      }
+      width={canvasWidth * scaleBoard}
+      height={canvasHeight * scaleBoard}
+      onClick={handleCellClick}
+    />
   )
 }
 
-export default Board
+export default memo(Board)
