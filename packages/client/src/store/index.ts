@@ -2,10 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
-import ratingReducer from './slices/RatingSlice'
+import ratingReducer from './slices/RatingSlice';
+import authReducer from './slices/AuthSlice';
+
 
 const RootReducer = combineReducers({
   rating: ratingReducer,
+  auth: authReducer,
 })
 
 export const setupStore = () => {
@@ -13,6 +16,7 @@ export const setupStore = () => {
     reducer: RootReducer,
   })
 }
+
 
 export type RootState = ReturnType<typeof RootReducer>
 export type AppStore = ReturnType<typeof setupStore>

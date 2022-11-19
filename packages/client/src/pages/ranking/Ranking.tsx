@@ -26,7 +26,7 @@ export default function Ranking() {
 
   useEffect(() => {
     dispatch(fetchLeaderboard())
-  }, [])
+  }, []) 
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,

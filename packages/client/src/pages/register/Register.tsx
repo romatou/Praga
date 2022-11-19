@@ -1,26 +1,38 @@
 import { Container, Box, TextField, Typography, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { apiService, SignupData } from "../../services/ApiService";
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from "@store/index";
+import { register, fetchUser } from "@store/actions/AuthActionCreators";
+import { UserData } from "@store/types";
 
 export default function Register() {
+
+  const navigate = useNavigate();
+
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
     }
   })
-
+  const dispatch = useAppDispatch()
+  
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    apiService.getRegister({
+    const newUser = {
       first_name: data.get('firstName'),
       second_name: data.get('secondName'),
       login: data.get('login'),
       email: data.get('email'),
       password: data.get('password'),
       phone: data.get('phone'),
-    } as SignupData);
+    } as UserData;
+
+    dispatch(register(newUser))
+    .then(() => navigate('/profile'))
+    dispatch(fetchUser())
+
   };
   return (
     <ThemeProvider theme={theme}>
@@ -98,11 +110,13 @@ export default function Register() {
               sx={{ mt: 3, mb: 2 }}
             > Создать аккаунт
             </Button>
+            
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Уже есть аккаунт?</Typography>
               <Link to='/auth' style={{ textDecoration: 'none', fontFamily: 'Roboto, sans-serif' }}>
                 Войти
               </Link>
+              
             </Stack>
           </Box>
         </Box>

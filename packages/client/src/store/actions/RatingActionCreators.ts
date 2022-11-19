@@ -15,7 +15,7 @@ export const fetchLeaderboard = createAsyncThunk(
         cursor: 0,
         limit: 5,
       })
-
+ 
       return resp.data
     } catch (e) {
       return thunkApi.rejectWithValue(

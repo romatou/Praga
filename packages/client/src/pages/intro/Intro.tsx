@@ -1,6 +1,18 @@
+import { Box, Button } from '@mui/material';
+import { logout } from '@store/actions/AuthActionCreators';
+import { useAppDispatch } from '@store/index';
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function Intro() {
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const logOut = (event: any) => {
+    event.preventDefault();
+    dispatch(logout())
+    .then(() => navigate('/auth'))
+  }
   return (
     <div>
       <h1>Мини-лэндинг - Главная страница</h1>
@@ -37,6 +49,15 @@ export default function Intro() {
           <Link to="/500">Ошибка на сервере</Link>
         </li>
       </ul>
+      <Box onClick={logOut} sx={{width: 150}}>
+          <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            > выйти
+            </Button>
+          </Box>
     </div>
   )
 }
