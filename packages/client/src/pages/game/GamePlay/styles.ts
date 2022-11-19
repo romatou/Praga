@@ -35,3 +35,8 @@ export const buttonStyles = {
   alignItems: 'center',
   justifyContent: 'center',
 }
+
+export const wrapShip = {
+  display: 'flex',
+  flexDirection: 'column',
+}
