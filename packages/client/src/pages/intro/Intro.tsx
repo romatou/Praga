@@ -3,50 +3,49 @@ import { Box, Container, Button, Typography } from '@mui/material'
 
 export default function Intro() {
   return (
-    <>
-      <Box
-        sx={{
-          backgroundImage: `url(${background})`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          height: '100vh',
-          width: '100vw',
-        }}>
-        <Container sx={{ height: '100vh' }}>
-          <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
-            <Typography
-              variant="h3"
-              component="h1"
-              sx={{
-                padding: '3.5rem 1rem 0',
-                letterSpacing: '15px',
-                fontWeight: '500',
-                wordSpacing: '20px',
-                textTransform: 'uppercase',
-              }}>
-              Морской бой
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexGrow: '2',
-                flexFlow: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Button
-                href="/register"
-                sx={{ marginBottom: '1rem' }}
-                variant="contained"
-                size="large"
-                color="primary">
-                Начать игру
-              </Button>
-              <Typography>Для игры требуется регистрация</Typography>
-            </Box>
+    <Box
+      sx={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        height: '100vh',
+        width: '100vw',
+      }}>
+      <Container sx={{ height: '100vh' }}>
+        <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{
+              padding: '3.5rem 1rem 0',
+              letterSpacing: '15px',
+              fontWeight: '500',
+              wordSpacing: '20px',
+              textTransform: 'uppercase',
+            }}>
+            Морской бой
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexGrow: '2',
+              flexFlow: 'column',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }}>
+            <Button
+              href="/register"
+              sx={{ marginBottom: '1rem' }}
+              variant="contained"
+              size="large"
+              color="primary">
+              Начать игру
+            </Button>
+            <Typography>Для игры требуется регистрация</Typography>
           </Box>
-        </Container>
-      </Box>
+        </Box>
+      </Container>
+
       <Box
         sx={{
           height: '100vh',
@@ -188,6 +187,6 @@ export default function Intro() {
           </Typography>
         </Box>
       </Container>
-    </>
+    </Box>
   )
 }
