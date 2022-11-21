@@ -1,36 +1,18 @@
-import background from '@assets/landing-background.jpg'
 import { Box, Container, Button, Typography } from '@mui/material'
+import styles from './styles'
 
 export default function Intro() {
   return (
-    <Box
-      sx={{
-        backgroundImage: `url(${background})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        height: '100vh',
-        width: '100vw',
-      }}>
+    <Box sx={{ ...styles.page }}>
       <Container sx={{ height: '100vh' }}>
         <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
-          <Typography
-            variant="h3"
-            component="h1"
-            sx={{
-              padding: '3.5rem 1rem 0',
-              letterSpacing: '15px',
-              fontWeight: '500',
-              wordSpacing: '20px',
-              textTransform: 'uppercase',
-            }}>
+          <Typography variant="h3" component="h1" sx={{ ...styles.title }}>
             Морской бой
           </Typography>
           <Box
             sx={{
-              display: 'flex',
+              ...styles.containerCentered,
               flexGrow: '2',
-              flexFlow: 'column',
-              justifyContent: 'center',
               alignItems: 'flex-start',
             }}>
             <Button
@@ -49,40 +31,15 @@ export default function Intro() {
       <Box
         sx={{
           height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          ...styles.containerCentered,
         }}>
-        <Box
-          sx={{
-            border: '2px solid #000',
-            background: '#fff',
-            boxShadow: '2px 4px 4px rgba(0, 0, 0, 0.25)',
-            width: '75%',
-            height: 'auto',
-            borderRadius: '6px',
-            position: 'relative',
-          }}>
-          <Typography
-            component="h2"
-            sx={{
-              background: '#000',
-              borderRadius: '0 6px 6px 0',
-              padding: '0.5rem 2rem',
-              left: '-2px',
-              color: '#fff',
-              marginBottom: '2rem',
-              display: 'inline-block',
-              position: 'relative',
-              top: '2rem',
-            }}>
+        <Box sx={{ ...styles.window }}>
+          <Typography component="h2" sx={{ ...styles.heading }}>
             История игры
           </Typography>
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              ...styles.containerCentered,
               position: 'relative',
               padding: '2rem',
               top: 0,
@@ -109,40 +66,20 @@ export default function Intro() {
       <Box
         sx={{
           height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          ...styles.containerCentered,
           background: 'lightgreen',
         }}>
-        <Box
-          sx={{
-            border: '2px solid #000',
-            background: '#fff',
-            boxShadow: '2px 4px 4px rgba(0, 0, 0, 0.25)',
-            width: '75%',
-            height: 'auto',
-            borderRadius: '6px',
-            position: 'relative',
-          }}>
+        <Box sx={{ ...styles.window }}>
           <Typography
             component="h2"
             sx={{
-              background: '#000',
-              borderRadius: '0 6px 6px 0',
-              padding: '0.5rem 2rem',
-              left: '-2px',
-              color: '#fff',
-              marginBottom: '2rem',
-              display: 'inline-block',
-              position: 'relative',
-              top: '2rem',
+              ...styles.heading,
             }}>
             Правила
           </Typography>
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
+              ...styles.containerCentered,
               flexFlow: 'column',
               position: 'relative',
               padding: '2rem',
@@ -156,13 +93,7 @@ export default function Intro() {
             <Typography
               component="p"
               sx={{
-                textAlign: 'left',
-                fontWeight: '300',
-                fontSize: '14px',
-                background: 'lightblue',
-                padding: '1rem',
-                margin: '1rem 0',
-                borderRadius: '6px',
+                ...styles.textCaption,
               }}>
               ❗️ Переставлять свои корабли после начала игры категорически
               запрещено.
