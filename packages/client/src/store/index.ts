@@ -9,7 +9,6 @@ import alertReducer from './slices/AlertSlice'
 const RootReducer = combineReducers({
   rating: ratingReducer,
   profile: profileReducer,
-  requestProfile: profileReducer,
   alertReducer: alertReducer
 })
 

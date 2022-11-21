@@ -6,7 +6,7 @@ import {
   fetchUser
 } from '@store/actions/ProfileActionCreators'
 
-import { useAppSelector } from '../index'
+import { RootState } from '../index'
 import { User, RequestData, RequestDataState, StatusLoading } from '../types'
 
 export interface UserState {
@@ -88,13 +88,6 @@ export const UserSlice = createSlice({
   },
 })
 
-export const selectProfileData = () => {
-  const { userData } = useAppSelector(state => state.profile)
-  return userData
-}
-export const selectRequestProfile = () => {
-  const { requestData } = useAppSelector(state => state.requestProfile)
-  return requestData
-}
+export const selectProfileData = (state: RootState) => state.profile;
 
 export default UserSlice.reducer

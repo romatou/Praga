@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useAppSelector } from '../index'
+import { RootState } from '../index'
 
 export type AlertProps = 'success' | 'info' | 'warning' | 'error';
 
@@ -33,8 +33,6 @@ export const alertSlice = createSlice({
 
 export const { showAlert, hideAlert } = alertSlice.actions;
 
-export const selectAlertState = () => {
-  return useAppSelector(state => state.alertReducer)
-}
+export const selectAlertState = (state: RootState) => state.alertReducer;
 
 export default alertSlice.reducer

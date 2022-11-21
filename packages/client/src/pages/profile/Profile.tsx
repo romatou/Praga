@@ -3,13 +3,13 @@ import * as RB from '@mui/material'
 import { LoadingButton } from '@mui/lab';
 import { useForm, FormProvider} from 'react-hook-form';
 
-import { useAppDispatch } from '@store/index'
+import { useAppDispatch, useAppSelector } from '@store/index'
 import { 
   editProfileData,
   editAvatar,
   editPasswordData,
   fetchUser } from '@store/actions/ProfileActionCreators'
-import { selectProfileData, selectRequestProfile } from '@store/slices/ProfileSlice'
+import { selectProfileData } from '@store/slices/ProfileSlice'
 import { showAlert, AlertProps } from '@store/slices/AlertSlice'
 
 import { TYPES_ALERT, TYPES_ALERT_MESS, InputLabel, userType, passwordType } from './types'
@@ -20,8 +20,7 @@ import AlertMessage  from '../../components/Alert';
 
 const Profile = () => {
   const dispatch = useAppDispatch()
-  const profileData = selectProfileData()
-  const requestData = selectRequestProfile()
+  const { userData, requestData } = useAppSelector(selectProfileData)
 
   const [open, setOpen] = React.useState(false);
 
@@ -72,20 +71,20 @@ const Profile = () => {
   }, [])
 
   useEffect(() => {
-    if (profileData) {
+    if (userData) {
         reset({
-            display_name: profileData.display_name,
-            email: profileData.email,
-            first_name: profileData.first_name,
-            login: profileData.login,
-            phone: profileData.phone,
-            second_name: profileData.second_name
+            display_name: userData.display_name,
+            email: userData.email,
+            first_name: userData.first_name,
+            login: userData.login,
+            phone: userData.phone,
+            second_name: userData.second_name
         })
     }
-  }, [profileData]); 
+  }, [userData]); 
 
   const methods = useForm<userType>({
-    defaultValues: profileData || {},
+    defaultValues: userData || {},
     mode: 'onBlur'
   });
   const { register, handleSubmit, reset  } = methods;
@@ -107,7 +106,7 @@ const Profile = () => {
           <RB.Avatar
             sx={{ width: 120, height: 120 }}
             alt='avatar'
-            src={'https://ya-praktikum.tech/api/v2/resources' + (profileData?.avatar ?? '')}
+            src={'https://ya-praktikum.tech/api/v2/resources' + (userData?.avatar ?? '')}
           />
         </RB.IconButton>
 
@@ -121,7 +120,7 @@ const Profile = () => {
               spacing={2}
             >
 
-              {(Object.keys(profileData) as Array<keyof typeof profileData>).sort((a, b) => a.localeCompare(b)).map((key, i) => {
+              {(Object.keys(userData) as Array<keyof typeof userData>).sort((a, b) => a.localeCompare(b)).map((key, i) => {
                 if ((key !== 'id') && (key !== 'avatar') && (key !== 'status')) {
                   return (
                     <RB.Grid item xs={12} key={i}>

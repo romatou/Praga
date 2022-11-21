@@ -1,7 +1,7 @@
 import React, { useCallback }  from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
-import { useAppDispatch } from '@store/index'
+import { useAppDispatch, useAppSelector } from '@store/index'
 import { hideAlert, selectAlertState } from '@store/slices/AlertSlice'
 
 export interface props {
@@ -17,7 +17,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 
 const AlertMessage = () =>  {
     const dispatch = useAppDispatch()
-    const { text, open, type } = selectAlertState();
+    const { text, open, type } = useAppSelector(selectAlertState);
 
     const handleClose = useCallback((event?: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') {
