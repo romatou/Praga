@@ -32,6 +32,7 @@ import {
 import { CellArgs, TBoardProps } from './types'
 
 let currentPlayer = 'player' //За кем текущий ход
+let timeClickComp = 700 // время реакции компа
 
 const Board = ({
   name,
@@ -194,9 +195,24 @@ const Board = ({
   }
 
   useEffect(
+    //изменения частоты клика компа
+    () => {
+      if (countPlayerShips && countPlayerShips < 8 && countPlayerShips >= 6)
+        timeClickComp = 500
+      if (countPlayerShips && countPlayerShips < 6 && countPlayerShips >= 4)
+        timeClickComp = 300
+      if (countPlayerShips && countPlayerShips < 4 && countPlayerShips >= 2)
+        timeClickComp = 100
+      if (countPlayerShips && countPlayerShips < 2) timeClickComp = 50
+    },
+    [countPlayerShips]
+  )
+
+  useEffect(
     //вызов клика компа
     () => {
-      const id = setInterval(handleComp, 100)
+      const id = setInterval(handleComp, timeClickComp)
+      console.log(timeClickComp)
       return () => clearInterval(id)
     },
     [handleComp]
