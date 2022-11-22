@@ -26,3 +26,34 @@ export interface Ranking {
   avatar: string
   score: number
 }
+export interface User {
+  avatar: string
+  display_name: string
+  email: string
+  first_name: string
+  id: number
+  login: string
+  phone: string
+  second_name: string
+  status: string
+}
+
+export interface UserRequest {
+  avatar?: string
+  id?: number
+  status?: string
+  display_name: string
+  email: string
+  first_name: string
+  login: string
+  phone: string
+  second_name: string
+}
+export interface Avatar {
+  avatar: FormData
+}
+
+export interface PassWord {
+  oldPassword: string
+  newPassword: string
+}

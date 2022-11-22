@@ -3,9 +3,13 @@ import { combineReducers } from 'redux'
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
 import ratingReducer from './slices/RatingSlice'
+import profileReducer from './slices/ProfileSlice'
+import alertReducer from './slices/AlertSlice'
 
 const RootReducer = combineReducers({
   rating: ratingReducer,
+  profile: profileReducer,
+  alertReducer: alertReducer
 })
 
 export const setupStore = () => {
