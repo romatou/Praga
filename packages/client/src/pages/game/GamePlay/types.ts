@@ -29,7 +29,7 @@ export type CellIsEngagedArgs = {
   engagedCells: CellArgs[]
 }
 
-export type TBoardProps = {
+export type BoardProps = {
   name: string
   nameBoard: string
   playerShips?: CellArgs[][]

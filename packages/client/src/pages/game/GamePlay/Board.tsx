@@ -29,7 +29,7 @@ import {
   canvasHeight,
 } from './helper'
 
-import { CellArgs, TBoardProps } from './types'
+import { CellArgs, BoardProps } from './types'
 
 let currentPlayer = 'player' //За кем текущий ход
 let timeClickComp = 700 // время реакции компа
@@ -41,7 +41,7 @@ const Board = ({
   playerShips,
   compShips,
   coords,
-}: TBoardProps): ReactElement => {
+}: BoardProps): ReactElement => {
   const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]) //затонувшие корабли player
   const [sunkenShipsComp, setSunkenShipsComp] = useState<CellArgs[]>([]) //затонувшие корабли comp
 
@@ -67,30 +67,29 @@ const Board = ({
 
   const handleComp = useCallback(() => {
     //комп
-    if (!(countCompShips === 0 || countPlayerShips === 0)) {
-      if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
+    if (countCompShips === 0 || countPlayerShips === 0) return
+    if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
-      if (currentPlayer === 'computer') {
-        const cell = generateRandomCompShot() as CellArgs //рандомная ячейка компа
+    if (currentPlayer === 'computer') {
+      const cell = generateRandomCompShot() as CellArgs //рандомная ячейка компа
 
-        if (
-          cellIsEngaged({
-            cell,
-            engagedCells: playerShips! && playerShips.flat(),
-          })
-        ) {
-          //проверка есть ли в кликнутой ячейки корабль игрока
-          if (cellIsEngaged({ cell, engagedCells: sunkenShipsPlayer })) return //если клик был уже по потопл кораблю игрока
-          sunkenShipsPlayer.push(cell)
-          setSunkenShipsPlayer([...sunkenShipsPlayer]) //если найден корабль противника то внесем его ячейку в потопленные
-          setCountPlayerShips(countPlayerShips! - 1) //отнимем коли-во кораблей противника
-          currentPlayer = 'computer' //ход остается
-        } else {
-          if (cellIsEngaged({ cell, engagedCells: pastCellsComp })) return // если клик по уже пустой клетке
-          pastCellsComp.push(cell)
-          setPastCellsComp([...pastCellsComp]) // сохранить пустую клетку
-          currentPlayer = 'player' //т к ход мимо переход стрельбы
-        }
+      if (
+        cellIsEngaged({
+          cell,
+          engagedCells: playerShips! && playerShips.flat(),
+        })
+      ) {
+        //проверка есть ли в кликнутой ячейки корабль игрока
+        if (cellIsEngaged({ cell, engagedCells: sunkenShipsPlayer })) return //если клик был уже по потопл кораблю игрока
+        sunkenShipsPlayer.push(cell)
+        setSunkenShipsPlayer([...sunkenShipsPlayer]) //если найден корабль противника то внесем его ячейку в потопленные
+        setCountPlayerShips(countPlayerShips! - 1) //отнимем коли-во кораблей противника
+        currentPlayer = 'computer' //ход остается
+      } else {
+        if (cellIsEngaged({ cell, engagedCells: pastCellsComp })) return // если клик по уже пустой клетке
+        pastCellsComp.push(cell)
+        setPastCellsComp([...pastCellsComp]) // сохранить пустую клетку
+        currentPlayer = 'player' //т к ход мимо переход стрельбы
       }
     }
   }, [
@@ -169,27 +168,26 @@ const Board = ({
   const handleCellClick = (event: {
     nativeEvent: { offsetX: number; offsetY: number }
   }) => {
-    if (!(countCompShips === 0 || countPlayerShips === 0)) {
-      if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
+    if (countCompShips === 0 || countPlayerShips === 0) return
+    if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
-      if (currentPlayer === 'player') {
-        const { offsetX, offsetY } = event.nativeEvent //определяется ячейка по которой кликнул игрок
+    if (currentPlayer === 'player') {
+      const { offsetX, offsetY } = event.nativeEvent //определяется ячейка по которой кликнул игрок
 
-        if (offsetX >= 300 || offsetY >= 300) return //выход за пределы при клике
-        const cell = getCell(offsetX, offsetY) //получил ячейку клика
+      if (offsetX >= 300 || offsetY >= 300) return //выход за пределы при клике
+      const cell = getCell(offsetX, offsetY) //получил ячейку клика
 
-        if (cellIsEngaged({ cell, engagedCells: compShips!.flat() })) {
-          //проверка есть ли в кликнутой ячейки корабль компа
-          if (cellIsEngaged({ cell, engagedCells: sunkenShipsComp })) return //если клик был уже по потопл кораблю компа
+      if (cellIsEngaged({ cell, engagedCells: compShips!.flat() })) {
+        //проверка есть ли в кликнутой ячейки корабль компа
+        if (cellIsEngaged({ cell, engagedCells: sunkenShipsComp })) return //если клик был уже по потопл кораблю компа
 
-          setSunkenShipsComp([...sunkenShipsComp, cell]) //если найден корабль противника то внесем его ячейку в потопленные
-          setCountCompShips(countCompShips! - 1) //отнимем коли-во кораблей противника
-          currentPlayer = 'player' // ход остается за игроком
-        } else {
-          if (cellIsEngaged({ cell, engagedCells: pastCellsPlayer })) return // если клик по уже пустой клетке
-          setPastCellsPlayer([...pastCellsPlayer, cell]) // сохранить пустую клетку
-          currentPlayer = 'computer' // т к ход мимо переход стрельбы к компу
-        }
+        setSunkenShipsComp([...sunkenShipsComp, cell]) //если найден корабль противника то внесем его ячейку в потопленные
+        setCountCompShips(countCompShips! - 1) //отнимем коли-во кораблей противника
+        currentPlayer = 'player' // ход остается за игроком
+      } else {
+        if (cellIsEngaged({ cell, engagedCells: pastCellsPlayer })) return // если клик по уже пустой клетке
+        setPastCellsPlayer([...pastCellsPlayer, cell]) // сохранить пустую клетку
+        currentPlayer = 'computer' // т к ход мимо переход стрельбы к компу
       }
     }
   }
@@ -212,7 +210,6 @@ const Board = ({
     //вызов клика компа
     () => {
       const id = setInterval(handleComp, timeClickComp)
-      console.log(timeClickComp)
       return () => clearInterval(id)
     },
     [handleComp]
