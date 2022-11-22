@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import * as RB from '@mui/material'
-import { LoadingButton } from '@mui/lab';
-import { useForm, FormProvider} from 'react-hook-form';
+import { LoadingButton } from '@mui/lab'
+import { useForm, FormProvider } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '@store/index'
 import { 
@@ -38,8 +38,8 @@ const Profile = () => {
   }, [requestData.editPassword])
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
     setOpen(false);

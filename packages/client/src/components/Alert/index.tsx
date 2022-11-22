@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from '@store/index'
 import { hideAlert, selectAlertState } from '@store/slices/AlertSlice'
 
 export interface props {
-  message: string,
-  severity: string,
-  open: boolean,
+  message: string
+  severity: string
+  open: boolean
   handleClose: () => void
 }
 
