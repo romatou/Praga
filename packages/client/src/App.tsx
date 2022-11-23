@@ -14,6 +14,7 @@ import ForumDetail from '@pages/forum/ForumDetail'
 import Ranking from '@pages/ranking'
 import NotFound from '@pages/not-found/NotFound'
 import ServerError from '@pages/server-error/ServerError'
+import { withAuth } from './HOC/withAuth'
 
 function App() {
   useEffect(() => {
@@ -24,13 +25,14 @@ function App() {
       console.log(data)
     }
 
-    fetchServerData()
+    fetchServerData();
   }, [])
+  const IntroWithAuth = withAuth(Intro);
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path={'/'} element={<Intro />} />
+          <Route path={'/'} element={<IntroWithAuth />} />
           <Route path={'/auth'} element={<Login />} />
           <Route path={'/register'} element={<Register />} />
           <Route path={'/profile'} element={<Profile />} />

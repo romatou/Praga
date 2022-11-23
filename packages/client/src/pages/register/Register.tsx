@@ -1,26 +1,23 @@
 import { Container, Box, TextField, Typography, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from "@store/index";
-import { register, fetchUser } from "@store/actions/AuthActionCreators";
 import { UserData } from "@store/types";
+import { useRegister } from "../../hooks/useRegister";
 
 export default function Register() {
 
-  const navigate = useNavigate();
+  const register = useRegister();
 
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
     }
   })
-  const dispatch = useAppDispatch()
   
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const newUser = {
+    const registerUser = {
       first_name: data.get('firstName'),
       second_name: data.get('secondName'),
       login: data.get('login'),
@@ -28,11 +25,7 @@ export default function Register() {
       password: data.get('password'),
       phone: data.get('phone'),
     } as UserData;
-
-    dispatch(register(newUser))
-    .then(() => navigate('/profile'))
-    dispatch(fetchUser())
-
+    register(registerUser)
   };
   return (
     <ThemeProvider theme={theme}>

@@ -1,21 +1,26 @@
 import { Box, Button } from '@mui/material';
 import { logout } from '@store/actions/AuthActionCreators';
 import { useAppDispatch } from '@store/index';
+import { useUser } from '../../hooks/useUser';
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 
 export default function Intro() {
+  const user = useUser()
 
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch()
-  const logOut = (event: any) => {
-    event.preventDefault();
-    dispatch(logout())
-    .then(() => navigate('/auth'))
-  }
-  return (
+ const navigate = useNavigate();
+ const dispatch = useAppDispatch()
+ const logOut = (event: any) => {
+   event.preventDefault();
+   dispatch(logout())
+
+ }
+ console.count('render mainPage')
+
+  return ( 
     <div>
       <h1>Мини-лэндинг - Главная страница</h1>
+      <h2>Hello {user.first_name} {user.second_name}</h2>
       <p>Это временная страница-заглушка. Здесь позже будет мини-лэндинг</p>
       <ul>
         <li>
@@ -59,5 +64,6 @@ export default function Intro() {
             </Button>
           </Box>
     </div>
+    
   )
 }
