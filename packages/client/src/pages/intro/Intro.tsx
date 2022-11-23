@@ -1,69 +1,123 @@
-import { Box, Button } from '@mui/material';
-import { logout } from '@store/actions/AuthActionCreators';
-import { useAppDispatch } from '@store/index';
-import { useUser } from '../../hooks/useUser';
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
+import { Box, Container, Button, Typography } from '@mui/material'
+import styles from './styles'
 
 export default function Intro() {
-  const user = useUser()
-
- const navigate = useNavigate();
- const dispatch = useAppDispatch()
- const logOut = (event: any) => {
-   event.preventDefault();
-   dispatch(logout())
-
- }
- console.count('render mainPage')
-
-  return ( 
-    <div>
-      <h1>Мини-лэндинг - Главная страница</h1>
-      <h2>Hello {user.first_name} {user.second_name}</h2>
-      <p>Это временная страница-заглушка. Здесь позже будет мини-лэндинг</p>
-      <ul>
-        <li>
-          <Link to="/auth">Авторизация</Link>
-        </li>
-        <li>
-          <Link to="/register">Регистрация</Link>
-        </li>
-        <li>
-          <Link to="/profile">Профиль</Link>
-        </li>
-        <li>
-          <Link to="/ranking">Лидерборд</Link>
-        </li>
-        <li>
-          <Link to="/game/start">Начало игры</Link>
-        </li>
-        <li>
-          <Link to="/game/play">Игра</Link>
-        </li>
-        <li>
-          <Link to="/game/result">Завершение игры</Link>
-        </li>
-        <li>
-          <Link to="/forum">Форум</Link>
-        </li>
-        <li>
-          <Link to="/404">Страница не найдена</Link>
-        </li>
-        <li>
-          <Link to="/500">Ошибка на сервере</Link>
-        </li>
-      </ul>
-      <Box onClick={logOut} sx={{width: 150}}>
-          <Button
-              type="submit"
-              fullWidth
+  return (
+    <Box sx={{ ...styles.page }}>
+      <Container sx={{ height: '100vh' }}>
+        <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
+          <Typography variant="h3" component="h1" sx={{ ...styles.title }}>
+            Морской бой
+          </Typography>
+          <Box
+            sx={{
+              ...styles.containerCentered,
+              flexGrow: '2',
+              alignItems: 'flex-start',
+            }}>
+            <Button
+              href="/register"
+              sx={{ marginBottom: '1rem' }}
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            > выйти
+              size="large"
+              color="primary">
+              Начать игру
             </Button>
+            <Typography>Для игры требуется регистрация</Typography>
           </Box>
-    </div>
-    
+        </Box>
+      </Container>
+
+      <Box
+        sx={{
+          height: '100vh',
+          ...styles.containerCentered,
+        }}>
+        <Box sx={{ ...styles.window }}>
+          <Typography component="h2" sx={{ ...styles.heading }}>
+            История игры
+          </Typography>
+          <Box
+            sx={{
+              ...styles.containerCentered,
+              position: 'relative',
+              padding: '2rem',
+              top: 0,
+              bottom: 0,
+              margin: 'auto',
+            }}>
+            <Typography component="p" sx={{ textAlign: 'justify' }}>
+              Считается, что игра Морской бой берет свое начало от французской
+              игры L'Attaque, в которую играли во время Первой мировой войны,
+              хотя параллели также были проведены с игрой Э.И. офицеров перед
+              Первой мировой войной. Первой коммерческой версией игры была
+              Salvo, изданная в 1931 году в США компанией Starex. Другие версии
+              игры были напечатаны в 1930-х и 1940-х годах, в том числе Combat:
+              The Battleship Game от Strathmore Company, Broadsides: A Game of
+              Naval Strategy Милтона Брэдли и «Морской бой Мориса Л. Фридмана».
+              Компания Strategy Games выпустила версию под названием Wings, в
+              которой были изображены самолеты, летящие над Колизеем
+              Лос-Анджелеса. Все эти ранние выпуски игры состояли из
+              предварительно напечатанных листов бумаги.
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          height: '100vh',
+          ...styles.containerCentered,
+          background: 'lightgreen',
+        }}>
+        <Box sx={{ ...styles.window }}>
+          <Typography
+            component="h2"
+            sx={{
+              ...styles.heading,
+            }}>
+            Правила
+          </Typography>
+          <Box
+            sx={{
+              ...styles.containerCentered,
+              flexFlow: 'column',
+              position: 'relative',
+              padding: '2rem',
+              margin: 'auto',
+            }}>
+            <Typography component="p" sx={{ textAlign: 'justify' }}>
+              В игре принимают участие один игрок и компьютер. Корабли игрока
+              располагаются рандомно. При этом корабли не должны соприкасаться,
+              то есть расстояние между ними должно быть не менее одной клетки.
+            </Typography>
+            <Typography
+              component="p"
+              sx={{
+                ...styles.textCaption,
+              }}>
+              ❗️ Переставлять свои корабли после начала игры категорически
+              запрещено.
+            </Typography>
+
+            <Typography>
+              Стрельба по мишеням ведется до первого промаха, то есть если игрок
+              попал в корабль противника, он производит следующий выстрел, и
+              только после его промаха ход переходит к компьютеру. На поле и на
+              экране промах обозначается точкой, а попадание — красным крестом в
+              квадрате. Каждый выстрел имеет свои координаты. Победитель тот,
+              кто первым уничтожит все корабли противника.
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Container>
+        <Box sx={{ padding: '1rem 0' }} component="footer">
+          <Typography sx={{ color: 'grey', fontSize: '14px' }}>
+            Проект команды Praga курса Мидл-Фронтенд Разработчик
+            Яндекс.Практикум 2022
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   )
 }

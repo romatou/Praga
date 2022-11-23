@@ -36,7 +36,7 @@ export default function GameStart() {
             }}
           />
         </Box>
-        <Button variant="contained" sx={startBtnStyles}>
+        <Button variant="contained" sx={startBtnStyles} href="/game/play">
           Начать игру
         </Button>
       </Box>
