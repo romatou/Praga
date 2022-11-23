@@ -11,7 +11,7 @@ export default function Register() {
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
-    }
+    },
   })
   
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,19 +27,25 @@ export default function Register() {
     } as UserData;
     register(registerUser)
   };
+
   return (
     <ThemeProvider theme={theme}>
-      <Container component='main' maxWidth='xs'>
+      <Container component="main" maxWidth="xs">
         <Box
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-          }}
-        >
-          <Typography component="h1" variant="h5">Регистрация</Typography>
-          <Box component="form" onSubmit={handleRegister} noValidate sx={{ mt: 1 }}>
+          }}>
+          <Typography component="h1" variant="h5">
+            Регистрация
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleRegister}
+            noValidate
+            sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -100,13 +106,19 @@ export default function Register() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            > Создать аккаунт
+              sx={{ mt: 3, mb: 2 }}>
+              {' '}
+              Создать аккаунт
             </Button>
             
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Уже есть аккаунт?</Typography>
-              <Link to='/auth' style={{ textDecoration: 'none', fontFamily: 'Roboto, sans-serif' }}>
+              <Link
+                to="/auth"
+                style={{
+                  textDecoration: 'none',
+                  fontFamily: 'Roboto, sans-serif',
+                }}>
                 Войти
               </Link>
               

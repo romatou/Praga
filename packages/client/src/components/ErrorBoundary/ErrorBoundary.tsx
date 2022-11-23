@@ -1,33 +1,33 @@
-import React, { Component, ReactNode, ErrorInfo } from 'react';
+import React, { Component, ReactNode, ErrorInfo } from 'react'
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 interface State {
-  hasError: boolean;
+  hasError: boolean
 }
 
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
-  };
-  
+    hasError: false,
+  }
+
   public static getDerivedStateFromError(_: Error): State {
-    return { hasError: true };
+    return { hasError: true }
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+    console.error('Uncaught error:', error, errorInfo)
   }
 
   public render() {
     if (this.state.hasError) {
-      return <div>Что-то пошло не так...</div>;
+      return <div>Что-то пошло не так...</div>
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary
