@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import userIcon from '../../../../assets/user-icon.svg'
 import chatIcon from '../../../../assets/chat-icon.svg'
@@ -6,6 +6,9 @@ import ratingIcon from '../../../../assets/rating-icon.svg'
 import questionIcon from '../../../../assets/question-icon.svg'
 import exitIcon from '../../../../assets/exit-icon.svg'
 import MenuItem from '../MenuItem'
+import { logout } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { useNavigate } from 'react-router-dom'
 
 const links = [
   { title: 'Профиль игрока', src: userIcon, alt: 'профиль', to: '/profile' },
@@ -16,6 +19,13 @@ const links = [
 ]
 
 export default function MenuList() {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const logOut = () => {
+    dispatch(logout())
+    navigate('/auth')
+  }
   return (
     <Box
       component="ul"
@@ -33,6 +43,7 @@ export default function MenuList() {
       {links.map(props => (
         <MenuItem key={props.title} {...props} />
       ))}
+      <Button onClick={logOut}>Выйти</Button>
     </Box>
   )
 }

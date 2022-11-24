@@ -1,5 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { register, login, fetchUser, logout } from "@store/actions/AuthActionCreators"
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {
+  register,
+  login,
+  fetchUser,
+  logout,
+} from '@store/actions/AuthActionCreators'
 import {
   StatusLoading,
   RequestDataState,
@@ -8,7 +13,7 @@ import {
 } from '../types'
 
 export interface AuthState {
-  user: UserData,
+  user: UserData
   requestData: RequestData
 }
 
@@ -20,14 +25,14 @@ const initialState: AuthState = {
     login: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
   },
   requestData: {
     signUp: {} as RequestDataState,
     signIn: {} as RequestDataState,
     getUserInfo: {} as RequestDataState<UserData>,
-    logout: {} as RequestDataState
-  }
+    logout: {} as RequestDataState,
+  },
 }
 
 export const authSlice = createSlice({
@@ -41,10 +46,7 @@ export const authSlice = createSlice({
     [register.pending.type]: state => {
       state.requestData.signUp.status = StatusLoading.IN_PROGRESS
     },
-    [register.rejected.type]: (
-      state,
-      { payload }: PayloadAction<string>
-    ) => {
+    [register.rejected.type]: (state, { payload }: PayloadAction<string>) => {
       state.requestData.signUp.errorMessage = payload
       state.requestData.signUp.status = StatusLoading.ERROR
     },
@@ -54,10 +56,7 @@ export const authSlice = createSlice({
     [login.pending.type]: state => {
       state.requestData.signIn.status = StatusLoading.IN_PROGRESS
     },
-    [login.rejected.type]: (
-      state,
-      { payload }: PayloadAction<string>
-    ) => {
+    [login.rejected.type]: (state, { payload }: PayloadAction<string>) => {
       state.requestData.signIn.errorMessage = payload
       state.requestData.signIn.status = StatusLoading.ERROR
     },
@@ -65,34 +64,28 @@ export const authSlice = createSlice({
       state,
       { payload }: PayloadAction<UserData>
     ) => {
-      state.user = payload;
+      state.user = payload
       state.requestData.getUserInfo.status = StatusLoading.SUCCESS
     },
     [fetchUser.pending.type]: state => {
       state.requestData.getUserInfo.status = StatusLoading.IN_PROGRESS
     },
-    [fetchUser.rejected.type]: (
-      state,
-      { payload }: PayloadAction<string>
-    ) => {
+    [fetchUser.rejected.type]: (state, { payload }: PayloadAction<string>) => {
       state.requestData.getUserInfo.errorMessage = payload
       state.requestData.getUserInfo.status = StatusLoading.ERROR
     },
     [logout.fulfilled.type]: state => {
-      state.user = {} as UserData;
+      state.user = {} as UserData
       state.requestData.logout.status = StatusLoading.SUCCESS
     },
     [logout.pending.type]: state => {
       state.requestData.logout.status = StatusLoading.IN_PROGRESS
     },
-    [logout.rejected.type]: (
-      state,
-      { payload }: PayloadAction<string>
-    ) => {
+    [logout.rejected.type]: (state, { payload }: PayloadAction<string>) => {
       state.requestData.logout.errorMessage = payload
       state.requestData.logout.status = StatusLoading.ERROR
-    }
-  }
+    },
+  },
 })
 
 export default authSlice.reducer

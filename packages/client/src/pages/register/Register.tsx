@@ -1,22 +1,28 @@
-import { Container, Box, TextField, Typography, Button, Stack } from "@mui/material";
-import { Link } from "react-router-dom";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { UserData } from "@store/types";
-import { useRegister } from "../../hooks/useRegister";
+import {
+  Container,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Stack,
+} from '@mui/material'
+import { Link } from 'react-router-dom'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { UserData } from '@store/types'
+import { useRegister } from '../../hooks/useRegister'
 
 export default function Register() {
-
-  const register = useRegister();
+  const register = useRegister()
 
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
     },
   })
-  
+
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     const registerUser = {
       first_name: data.get('firstName'),
       second_name: data.get('secondName'),
@@ -24,9 +30,9 @@ export default function Register() {
       email: data.get('email'),
       password: data.get('password'),
       phone: data.get('phone'),
-    } as UserData;
+    } as UserData
     register(registerUser)
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,7 +116,7 @@ export default function Register() {
               {' '}
               Создать аккаунт
             </Button>
-            
+
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Уже есть аккаунт?</Typography>
               <Link
@@ -121,7 +127,6 @@ export default function Register() {
                 }}>
                 Войти
               </Link>
-              
             </Stack>
           </Box>
         </Box>

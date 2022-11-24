@@ -1,13 +1,6 @@
-import { useAppSelector } from "@store/index";
+import { useAppSelector } from '@store/index'
 
-export const useUser= () => {
-  const {user} = useAppSelector(state => state.auth);
-  // const {user} = auth
-
-  return user;
+export const useUser = () => {
+  const { user } = useAppSelector(state => state.auth)
+  return user
 }
-// Для каждого компонента страницы нужна следующая логика:
-// - проверить, есть ли в сторе информация о пользователе
-// - если нет, то запросить
-// - если бэк ответил 401 - редиректнуть на страницу авторизации
-// Чтобы ее не дублировать в каждом компоненте, можно написать хук, который все это проверит

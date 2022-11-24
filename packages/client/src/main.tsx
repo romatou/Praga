@@ -10,11 +10,11 @@ import './index.css'
 const store = setupStore()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
         <App />
       </Provider>
     </ErrorBoundary>
-  // </React.StrictMode>
+  </React.StrictMode>
 )
