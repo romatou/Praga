@@ -9,7 +9,7 @@ import alertReducer from './slices/AlertSlice'
 const RootReducer = combineReducers({
   rating: ratingReducer,
   profile: profileReducer,
-  alertReducer: alertReducer
+  alertReducer: alertReducer,
 })
 
 export const setupStore = () => {

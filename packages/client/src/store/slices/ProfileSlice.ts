@@ -3,7 +3,7 @@ import {
   editProfileData,
   editAvatar,
   editPasswordData,
-  fetchUser
+  fetchUser,
 } from '@store/actions/ProfileActionCreators'
 
 import { RootState } from '../index'
@@ -24,13 +24,13 @@ const initialState: UserState = {
     login: '',
     phone: '',
     second_name: '',
-    status: ''
+    status: '',
   },
   requestData: {
-    getUser:  {} as RequestDataState<User>,
-    editUser:  {} as RequestDataState<User>,
-    editAvatar:  {} as RequestDataState<User>,
-    editPassword:  {} as RequestDataState,
+    getUser: {} as RequestDataState<User>,
+    editUser: {} as RequestDataState<User>,
+    editAvatar: {} as RequestDataState<User>,
+    editPassword: {} as RequestDataState,
   },
 }
 
@@ -42,23 +42,23 @@ export const UserSlice = createSlice({
     [fetchUser.pending.type]: state => {
       state.requestData.getUser.status = StatusLoading.IN_PROGRESS
     },
-    [fetchUser.fulfilled.type]: (state,{ payload }) => {
+    [fetchUser.fulfilled.type]: (state, { payload }) => {
       state.userData = payload
       state.requestData.getUser.status = StatusLoading.SUCCESS
     },
-    [fetchUser.rejected.type]: (state,{ payload }) => {
+    [fetchUser.rejected.type]: (state, { payload }) => {
       state.requestData.getUser.errorMessage = payload
       state.requestData.getUser.status = StatusLoading.ERROR
     },
-    
+
     [editProfileData.pending.type]: state => {
       state.requestData.editUser.status = StatusLoading.IN_PROGRESS
     },
-    [editProfileData.fulfilled.type]: (state,{ payload }) => {
+    [editProfileData.fulfilled.type]: (state, { payload }) => {
       state.userData = payload
       state.requestData.editUser.status = StatusLoading.SUCCESS
     },
-    [editProfileData.rejected.type]: (state,{ payload }) => {
+    [editProfileData.rejected.type]: (state, { payload }) => {
       state.requestData.editUser.errorMessage = payload
       state.requestData.editUser.status = StatusLoading.ERROR
     },
@@ -66,11 +66,11 @@ export const UserSlice = createSlice({
     [editAvatar.pending.type]: state => {
       state.requestData.editAvatar.status = StatusLoading.IN_PROGRESS
     },
-    [editAvatar.fulfilled.type]: (state,{ payload }) => {
+    [editAvatar.fulfilled.type]: (state, { payload }) => {
       state.userData = payload
       state.requestData.editAvatar.status = StatusLoading.SUCCESS
     },
-    [editAvatar.rejected.type]: (state,{ payload }) => {
+    [editAvatar.rejected.type]: (state, { payload }) => {
       state.requestData.editAvatar.errorMessage = payload
       state.requestData.editAvatar.status = StatusLoading.ERROR
     },
@@ -81,13 +81,13 @@ export const UserSlice = createSlice({
     [editPasswordData.fulfilled.type]: state => {
       state.requestData.editPassword.status = StatusLoading.SUCCESS
     },
-    [editPasswordData.rejected.type]: (state,{ payload }) => {
+    [editPasswordData.rejected.type]: (state, { payload }) => {
       state.requestData.editPassword.errorMessage = payload
       state.requestData.editPassword.status = StatusLoading.ERROR
     },
   },
 })
 
-export const selectProfileData = (state: RootState) => state.profile;
+export const selectProfileData = (state: RootState) => state.profile
 
 export default UserSlice.reducer
