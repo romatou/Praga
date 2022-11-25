@@ -6,25 +6,43 @@ import {
   Button,
   Stack,
 } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { apiService, SigninData } from '../../services/ApiService'
+import { LoginData } from '@store/types'
+import { useLogin } from '../../hooks/useLogin'
+import { useUser } from '../../hooks/useUser'
+import { useEffect } from 'react'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
 
 export default function Login() {
+  const user = useUser()
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const login = useLogin()
+
+  useEffect(() => {
+    dispatch(fetchUser())
+    if (user.id) {
+      navigate('/')
+    }
+  }, [navigate, user])
+
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
     },
   })
-
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    apiService.getAuth({
+    const authData = {
       login: data.get('login'),
       password: data.get('password'),
-    } as SigninData)
+    } as LoginData
+    login(authData)
   }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

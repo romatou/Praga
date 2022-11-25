@@ -1,7 +1,19 @@
 import { Box, Container, Button, Typography } from '@mui/material'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { useEffect } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
 
 export default function Intro() {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [])
+  const isAuth = useAuth()
+  const handleClick = () => {
+    isAuth()
+  }
   return (
     <Box sx={{ ...styles.page }}>
       <Container sx={{ height: '100vh' }}>
@@ -16,7 +28,7 @@ export default function Intro() {
               alignItems: 'flex-start',
             }}>
             <Button
-              href="/register"
+              onClick={handleClick}
               sx={{ marginBottom: '1rem' }}
               variant="contained"
               size="large"
