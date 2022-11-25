@@ -8,9 +8,12 @@ import {
 } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { apiService, SignupData } from '../../services/ApiService'
+import { UserData } from '@store/types'
+import { useRegister } from '../../hooks/useRegister'
 
 export default function Register() {
+  const register = useRegister()
+
   const theme = createTheme({
     typography: {
       fontFamily: 'Roboto, sans-serif',
@@ -20,15 +23,17 @@ export default function Register() {
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    apiService.getRegister({
+    const registerUser = {
       first_name: data.get('firstName'),
       second_name: data.get('secondName'),
       login: data.get('login'),
       email: data.get('email'),
       password: data.get('password'),
       phone: data.get('phone'),
-    } as SignupData)
+    } as UserData
+    register(registerUser)
   }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -111,6 +116,7 @@ export default function Register() {
               {' '}
               Создать аккаунт
             </Button>
+
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Уже есть аккаунт?</Typography>
               <Link
