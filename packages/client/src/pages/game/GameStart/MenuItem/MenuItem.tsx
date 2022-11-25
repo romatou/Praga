@@ -11,6 +11,8 @@ interface MenuItemProps {
 }
 
 export default function MenuItem({ title, src, alt, to }: MenuItemProps) {
+  if (!to) return null
+
   return (
     <Box component="li" sx={itemStyles}>
       <Link to={to} style={linkStyles}>
