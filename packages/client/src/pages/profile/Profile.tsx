@@ -1,7 +1,9 @@
 import React, { useEffect, useCallback } from 'react'
 import * as RB from '@mui/material'
 import { LoadingButton } from '@mui/lab'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useForm, FormProvider } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '@store/index'
 import {
@@ -10,6 +12,8 @@ import {
   editPasswordData,
   fetchUser,
 } from '@store/actions/ProfileActionCreators'
+import { logout } from '@store/actions/AuthActionCreators'
+
 import { selectProfileData } from '@store/slices/ProfileSlice'
 import { showAlert, AlertProps } from '@store/slices/AlertSlice'
 
@@ -27,6 +31,8 @@ import AlertMessage from '../../components/Alert'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const { userData, requestData } = useAppSelector(selectProfileData)
 
   const [open, setOpen] = React.useState(false)
@@ -102,96 +108,117 @@ const Profile = () => {
   const { register, handleSubmit, reset } = methods
 
   return (
-    <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
-      <RB.IconButton
-        color="primary"
-        aria-label="upload picture"
-        component="label"
-        sx={{
-          width: 140,
-          alignSelf: 'center',
-          marginBottom: 4,
-        }}>
-        <input
-          data-testid="avatar"
-          id="avatar"
-          name="avatar"
-          hidden
-          accept="image/*"
-          type="file"
-          onChange={onSubmitAvatar}
-        />
-
-        <RB.Avatar
-          sx={{ width: 120, height: 120 }}
-          alt="avatar"
-          src={
-            'https://ya-praktikum.tech/api/v2/resources' +
-            (userData?.avatar ?? '')
-          }
-        />
-      </RB.IconButton>
-
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmitFormData)}>
-          <RB.Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={2}>
-            {(Object.keys(userData) as Array<keyof typeof userData>)
-              .sort((a, b) => a.localeCompare(b))
-              .map((key, i) => {
-                if (key !== 'id' && key !== 'avatar' && key !== 'status') {
-                  return (
-                    <RB.Grid item xs={12} key={i}>
-                      <RB.TextField
-                        {...register(key)}
-                        data-testid={key}
-                        type="text"
-                        name={key}
-                        label={InputLabel[key]}
-                        size="small"
-                        InputProps={{
-                          startAdornment: (
-                            <RB.InputAdornment position="start"></RB.InputAdornment>
-                          ),
-                        }}
-                      />
-                    </RB.Grid>
-                  )
-                }
-              })}
-            <RB.Grid item xs={12}>
-              <LoadingButton
-                size="small"
-                type="submit"
-                variant="outlined"
-                loading={requestData.editUser.status === 'IN_PROGRESS'}
-                loadingIndicator="Загрузка…">
-                Сохранить
-              </LoadingButton>
-            </RB.Grid>
-          </RB.Grid>
-        </form>
-      </FormProvider>
-      <RB.Button
-        variant="text"
-        size="small"
-        sx={{
-          marginTop: 1,
-        }}
-        onClick={handleClickOpen}>
-        Изменить пароль
+    <>
+      <RB.Button 
+        variant="text" 
+        onClick={() => navigate('/game/start')}
+        startIcon={ <ArrowBackIcon/>} 
+      >
+        Вернуться на главную 
       </RB.Button>
-      <ModalPassword
-        isopen={open}
-        handleClose={handleClose}
-        onSubmitPassword={onSubmitPassword}
-      />
-      <AlertMessage />
-    </RB.Container>
+      <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
+        <RB.IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+          sx={{
+            width: 140,
+            alignSelf: 'center',
+            marginBottom: 4,
+          }}>
+          <input
+            data-testid="avatar"
+            id="avatar"
+            name="avatar"
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={onSubmitAvatar}
+          />
+
+          <RB.Avatar
+            sx={{ width: 120, height: 120 }}
+            alt="avatar"
+            src={
+              'https://ya-praktikum.tech/api/v2/resources' +
+              (userData?.avatar ?? '')
+            }
+          />
+        </RB.IconButton>
+
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmitFormData)}>
+            <RB.Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}>
+              {(Object.keys(userData) as Array<keyof typeof userData>)
+                .sort((a, b) => a.localeCompare(b))
+                .map((key, i) => {
+                  if (key !== 'id' && key !== 'avatar' && key !== 'status') {
+                    return (
+                      <RB.Grid item xs={12} key={i}>
+                        <RB.TextField
+                          {...register(key)}
+                          data-testid={key}
+                          type="text"
+                          name={key}
+                          label={InputLabel[key]}
+                          size="small"
+                          InputProps={{
+                            startAdornment: (
+                              <RB.InputAdornment position="start"></RB.InputAdornment>
+                            ),
+                          }}
+                        />
+                      </RB.Grid>
+                    )
+                  }
+                })}
+              <RB.Grid item xs={12}>
+                <LoadingButton
+                  size="small"
+                  type="submit"
+                  variant="outlined"
+                  loading={requestData.editUser.status === 'IN_PROGRESS'}
+                  loadingIndicator="Загрузка…">
+                  Сохранить
+                </LoadingButton>
+              </RB.Grid>
+            </RB.Grid>
+          </form>
+        </FormProvider>
+        <RB.Button
+          variant="text"
+          size="small"
+          sx={{
+            marginTop: 1,
+          }}
+          onClick={handleClickOpen}>
+          Изменить пароль
+        </RB.Button>
+        <RB.Button 
+          variant="text"
+          size="small"
+          color="error"
+          sx={{
+            marginTop: 1,
+          }}
+          onClick={ () => { 
+            dispatch(logout())
+            navigate('/auth')}}>
+            Выйти из профиля
+        </RB.Button>
+        <ModalPassword
+          isopen={open}
+          handleClose={handleClose}
+          onSubmitPassword={onSubmitPassword}
+        />
+        <AlertMessage />
+      </RB.Container>
+    </>
   )
 }
 

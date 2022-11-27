@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import * as RB from '@mui/material'
 import { useForm, FormProvider } from 'react-hook-form'
 import { passwordType } from '../../pages/profile/types'
@@ -11,7 +11,7 @@ const ModalPassword = (props: any) => {
     },
     mode: 'onBlur',
   })
-  const { register, handleSubmit, reset } = methods
+  const { register, handleSubmit } = methods
 
   useEffect(() => {
     methods.reset({
