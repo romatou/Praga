@@ -47,24 +47,37 @@ const Game = (): ReactElement => {
     }
   }, [playerShips])
 
+  const toggleFullScreen = () =>  {
+    let tableGame = document.getElementById('tableGame')
+    if(tableGame !== null) {
+      if(tableGame.requestFullscreen) {
+        tableGame.requestFullscreen();
+      }
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
   return (
     <>
       <Container sx={{ ...game }}>
         <Box sx={{ ...gameBoard }}>
-          <Board
-            name="computer"
-            nameBoard="поиск кораблей противника"
-            compShips={compShips}
-            gameIsFinished={gameIsFinished}
-            coords={coords}
-          />
-          <Board
-            name="player"
-            nameBoard="расположение моих кораблей"
-            playerShips={playerShips}
-            gameIsFinished={gameIsFinished}
-            coords={coords}
-          />
+          <Box id="tableGame">
+            <Board
+              name="computer"
+              nameBoard="поиск кораблей противника"
+              compShips={compShips}
+              gameIsFinished={gameIsFinished}
+              coords={coords}
+            />
+            <Board
+              name="player"
+              nameBoard="расположение моих кораблей"
+              playerShips={playerShips}
+              gameIsFinished={gameIsFinished}
+              coords={coords}
+            />
+          </Box>
           <Box sx={{ ...wrapButton }}>
             <Button
               onClick={restartGame}
@@ -72,6 +85,12 @@ const Game = (): ReactElement => {
               href="/game/play"
               sx={{ ...buttonStyles, marginTop: '3rem' }}>
               Играть снова
+            </Button>
+            <Button
+              variant="contained"
+              onClick={toggleFullScreen}
+              sx={{ ...buttonStyles, marginTop: '1rem' }}>
+              Полноэкранный режим
             </Button>
             <Button
               variant="contained"
@@ -86,7 +105,7 @@ const Game = (): ReactElement => {
               Рейтинг
             </Button>
             <Box sx={{ ...wrapShip }}>
-              <Box sx={{ display: 'flex', margin: '1rem 0' }}>
+              <Box sx={{ display: 'flex', marginTop: '1rem' }}>
                 <Box
                   component="img"
                   src={cell1}
@@ -96,13 +115,12 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center',
-                    marginBottom: '1rem',
+                    textAlign: 'center'
                   }}>
                   одноклеточных по 3 штуки
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
+              <Box sx={{ display: 'flex'}}>
                 <Box
                   component="img"
                   src={cell2}
@@ -112,8 +130,7 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center',
-                    marginBottom: '1rem',
+                    textAlign: 'center'
                   }}>
                   двухклеточных по 2 штуки
                 </Typography>
@@ -128,8 +145,7 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center',
-                    marginBottom: '1rem',
+                    textAlign: 'center'
                   }}>
                   трехклеточных по 1 штуки
                 </Typography>
