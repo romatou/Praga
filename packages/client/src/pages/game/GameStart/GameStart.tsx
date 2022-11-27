@@ -10,8 +10,14 @@ import {
   imagesStyles,
   startBtnStyles,
 } from './styles'
+import { useAuth } from '../../../hooks/useAuth'
+import { useEffect } from 'react'
 
 export default function GameStart() {
+  const isAuth = useAuth()
+  useEffect(() => {
+    isAuth()
+  }, [])
   return (
     <Container disableGutters maxWidth={false} sx={containerStyles}>
       <MenuList />
