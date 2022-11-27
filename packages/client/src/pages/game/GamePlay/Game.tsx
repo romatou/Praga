@@ -47,14 +47,14 @@ const Game = (): ReactElement => {
     }
   }, [playerShips])
 
-  const toggleFullScreen = () =>  {
-    let tableGame = document.getElementById('tableGame')
-    if(tableGame !== null) {
-      if(tableGame.requestFullscreen) {
-        tableGame.requestFullscreen();
+  const toggleFullScreen = () => {
+    const tableGame = document.getElementById('tableGame')
+    if (tableGame !== null) {
+      if (tableGame.requestFullscreen) {
+        tableGame.requestFullscreen()
       }
     } else if (document.exitFullscreen) {
-      document.exitFullscreen();
+      document.exitFullscreen()
     }
   }
 
@@ -115,12 +115,12 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}>
                   одноклеточных по 3 штуки
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex'}}>
+              <Box sx={{ display: 'flex' }}>
                 <Box
                   component="img"
                   src={cell2}
@@ -130,7 +130,7 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}>
                   двухклеточных по 2 штуки
                 </Typography>
@@ -145,7 +145,7 @@ const Game = (): ReactElement => {
                 <Typography
                   component="p"
                   sx={{
-                    textAlign: 'center'
+                    textAlign: 'center',
                   }}>
                   трехклеточных по 1 штуки
                 </Typography>

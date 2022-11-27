@@ -1,18 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../index'
 
-export type AlertProps = 'success' | 'info' | 'warning' | 'error';
+export type AlertProps = 'success' | 'info' | 'warning' | 'error'
 
 interface AlertState {
-  text: string;
-  type: AlertProps;
-  open?: boolean;
+  text: string
+  type: AlertProps
+  open?: boolean
 }
 
 const initialState: AlertState = {
   text: '',
   type: 'success',
-  open: false
+  open: false,
 }
 
 export const alertSlice = createSlice({
@@ -20,19 +20,19 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     showAlert: (state, action: PayloadAction<AlertState>) => {
-      state.open = true;
-      state.text = action.payload?.text ?? '';
-      state.type = action.payload?.type ?? 'success';
+      state.open = true
+      state.text = action.payload?.text ?? ''
+      state.type = action.payload?.type ?? 'success'
     },
-    hideAlert: (state) => {
-      state.open = false;
-      state.text = '';
-    }
-  }
+    hideAlert: state => {
+      state.open = false
+      state.text = ''
+    },
+  },
 })
 
-export const { showAlert, hideAlert } = alertSlice.actions;
+export const { showAlert, hideAlert } = alertSlice.actions
 
-export const selectAlertState = (state: RootState) => state.alertReducer;
+export const selectAlertState = (state: RootState) => state.alertReducer
 
 export default alertSlice.reducer
