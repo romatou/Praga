@@ -14,6 +14,8 @@ export default function Intro() {
   const handleClick = () => {
     isAuth()
   }
+  
+
   return (
     <Box sx={{ ...styles.page }}>
       <Container sx={{ height: '100vh' }}>

@@ -23,6 +23,6 @@
       "@store/*": ["store/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "sw.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
