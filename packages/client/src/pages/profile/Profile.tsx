@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import * as RB from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -109,12 +109,11 @@ const Profile = () => {
 
   return (
     <>
-      <RB.Button 
-        variant="text" 
+      <RB.Button
+        variant="text"
         onClick={() => navigate('/game/start')}
-        startIcon={ <ArrowBackIcon/>} 
-      >
-        Вернуться на главную 
+        startIcon={<ArrowBackIcon />}>
+        Вернуться на главную
       </RB.Button>
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.IconButton
@@ -199,17 +198,18 @@ const Profile = () => {
           onClick={handleClickOpen}>
           Изменить пароль
         </RB.Button>
-        <RB.Button 
+        <RB.Button
           variant="text"
           size="small"
           color="error"
           sx={{
             marginTop: 1,
           }}
-          onClick={ () => { 
+          onClick={() => {
             dispatch(logout())
-            navigate('/auth')}}>
-            Выйти из профиля
+            navigate('/auth')
+          }}>
+          Выйти из профиля
         </RB.Button>
         <ModalPassword
           isopen={open}
