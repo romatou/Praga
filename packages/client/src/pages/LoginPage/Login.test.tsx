@@ -1,36 +1,36 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { setupStore } from '@store/index'
 
 import Login from './Login'
 
-describe('Login component', () => {
-  it('Login component renders', () => {
-    render(
+const store = setupStore()
+
+const renderLoginComponent = () =>
+  render(
+    <Provider store={store}>
       <BrowserRouter>
         <Login />
       </BrowserRouter>
-    )
+    </Provider>
+  )
 
+describe('Login component', () => {
+  it('Login component renders', () => {
+    renderLoginComponent()
     expect(screen.getByText(/вход/i)).toBeInTheDocument()
   })
 
   it('login input in dom', () => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    )
+    renderLoginComponent()
 
     expect(screen.getByLabelText(/логин/i)).toBeInTheDocument()
   })
 
   it('login onChange works', () => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    )
+    renderLoginComponent()
 
     const input = screen.getByLabelText(/логин/i) as HTMLInputElement
 
@@ -39,11 +39,7 @@ describe('Login component', () => {
   })
 
   it('password onChange works', () => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    )
+    renderLoginComponent()
 
     const input = screen.getByLabelText(/Пароль/i) as HTMLInputElement
 
