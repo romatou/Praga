@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   ShipsSet,
   CellArgs,
@@ -6,6 +7,7 @@ import {
   GeneratedCoords,
   CellIsEngagedArgs,
   CellIsWithinArgs,
+  Winner,
 } from './types'
 
 export enum DirectionsOfGeneration {
@@ -125,13 +127,17 @@ export const drawStatusShips = (
 export const drawWhoWin = (
   context: CanvasRenderingContext2D,
   name: string,
+  setPlayerIsWin: React.Dispatch<React.SetStateAction<boolean>>,
   countCompShips?: number,
   countPlayerShips?: number
 ): void => {
   const str =
     name === 'computer'
-      ? countCompShips === 0 && 'Вы победитель!!!'
-      : countPlayerShips === 0 && 'Компутер красавчик!!!'
+      ? countCompShips === 0 && Winner.PLAYER_IS_WIN
+      : countPlayerShips === 0 && Winner.COMP_IS_WIN
+
+  if (str === Winner.PLAYER_IS_WIN) setPlayerIsWin(true)
+
   if (!str) return
   context.beginPath()
   context.clearRect(0, 340, 300, 60)

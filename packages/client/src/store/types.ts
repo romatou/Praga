@@ -21,9 +21,9 @@ export interface RankingResponse {
 }
 
 export interface Ranking {
-  id: number
+  id?: number
   name: string
-  avatar: string
+  avatar?: string
   score: number
 }
 

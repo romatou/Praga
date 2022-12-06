@@ -14,8 +14,12 @@ import ForumDetail from '@pages/forum/ForumDetail'
 import Ranking from '@pages/ranking'
 import NotFound from '@pages/not-found/NotFound'
 import ServerError from '@pages/server-error/ServerError'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from './store'
 
 function App() {
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
@@ -26,6 +30,11 @@ function App() {
 
     fetchServerData()
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [])
+
   return (
     <div className="App">
       <Router>

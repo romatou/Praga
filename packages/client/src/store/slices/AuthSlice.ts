@@ -5,6 +5,7 @@ import {
   fetchUser,
   logout,
 } from '@store/actions/AuthActionCreators'
+import { useAppSelector } from '../index'
 import {
   StatusLoading,
   RequestDataState,
@@ -87,5 +88,7 @@ export const authSlice = createSlice({
     },
   },
 })
+
+export const selectUserData = () => useAppSelector(state => state.auth.user)
 
 export default authSlice.reducer

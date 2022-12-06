@@ -7,6 +7,13 @@ import {
   ReactElement,
   memo,
 } from 'react'
+import { useAppDispatch } from '@store/index'
+import { selectUserData } from '@store/slices/AuthSlice'
+import {
+  fetchLeaderboard,
+  sendDataToLeaderboard,
+} from '@store/actions/RatingActionCreators'
+import { selectRatingData } from '@store/slices/RatingSlice'
 
 import {
   drawCells,
@@ -42,6 +49,10 @@ const Board = ({
   compShips,
   coords,
 }: BoardProps): ReactElement => {
+  const dispatch = useAppDispatch()
+  const user = selectUserData()
+  const ratingData = selectRatingData()
+
   const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]) //затонувшие корабли player
   const [sunkenShipsComp, setSunkenShipsComp] = useState<CellArgs[]>([]) //затонувшие корабли comp
 
@@ -53,6 +64,31 @@ const Board = ({
 
   const [countPlayerShips, setCountPlayerShips] = useState(allPlayerShips) //Количество кораблей для уничтожения
   const [countCompShips, setCountCompShips] = useState(allCompShips) //Количество кораблей для уничтожения
+
+  const [playerIsWin, setPlayerIsWin] = useState(false)
+
+  useEffect(() => {
+    dispatch(fetchLeaderboard())
+  }, [])
+
+  useEffect(() => {
+    if (playerIsWin && user) {
+      const currentUser = ratingData.find(({ data: { id } }) => id === user.id)
+      const score = (currentUser && currentUser.data.score + 1) ?? 1
+
+      const { avatar, id, display_name } = user
+      dispatch(
+        sendDataToLeaderboard({
+          avatar,
+          id,
+          name: display_name ?? 'anonymous',
+          score,
+        })
+      )
+
+      setPlayerIsWin(false)
+    }
+  }, [playerIsWin, user, ratingData])
 
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement | null>(null)
@@ -112,7 +148,13 @@ const Board = ({
       drawNameBoard(context, nameBoard) //отрисовка названия доски
       drawLatterCoords(context, coords.letterCoords) //отрисовка координат букв доски
       drawNumberCoords(context, coords.numberCoords) //отрисовка координат чисел доски
-      drawWhoWin(context, name, countCompShips, countPlayerShips) //who win
+      drawWhoWin(
+        context,
+        name,
+        setPlayerIsWin,
+        countCompShips,
+        countPlayerShips
+      ) //who win
       drawStatusShips(context, name, countCompShips, countPlayerShips) // кол-о к уничтож клеток
 
       drawShips(context, cellSize, playerShips!) //отрисовка караблей
