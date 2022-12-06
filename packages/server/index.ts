@@ -1,31 +1,63 @@
+import { createServer as createViteServer } from 'vite'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import fs from 'fs';
 import path from 'path';
-dotenv.config()
 
-// @ts-ignore
-import { render } from '../../client/dist/ssr/entry-server.cjs'
+const { createProxyMiddleware } = require('http-proxy-middleware')
+
+dotenv.config()
 
 import express from 'express'
 import { createClientAndConnect } from './db'
-
-const app = express();
-app.use(cors())
-const port = Number(process.env.SERVER_PORT) || 3001
-
 createClientAndConnect()
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)')
-})
-app.get('/ssr', (_, res) => {
-  const result = render()
-  const template = path.resolve(__dirname, '../../client/dist/client/index.html')
-  const htmlString = fs.readFileSync(template, 'utf-8')
-  const newString = htmlString.replace('<!--ssr-->', result)
-  res.send(newString)
-})
-app.listen(port, () => {
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
-})
+const app = express()
+const port = Number(process.env.SERVER_PORT) || 3001
+
+async function createServer() {
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'custom'
+  })
+
+  app.use(vite.middlewares)
+  app.use(cors())
+  app.use(
+    express.static(path.resolve(__dirname, '../../client/dist/client/'), {
+      index: false,
+    })
+  )
+
+  app.use('*', async (req, res) => {
+    const url = req.originalUrl
+    let template = fs.readFileSync(
+      path.resolve(__dirname, '../../client/dist/client/index.html'),
+      'utf-8'
+    )
+    template = await vite.transformIndexHtml(url, template)
+    // @ts-ignore
+    const render = (await import('../../client/dist/ssr/entry-server.cjs')).SSRRender;
+    const appHtml = render(url)
+    const html = template.replace(`<!--ssr-->`, appHtml)
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+  })
+  app.use(
+    '/praktikum-api',
+    createProxyMiddleware({
+      pathRewrite: { '^/praktikum-api': '/' },
+      target: 'https://ya-praktikum.tech',
+      changeOrigin: true,
+      cookieDomainRewrite: 'localhost',
+      secure: false,
+      debug: true,
+    })
+  )
+  return { app, vite };
+}
+
+createServer().then(({ app }) =>
+  app.listen(port, () => {
+    console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
+  }),
+);

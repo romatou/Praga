@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import * as ReactDOMClient from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import App from './App'
@@ -10,21 +10,15 @@ import './index.css'
 
 const store = setupStore()
 
-/*ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
-        <App />
-      </Provider>
-    </ErrorBoundary>
-  </React.StrictMode>
-)*/
-
-ReactDOMClient.hydrateRoot(document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
-    <ErrorBoundary>
-      <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <div className="App">
+            <App />
+          </div>
+        </BrowserRouter>
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>

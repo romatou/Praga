@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 import Login from '@pages/LoginPage/Login'
@@ -27,24 +27,20 @@ function App() {
     fetchServerData()
   }, [])
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path={'/'} element={<Intro />} />
-          <Route path={'/auth'} element={<Login />} />
-          <Route path={'/register'} element={<Register />} />
-          <Route path={'/profile'} element={<Profile />} />
-          <Route path={'/game/start'} element={<GameStart />} />
-          <Route path={'/game/play'} element={<GamePlay />} />
-          <Route path={'/game/result'} element={<GameResult />} />
-          <Route path={'/forum'} element={<Forum />} />
-          <Route path={'/forum/:id'} element={<ForumDetail />} />
-          <Route path={'/ranking'} element={<Ranking />} />
-          <Route path={'/500'} element={<ServerError />} />
-          <Route path={'/*'} element={<NotFound />} />
-        </Routes>
-      </Router>
-    </div>
+    <Routes>
+      <Route path={'/'} element={<Intro />} />
+      <Route path={'/auth'} element={<Login />} />
+      <Route path={'/register'} element={<Register />} />
+      <Route path={'/profile'} element={<Profile />} />
+      <Route path={'/game/start'} element={<GameStart />} />
+      <Route path={'/game/play'} element={<GamePlay />} />
+      <Route path={'/game/result'} element={<GameResult />} />
+      <Route path={'/forum'} element={<Forum />} />
+      <Route path={'/forum/:id'} element={<ForumDetail />} />
+      <Route path={'/ranking'} element={<Ranking />} />
+      <Route path={'/500'} element={<ServerError />} />
+      <Route path={'/*'} element={<NotFound />} />
+    </Routes>
   )
 }
 
