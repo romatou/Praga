@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   fetchLeaderboard,
   sendDataToLeaderboard,
-} from '@store/actions/RatingActionCreators'
+} from '../actions/RatingActionCreators'
 
 import { useAppSelector } from '../index'
 import {

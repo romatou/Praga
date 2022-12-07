@@ -4,7 +4,7 @@ import {
   login,
   fetchUser,
   logout,
-} from '@store/actions/AuthActionCreators'
+} from '../actions/AuthActionCreators'
 import {
   StatusLoading,
   RequestDataState,

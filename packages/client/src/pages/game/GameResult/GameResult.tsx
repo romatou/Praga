@@ -1,6 +1,7 @@
+import React from 'react'
 import { Button, Container, Box, Typography } from '@mui/material'
 import { buttonStyles, containerStyles, imageStyles } from './styles'
-import starBadge from '@assets/star-badge.png'
+import starBadge from '../../../assets/star-badge.png'
 import ResultsTable from './ResultsTable'
 
 export default function GameResult() {

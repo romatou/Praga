@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   TableRow,
@@ -12,10 +12,10 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
-import avatarStub from '@assets/avatar-stub.svg'
-import { useAppDispatch } from '@store/index'
-import { fetchLeaderboard } from '@store/actions/RatingActionCreators'
-import { selectRatingData } from '@store/slices/RatingSlice'
+import avatarStub from '../../assets/avatar-stub.svg'
+import { useAppDispatch } from '../../store/index'
+import { fetchLeaderboard } from '../../store/actions/RatingActionCreators'
+import { selectRatingData } from '../../store/slices/RatingSlice'
 
 export default function Ranking() {
   const dispatch = useAppDispatch()

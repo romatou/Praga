@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import App from './App'
 import { setupStore } from './store'
 import ErrorBoundary from './components/ErrorBoundary'
-import './index.css'
 
 const store = setupStore()
 
@@ -26,7 +25,8 @@ window.addEventListener('load', () => {
   }
 })
 
-ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
