@@ -14,7 +14,7 @@ export default defineConfig({
   },
   ssr: {
     target: 'node',
-    format: 'cjs'
+    format: 'cjs',
   },
   plugins: [react()],
   resolve: {

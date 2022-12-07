@@ -1,10 +1,8 @@
 import { createServer as createViteServer } from 'vite'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import fs from 'fs';
-import path from 'path';
-
-const { createProxyMiddleware } = require('http-proxy-middleware')
+import fs from 'fs'
+import path from 'path'
 
 dotenv.config()
 
@@ -18,7 +16,7 @@ const port = Number(process.env.SERVER_PORT) || 3001
 async function createServer() {
   const vite = await createViteServer({
     server: { middlewareMode: true },
-    appType: 'custom'
+    appType: 'custom',
   })
 
   app.use(vite.middlewares)
@@ -37,27 +35,18 @@ async function createServer() {
     )
     template = await vite.transformIndexHtml(url, template)
     // @ts-ignore
-    const render = (await import('../../client/dist/ssr/entry-server.cjs')).SSRRender;
+    const render = (await import('../../client/dist/ssr/entry-server.cjs'))
+      .SSRRender
     const appHtml = render(url)
     const html = template.replace(`<!--ssr-->`, appHtml)
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   })
-  app.use(
-    '/praktikum-api',
-    createProxyMiddleware({
-      pathRewrite: { '^/praktikum-api': '/' },
-      target: 'https://ya-praktikum.tech',
-      changeOrigin: true,
-      cookieDomainRewrite: 'localhost',
-      secure: false,
-      debug: true,
-    })
-  )
-  return { app, vite };
+  return { app, vite }
 }
 
 createServer().then(({ app }) =>
   app.listen(port, () => {
-    console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
-  }),
-);
+    console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
+    console.log(__dirname)
+  })
+)

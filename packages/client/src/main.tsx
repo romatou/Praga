@@ -26,7 +26,8 @@ window.addEventListener('load', () => {
   }
 })
 
-ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
