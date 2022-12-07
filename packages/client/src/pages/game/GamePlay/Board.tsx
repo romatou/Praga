@@ -7,7 +7,7 @@ import {
   ReactElement,
   memo,
 } from 'react'
-import { useAppDispatch } from '@store/index'
+import { useAppDispatch, useAppSelector } from '@store/index'
 import { selectUserData } from '@store/slices/AuthSlice'
 import {
   fetchLeaderboard,
@@ -50,7 +50,7 @@ const Board = ({
   coords,
 }: BoardProps): ReactElement => {
   const dispatch = useAppDispatch()
-  const user = selectUserData()
+  const user = useAppSelector(selectUserData)
   const ratingData = selectRatingData()
 
   const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]) //затонувшие корабли player
