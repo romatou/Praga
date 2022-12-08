@@ -1,19 +1,20 @@
 import { Box, Container, Button, Typography } from '@mui/material'
 import { fetchUser } from '@store/actions/AuthActionCreators'
 import { useAppDispatch } from '@store/index'
+import { useOAuth } from '../../hooks/useOAuth'
 import { useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
 
 export default function Intro() {
+  const isOAuth = useOAuth()
+  const isAuth = useAuth()
   const dispatch = useAppDispatch()
+
   useEffect(() => {
+    isOAuth()
     dispatch(fetchUser())
   }, [])
-  const isAuth = useAuth()
-  const handleClick = () => {
-    isAuth()
-  }
 
   return (
     <Box sx={{ ...styles.page }}>
@@ -29,7 +30,7 @@ export default function Intro() {
               alignItems: 'flex-start',
             }}>
             <Button
-              onClick={handleClick}
+              onClick={() => isAuth()}
               sx={{ marginBottom: '1rem' }}
               variant="contained"
               size="large"

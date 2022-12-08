@@ -74,3 +74,8 @@ export interface PassWord {
   oldPassword: string
   newPassword: string
 }
+
+export interface OauthData {
+  code: string
+  redirect_uri: string
+}

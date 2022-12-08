@@ -11,9 +11,9 @@ export const useAuth = () => {
     user.id
       ? navigate('/game/start')
       : dispatch(fetchUser()).then(res => {
-          if (res.type === 'auth/fetch/rejected') {
-            return navigate('/auth')
-          }
-        })
+        if (res.type === 'auth/fetch/rejected') {
+          return navigate('/auth')
+        }
+      })
   }
 }
