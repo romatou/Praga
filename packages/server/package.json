@@ -6,6 +6,7 @@
     "build": "rm -rf ./dist && tsc --p ./tsconfig.prod.json",
     "preview": "node ./dist/index.js",
     "dev": "NODE_ENV=development nodemon index.ts",
+    "serve": "yarn build && yarn preview",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "jest ."
