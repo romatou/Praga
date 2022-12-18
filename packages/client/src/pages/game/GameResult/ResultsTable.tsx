@@ -26,8 +26,8 @@ export default function ResultsTable() {
       sx={{ marginBottom: '2rem', width: 'auto' }}>
       <Table sx={tableStyles} aria-label="simple table">
         <TableBody>
-          {rows.map(row => (
-            <TableRow>
+          {rows.map((row, key) => (
+            <TableRow key={key}>
               <TableCell>{row.category}</TableCell>
               <TableCell align="right">{row.score}</TableCell>
             </TableRow>
