@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Container, Typography } from '@mui/material'
+import { Button, Box, Container, Typography } from '@mui/material'
 import { fetchUser } from '../../store/actions/AuthActionCreators'
 import { useAppDispatch } from '../../store/index'
 import { useAuth } from '../../hooks/useAuth'
@@ -30,9 +30,23 @@ export default function Intro() {
                 flexGrow: '2',
                 alignItems: 'flex-start',
               }}>
-              <Link to="/auth" onClick={handleClick}>
-                Начать игру
-              </Link>
+              <Button
+                variant="contained"
+                sx={{
+                  background: '#000',
+                  marginBottom: '1rem',
+                  ':hover': {
+                    backgroundColor: '#000',
+                    color: '#fff',
+                  },
+                }}>
+                <Link
+                  to="/auth"
+                  onClick={handleClick}
+                  style={{ textDecoration: 'none', color: '#fff' }}>
+                  Начать игру
+                </Link>
+              </Button>
               <Typography>Для игры требуется регистрация</Typography>
             </Box>
           </Box>
