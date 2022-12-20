@@ -111,7 +111,7 @@ export default function Login() {
           </Typography>
             <YandexIdButton 
             onClick={()=>location()}
-            startIcon={<YandexIcon/>}
+            // startIcon={<YandexIcon/>}
             >Войти c Яндекс ID</YandexIdButton>
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
