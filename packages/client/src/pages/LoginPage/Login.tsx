@@ -36,7 +36,7 @@ export default function Login() {
       boxShadow: 'none',
     },
   })
-  
+
   useEffect(() => {
     if (user.id) {
       navigate('/')

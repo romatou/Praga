@@ -9,12 +9,12 @@ import styles from './styles'
 import React from 'react'
 
 export default function Intro() {
-  const isOAuth = useOAuth()
-  const isAuth = useAuth()
+  const getOAuth = useOAuth()
+  const getAuth = useAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    isOAuth()
+    getOAuth()
     dispatch(fetchUser())
   }, [])
 
@@ -33,7 +33,7 @@ export default function Intro() {
                 alignItems: 'flex-start',
               }}>
               <Button
-                onClick={() => isAuth()}
+                onClick={() => getAuth()}
                 sx={{ marginBottom: '1rem' }}
                 variant="contained"
                 size="large"
