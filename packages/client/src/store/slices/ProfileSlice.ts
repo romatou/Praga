@@ -4,7 +4,7 @@ import {
   editAvatar,
   editPasswordData,
   fetchUser,
-} from '@store/actions/ProfileActionCreators'
+} from '../actions/ProfileActionCreators'
 
 import { RootState } from '../index'
 import { User, RequestData, RequestDataState, StatusLoading } from '../types'

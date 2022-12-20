@@ -7,6 +7,7 @@ import {
   getServiceId,
   oauthYandex,
 } from '@store/actions/AuthActionCreators'
+
 import {
   StatusLoading,
   RequestDataState,

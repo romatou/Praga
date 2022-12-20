@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
-import { useAppDispatch, useAppSelector } from '@store/index'
-import { hideAlert, selectAlertState } from '@store/slices/AlertSlice'
+import { useAppDispatch, useAppSelector } from '../../store/index'
+import { hideAlert, selectAlertState } from '../../store/slices/AlertSlice'
 
 export interface props {
   message: string

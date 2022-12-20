@@ -5,17 +5,17 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from '@store/index'
+import { useAppDispatch, useAppSelector } from '../../store/index'
 import {
   editProfileData,
   editAvatar,
   editPasswordData,
   fetchUser,
-} from '@store/actions/ProfileActionCreators'
-import { logout } from '@store/actions/AuthActionCreators'
+} from '../../store/actions/ProfileActionCreators'
+import { logout } from '../../store/actions/AuthActionCreators'
 
-import { selectProfileData } from '@store/slices/ProfileSlice'
-import { showAlert, AlertProps } from '@store/slices/AlertSlice'
+import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { showAlert, AlertProps } from '../../store/slices/AlertSlice'
 
 import {
   TYPES_ALERT,
