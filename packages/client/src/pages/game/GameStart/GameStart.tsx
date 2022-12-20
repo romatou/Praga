@@ -1,5 +1,5 @@
+import React, { useEffect } from 'react'
 import { Box, Button, Container, Typography } from '@mui/material'
-
 import MenuList from './MenuList'
 import playWithUser from '../../../assets/play-with-user.svg'
 import playWithComp from '../../../assets/play-with-comp.svg'
@@ -11,7 +11,6 @@ import {
   startBtnStyles,
 } from './styles'
 import { useAuth } from '../../../hooks/useAuth'
-import { useEffect } from 'react'
 
 export default function GameStart() {
   const isAuth = useAuth()

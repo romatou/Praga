@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Container,
   Box,
@@ -8,7 +9,7 @@ import {
 } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { UserData } from '@store/types'
+import { UserData } from '../../store/types'
 import { useRegister } from '../../hooks/useRegister'
 
 export default function Register() {

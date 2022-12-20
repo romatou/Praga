@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react'
 import {
   Container,
   Box,
@@ -8,12 +9,11 @@ import {
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { LoginData } from '@store/types'
+import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
-import { useEffect } from 'react'
-import { fetchUser } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
+import { fetchUser } from '../../store/actions/AuthActionCreators'
+import { useAppDispatch } from '../../store/index'
 
 export default function Login() {
   const user = useUser()

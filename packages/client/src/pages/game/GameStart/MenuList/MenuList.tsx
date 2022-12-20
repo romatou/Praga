@@ -1,13 +1,13 @@
+import React from 'react'
 import { Box, Button } from '@mui/material'
-
 import userIcon from '../../../../assets/user-icon.svg'
 import chatIcon from '../../../../assets/chat-icon.svg'
 import ratingIcon from '../../../../assets/rating-icon.svg'
 import questionIcon from '../../../../assets/question-icon.svg'
 import exitIcon from '../../../../assets/exit-icon.svg'
 import MenuItem from '../MenuItem'
-import { logout } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
+import { logout } from '../../../../store/actions/AuthActionCreators'
+import { useAppDispatch } from '../../../../store'
 import { useNavigate } from 'react-router-dom'
 
 const links = [
