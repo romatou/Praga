@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { LoginData, UserData } from '../types'
+import { LoginData, OauthData, UserData } from '@store/types'
+
 import axiosInstance from '../../services/BaseApi'
 
 export const register = createAsyncThunk(
@@ -45,3 +46,27 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
     return thunkApi.rejectWithValue('Не удалось выйти из приложения')
   }
 })
+
+export const getServiceId = createAsyncThunk(
+  'auth/serviceid',
+  async (_, thunkApi) => {
+    try {
+      const response = await axiosInstance.get('oauth/yandex/service-id')
+      return response.data
+    } catch (e) {
+      return thunkApi.rejectWithValue('No such redirect_uri refistered')
+    }
+  }
+)
+
+export const oauthYandex = createAsyncThunk(
+  'auth/yandex',
+  async (data: OauthData, thunkApi) => {
+    try {
+      const response = await axiosInstance.post('oauth/yandex', data)
+      return response.data
+    } catch (e) {
+      return thunkApi.rejectWithValue('Пользователь не авторизован в системе')
+    }
+  }
+)
