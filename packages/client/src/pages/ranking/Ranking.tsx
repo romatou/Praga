@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   TableRow,
@@ -11,13 +12,18 @@ import {
   TablePagination,
   Paper,
   Typography,
+  Button,
 } from '@mui/material'
-import avatarStub from '../../assets/avatar-stub.svg'
-import { useAppDispatch } from '../../store/index'
-import { fetchLeaderboard } from '../../store/actions/RatingActionCreators'
-import { selectRatingData } from '../../store/slices/RatingSlice'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import avatarStub from '@assets/avatar-stub.svg'
+import { useAppDispatch } from '@store/index'
+import { fetchLeaderboard } from '@store/actions/RatingActionCreators'
+import { selectRatingData } from '@store/slices/RatingSlice'
+import { avatarContainer, container } from './styles'
 
 export default function Ranking() {
+  const navigate = useNavigate()
+
   const dispatch = useAppDispatch()
   const ratingData = selectRatingData()
 
@@ -42,76 +48,83 @@ export default function Ranking() {
     setPage(0)
   }
 
+  const tableData = useMemo(
+    () =>
+      [...ratingData]
+        .sort((a, b) => b.data.score - a.data.score)
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [ratingData, page, rowsPerPage]
+  )
+
   return (
-    <Box
-      sx={{
-        margin: '24px auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '24px',
-        alignItems: 'center',
-      }}>
+    <Box sx={container}>
+      <Button
+        variant="text"
+        onClick={() => navigate('/game/start')}
+        startIcon={<ArrowBackIcon />}
+        sx={{ alignSelf: 'flex-start' }}>
+        Назад
+      </Button>
       <Typography component="h1" sx={{ fontWeight: 700, fontSize: '24px' }}>
         Таблица лидеров
       </Typography>
-      <TableContainer
-        sx={{ width: 650, margin: '40px auto' }}
-        component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Место</TableCell>
-              <TableCell align="center">Игрок</TableCell>
-              <TableCell align="right">Побед</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {ratingData
-              .sort((a, b) => a.data.score - b.data.score)
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map(({ data: { score, id, name } }, index) => (
+      {ratingData.length ? (
+        <TableContainer
+          sx={{ width: 650, margin: '40px auto' }}
+          component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Место</TableCell>
+                <TableCell align="center">Игрок</TableCell>
+                <TableCell align="center">Побед</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tableData.map(({ data: { score, id, name } }, index) => (
                 <TableRow key={id} sx={{ padding: '8px 0' }}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      display: 'flex',
-                      gap: '16px',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Box component="img" src={avatarStub} alt="аватар" />
-                    <Box>{name}</Box>
+                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell align="center" sx={avatarContainer}>
+                    <Box
+                      component="img"
+                      src={avatarStub}
+                      alt="аватар"
+                      sx={{ justifySelf: 'end' }}
+                    />
+                    <Box sx={{ justifySelf: 'start' }}>{name}</Box>
                   </TableCell>
-                  <TableCell align="right">{score}</TableCell>
+                  <TableCell align="center">{score}</TableCell>
                 </TableRow>
               ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, { label: 'Все', value: -1 }]}
-                colSpan={3}
-                count={ratingData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                labelDisplayedRows={({ from, to, count }) =>
-                  from + ' - ' + to + ' из ' + count
-                }
-                labelRowsPerPage={<span>Игроков на странице</span>}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, { label: 'Все', value: -1 }]}
+                  colSpan={3}
+                  count={ratingData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page',
+                    },
+                    native: true,
+                  }}
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from} - ${to} из ${count}`
+                  }
+                  labelRowsPerPage={<span>Игроков на странице</span>}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Box>Пока никого нет, будь первым! :-)</Box>
+      )}
     </Box>
   )
 }
