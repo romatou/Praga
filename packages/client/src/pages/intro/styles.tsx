@@ -1,4 +1,4 @@
-import background from '@assets/landing-background.jpg'
+import background from '../../assets/landing-background.jpg'
 
 const styles = {
   page: {

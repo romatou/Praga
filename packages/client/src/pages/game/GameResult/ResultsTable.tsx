@@ -1,3 +1,4 @@
+import React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -25,8 +26,8 @@ export default function ResultsTable() {
       sx={{ marginBottom: '2rem', width: 'auto' }}>
       <Table sx={tableStyles} aria-label="simple table">
         <TableBody>
-          {rows.map(row => (
-            <TableRow>
+          {rows.map((row, i) => (
+            <TableRow key={i}>
               <TableCell>{row.category}</TableCell>
               <TableCell align="right">{row.score}</TableCell>
             </TableRow>

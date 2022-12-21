@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
+import React, { useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
 
 import Login from '@pages/LoginPage/Login'
 import Register from '@pages/register/Register'
@@ -36,24 +35,20 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path={'/'} element={<Intro />} />
-          <Route path={'/auth'} element={<Login />} />
-          <Route path={'/register'} element={<Register />} />
-          <Route path={'/profile'} element={<Profile />} />
-          <Route path={'/game/start'} element={<GameStart />} />
-          <Route path={'/game/play'} element={<GamePlay />} />
-          <Route path={'/game/result'} element={<GameResult />} />
-          <Route path={'/forum'} element={<Forum />} />
-          <Route path={'/forum/:id'} element={<ForumDetail />} />
-          <Route path={'/ranking'} element={<Ranking />} />
-          <Route path={'/500'} element={<ServerError />} />
-          <Route path={'/*'} element={<NotFound />} />
-        </Routes>
-      </Router>
-    </div>
+    <Routes>
+      <Route path={'/'} element={<Intro />} />
+      <Route path={'/auth'} element={<Login />} />
+      <Route path={'/register'} element={<Register />} />
+      <Route path={'/profile'} element={<Profile />} />
+      <Route path={'/game/start'} element={<GameStart />} />
+      <Route path={'/game/play'} element={<GamePlay />} />
+      <Route path={'/game/result'} element={<GameResult />} />
+      <Route path={'/forum'} element={<Forum />} />
+      <Route path={'/forum/:id'} element={<ForumDetail />} />
+      <Route path={'/ranking'} element={<Ranking />} />
+      <Route path={'/500'} element={<ServerError />} />
+      <Route path={'/*'} element={<NotFound />} />
+    </Routes>
   )
 }
 

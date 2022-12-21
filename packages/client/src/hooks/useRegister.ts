@@ -1,6 +1,6 @@
-import { fetchUser, register } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
-import { UserData } from '@store/types'
+import { fetchUser, register } from '../store/actions/AuthActionCreators'
+import { useAppDispatch } from '../store/index'
+import { UserData } from '../store/types'
 import { useNavigate } from 'react-router-dom'
 
 export const useRegister = () => {

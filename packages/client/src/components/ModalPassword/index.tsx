@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import * as RB from '@mui/material'
 import { useForm, FormProvider } from 'react-hook-form'
 import { passwordType } from '../../pages/profile/types'

@@ -1,9 +1,9 @@
-import { useState, useMemo, ReactElement, useEffect } from 'react'
+import React, { useState, useMemo, ReactElement, useEffect } from 'react'
 import { buttonStyles, game, gameBoard, wrapButton, wrapShip } from './styles'
 import { Container, Button, Box, Typography } from '@mui/material'
-import cell1 from '@assets/cell1.svg'
-import cell2 from '@assets/cell2.svg'
-import cell3 from '@assets/cell3.svg'
+import cell1 from '../../../assets/cell1.svg'
+import cell2 from '../../../assets/cell2.svg'
+import cell3 from '../../../assets/cell3.svg'
 
 import {
   generateShipsLayout,
