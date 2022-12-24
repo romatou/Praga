@@ -24,6 +24,19 @@ export const scaleBoard = 1 //масшатаб игрового поля
 export const canvasWidth = size + 70 //ширина всего канваса
 export const canvasHeight = size + 100 //высота всего канваса
 
+//время неспешного решения о возможном клике
+export const getStepTimeGame = (x: number): string => {
+  const y = (x / 1000).toFixed(2);
+  return y;
+};
+
+//время отработки функций
+export const getStepTimeWorkFun = (tHandle: number, tDraw: number): string => {
+  const y = ((tHandle + tDraw) / 1000).toFixed(4);
+
+  return y;
+};
+
 export const shipsSet: ShipsSet[] = [
   //размеры кораблей и их количество на доске
   // последовательность строго c size =3 и на уменьшение!!!!
@@ -49,18 +62,43 @@ const drawCell = ({ context, cellSize, x, y }: DrawCellArgs): void => {
 //рисовать имя доски
 export const drawNameBoard = (
   context: CanvasRenderingContext2D,
-  font: string
+  font: string,
+  name: string,
+  pausePlayer?: string,
+  pauseComp?: string,
+  pauseWorkFunPlayer?: string,
+  pauseWorkFunСomp?: string
 ): void => {
-  context.beginPath()
-  context.clearRect(0, 340, 300, 60)
-  context.rect(0, 340, 300, 60)
-  context.fillStyle = 'burlywood'
-  context.fill()
-  context.fillStyle = 'blue'
-  context.font = 'italic ' + 12 + 'pt Arial'
-  context.fillText(`${font}`, 40, 360)
-  context.closePath()
-}
+  context.beginPath();
+  context.clearRect(0, 340, 330, 60);
+  context.rect(0, 340, 330, 60);
+  context.fillStyle = "burlywood";
+  context.fill();
+  context.fillStyle = "blue";
+  context.font = "italic " + 12 + "pt Arial";
+  context.fillText(`${font}`, 40, 360);
+  context.font = "italic " + 9 + "pt Arial";
+  if (name === "player") {
+    pausePlayer = pausePlayer === undefined ? "" : pausePlayer;
+    pauseWorkFunPlayer =
+      pauseWorkFunPlayer === undefined ? "" : pauseWorkFunPlayer;
+    context.fillText(
+      `секунды сомнения ${pausePlayer}; тормоз обработки ${pauseWorkFunPlayer};`,
+      2,
+      378
+    );
+  } else {
+    pauseComp = pauseComp === undefined ? "" : pauseComp;
+    pauseWorkFunСomp = pauseWorkFunСomp === undefined ? "" : pauseWorkFunСomp;
+    context.fillText(
+      `секундная дума компа ${pauseComp}; тормоз обработки ${pauseWorkFunСomp};`,
+      2,
+      378
+    );
+  }
+
+  context.closePath();
+};
 
 //генерировать координаты
 export const generateCoords = (cellCount: number): GeneratedCoords => {
@@ -139,15 +177,15 @@ export const drawWhoWin = (
   if (str === Winner.PLAYER_IS_WIN) setPlayerIsWin(true)
 
   if (!str) return
-  context.beginPath()
-  context.clearRect(0, 340, 300, 60)
-  context.rect(0, 340, 300, 60)
-  context.fillStyle = 'burlywood'
-  context.fill()
-  context.fillStyle = 'rgb(158, 0, 0)'
-  context.font = 'italic ' + 20 + 'pt Arial'
-  context.fillText(`${str}`, 10, 370)
-  context.closePath()
+  context.beginPath();
+  context.clearRect(0, 340, 330, 60);
+  context.rect(0, 340, 330, 60);
+  context.fillStyle = "burlywood";
+  context.fill();
+  context.fillStyle = "rgb(158, 0, 0)";
+  context.font = "italic " + 20 + "pt Arial";
+  context.fillText(`${str}`, 10, 370);
+  context.closePath();
 }
 
 // рисовать ячейки

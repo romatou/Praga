@@ -34,12 +34,24 @@ import {
   drawStatusShips,
   canvasWidth,
   canvasHeight,
+  getStepTimeGame,
+  getStepTimeWorkFun,
 } from './helper'
 
 import { CellArgs, BoardProps } from './types'
 
 let currentPlayer = 'player' //За кем текущий ход
 let timeClickComp = 700 // время реакции компа
+
+let startTime: number; // время начала игры
+let timeHandlePlayer: number; // время обработки функции удара player
+let startTimeGame: number; //время нового отсчета
+let pausePlayer: string; //время раздумий игрока с отработкой клика
+let timeHandleComp: number; // время обработки функции удара
+let pauseComp: string; // // пауза обработки удара compa
+let timeDraw: number; //время работы ф-и по отрисовке
+let pauseWorkFunPlayer: string; //время работы ф-и игрока
+let pauseWorkFunСomp: string; // // время работы ф-и compa
 
 const Board = ({
   name,
@@ -70,6 +82,31 @@ const Board = ({
   useEffect(() => {
     dispatch(fetchLeaderboard())
   }, [])
+
+  useEffect(() => {
+    startTime = Date.now(); //время на старте игры
+  }, []);
+
+
+  useEffect(() => {
+    //для изме-я шага по времени для игрока
+    if (timeHandlePlayer === undefined || timeDraw === undefined) return;
+    if (name === "computer") return;
+
+    pausePlayer = getStepTimeGame(Date.now() - startTime);
+    pauseWorkFunPlayer = getStepTimeWorkFun(timeHandlePlayer, timeDraw);
+
+    startTime = startTimeGame; //для нового отсчета с функции клика компа в конце
+  }, [timeHandlePlayer, name, timeDraw]);
+
+  useEffect(() => {
+    //для изме-я шага по времени для компа
+    if (timeHandleComp === undefined || timeDraw === undefined) return;
+    if (name === "player") return;
+
+    pauseComp = getStepTimeGame(timeClickComp);
+    pauseWorkFunСomp = getStepTimeWorkFun(timeHandleComp, timeDraw);
+  }, [timeHandleComp, name, timeDraw]);
 
   useEffect(() => {
     if (playerIsWin && user) {
@@ -106,6 +143,8 @@ const Board = ({
     if (countCompShips === 0 || countPlayerShips === 0) return
     if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
+    const firstNow = performance.now();  
+
     if (currentPlayer === 'computer') {
       const cell = generateRandomCompShot() as CellArgs //рандомная ячейка компа
 
@@ -128,6 +167,12 @@ const Board = ({
         currentPlayer = 'player' //т к ход мимо переход стрельбы
       }
     }
+
+    const secondNow = performance.now();
+    timeHandleComp = secondNow - firstNow; //время работы функции клика компа
+
+    startTimeGame = Date.now(); //начало нового отсчета
+
   }, [
     countPlayerShips,
     countCompShips,
@@ -142,10 +187,21 @@ const Board = ({
 
     const drawGrid = (context: CanvasRenderingContext2D) => {
       //отрисовка сетки, краблей, клеток попадания, клеток мимо
+
+      const firstNow = performance.now();
+
       context.clearRect(0, 0, size, size)
       drawCells({ context, cellSize, dimMatr })
 
-      drawNameBoard(context, nameBoard) //отрисовка названия доски
+        drawNameBoard(
+        context,
+        nameBoard,
+        name,
+        pausePlayer,
+        pauseComp,
+        pauseWorkFunPlayer,
+        pauseWorkFunСomp
+      ); //отрисовка названия доски с добавлением временных шагов
       drawLatterCoords(context, coords.letterCoords) //отрисовка координат букв доски
       drawNumberCoords(context, coords.numberCoords) //отрисовка координат чисел доски
       drawWhoWin(
@@ -165,6 +221,9 @@ const Board = ({
 
       drawPastCells(context, cellSize, pastCellsPlayer) //отрис клетки мимо игрока
       drawPastCells(context, cellSize, pastCellsComp) //отрис клетки мимо компа
+
+      const secondNow = performance.now();
+      timeDraw = secondNow - firstNow; //время работы функции draw
     }
 
     if (canvasRef.current) localRef = canvasRef.current
@@ -213,6 +272,8 @@ const Board = ({
     if (countCompShips === 0 || countPlayerShips === 0) return
     if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
+    const firstNow = performance.now();
+
     if (currentPlayer === 'player') {
       const { offsetX, offsetY } = event.nativeEvent //определяется ячейка по которой кликнул игрок
 
@@ -232,6 +293,9 @@ const Board = ({
         currentPlayer = 'computer' // т к ход мимо переход стрельбы к компу
       }
     }
+
+    const secondNow = performance.now();
+    timeHandlePlayer = secondNow - firstNow; //время работы функции клика игрока
   }
 
   useEffect(
