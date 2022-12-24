@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
-import sequelize from '../db'
+import sequelize from './db'
 
 dotenv.config()
 

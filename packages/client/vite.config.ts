@@ -18,10 +18,19 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      src: path.resolve(__dirname, './src'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@components': path.resolve(__dirname, './src/components'),
       '@store': path.resolve(__dirname, './src/store'),
+    },
+  },
+  optimizeDeps: {
+    include: ['esm-dep > cjs-dep'],
+  },
+  build: {
+    rollupOptions: {
+      input: { client: 'src/entry-client.tsx', server: 'src/entry-server.tsx' },
     },
   },
 })
