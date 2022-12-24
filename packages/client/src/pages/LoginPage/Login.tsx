@@ -8,7 +8,6 @@ import {
   Stack,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
@@ -28,11 +27,6 @@ export default function Login() {
     }
   }, [navigate, user])
 
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Roboto, sans-serif',
-    },
-  })
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -44,7 +38,7 @@ export default function Login() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <Box color="primary">
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -91,18 +85,19 @@ export default function Login() {
             </Button>
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
-              <Link
+              <Typography
                 to="/register"
                 style={{
                   textDecoration: 'none',
-                  fontFamily: 'Roboto, sans-serif',
-                }}>
+                  color: 'red',
+                }}
+                component={Link}>
                 Создать аккаунт
-              </Link>
+              </Typography>
             </Stack>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </Box>
   )
 }

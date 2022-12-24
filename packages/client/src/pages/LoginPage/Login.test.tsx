@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { setupStore } from '@store/index'
+import { setupStore } from '../../store/index'
 
 import Login from './Login'
 

@@ -6,19 +6,21 @@ import { itemStyles, linkStyles } from './styles'
 
 interface MenuItemProps {
   title: string
-  src: string
+  Icon: React.ReactNode
   alt: string
   to: string
 }
 
-export default function MenuItem({ title, src, alt, to }: MenuItemProps) {
+export default function MenuItem({ title, Icon, alt, to }: MenuItemProps) {
   if (!to) return null
 
   return (
-    <Box component="li" sx={itemStyles}>
+    <Box component="li" bgcolor="primary.main" sx={itemStyles}>
       <Link to={to} style={linkStyles}>
-        <Box component="img" {...{ src, alt }} />
-        <Typography component="span">{title}</Typography>
+        {Icon}
+        <Typography color="secondary" component="span">
+          {title}
+        </Typography>
       </Link>
     </Box>
   )

@@ -29,7 +29,6 @@ export const wrapButton = {
 
 export const buttonStyles = {
   position: 'static',
-  backgroundColor: '#000',
   margin: 0,
   display: 'flex',
   alignItems: 'center',

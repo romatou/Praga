@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { Button } from '@mui/material'
-
+import Header from './components/Header'
+import { createTheme } from '@mui/material/styles'
 import Login from './pages/LoginPage/Login'
 import Register from './pages/register/Register'
 import Profile from './pages/profile/Profile'
@@ -17,9 +17,8 @@ import Ranking from './pages/ranking'
 import NotFound from './pages/not-found/NotFound'
 import ServerError from './pages/server-error/ServerError'
 import { useAppDispatch, useAppSelector } from './store'
-import { toggleTheme, selectUserData, getTheme } from '@store/slices/UserSlice'
-import { fetchUser } from '@store/actions/UserActionCreators'
-import { amber, deepOrange, grey } from '@mui/material/colors'
+import { selectUserData, getTheme } from './store/slices/UserSlice'
+import { fetchUser } from './store/actions/UserActionCreators'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -27,7 +26,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUser())
-  
+
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
       const response = await fetch(url)
@@ -36,7 +35,6 @@ function App() {
     }
 
     fetchServerData()
-    
   }, [])
 
   useEffect(() => {
@@ -49,40 +47,23 @@ function App() {
       ...(selectedTheme === 'light'
         ? {
             // palette values for light mode
-            primary: amber,
-            divider: amber[200],
-            text: {
-              primary: grey[900],
-              secondary: grey[800],
-            },
+            primary: { main: '#000000' },
+            secondary: { main: '#ffffff' },
+            neutral: { main: '#ffffff' },
           }
         : {
             // palette values for dark mode
-            primary: deepOrange,
-            divider: deepOrange[700],
-            background: {
-              default: deepOrange[900],
-              paper: deepOrange[900],
-            },
-            text: {
-              primary: '#f0f0f0',
-              secondary: grey[500],
-            },
+            primary: { main: '#ffffff' },
+            secondary: { main: '#000000' },
+            neutral: { main: '#000000' },
           }),
     },
   })
 
-  const handleThemeChange = () => {
-  
- 
-    dispatch(toggleTheme(selectedTheme))
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <main>
-      <Button onClick={handleThemeChange}>тема</Button>
+      <Header />
       <Routes>
         <Route path={'/'} element={<Intro />} />
         <Route path={'/auth'} element={<Login />} />
@@ -97,7 +78,6 @@ function App() {
         <Route path={'/500'} element={<ServerError />} />
         <Route path={'/*'} element={<NotFound />} />
       </Routes>
-      </main>
     </ThemeProvider>
   )
 }

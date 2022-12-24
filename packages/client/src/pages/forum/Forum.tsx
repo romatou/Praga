@@ -11,11 +11,11 @@ const forumData = [
   { name: 'Жалобы', count: 10, id: 4 },
 ]
 const Item = styled(RB.Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
-  color: theme.palette.text.secondary,
+  color: theme.palette.mode === 'dark' ? '#000' : '#fff',
   width: '478px',
 }))
 const Forum = () => (
@@ -25,7 +25,6 @@ const Forum = () => (
       position: 'relative',
       height: '100vh',
       width: '100vw',
-      background: '#D5D5D5',
     }}>
     <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
       <RB.Grid

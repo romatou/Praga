@@ -52,9 +52,9 @@ export const drawNameBoard = (
   context.beginPath()
   context.clearRect(0, 340, 300, 60)
   context.rect(0, 340, 300, 60)
-  context.fillStyle = 'burlywood'
+  context.fillStyle = 'white'
   context.fill()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 12 + 'pt Arial'
   context.fillText(`${font}`, 40, 360)
   context.closePath()
@@ -80,7 +80,7 @@ export const drawLatterCoords = (
 ): void => {
   let i = 15
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 12 + 'pt Arial'
   font.forEach(el => {
     context.fillText(`${el}`, i, 320)
@@ -96,7 +96,7 @@ export const drawNumberCoords = (
 ): void => {
   let i = 24
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 13 + 'pt Arial'
   font.forEach(el => {
     context.fillText(`${el}`, 306, i)
@@ -115,7 +115,7 @@ export const drawStatusShips = (
   const num = name === 'computer' ? countCompShips : countPlayerShips
 
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 11 + 'pt Arial'
   context.fillText(`Осталось уничтожить: ${num}`, 10, 395)
   context.closePath()
@@ -263,7 +263,7 @@ export const drawSunkenShips = (
       context.lineTo(x * cellSize, y * cellSize)
       context.moveTo((x - 1) * cellSize + cellSize, (y - 1) * cellSize)
       context.lineTo(x * cellSize - cellSize, y * cellSize)
-      context.strokeStyle = 'blue'
+      context.strokeStyle = 'black'
       context.fillStyle = 'rgb(255, 82, 82)'
       context.fillRect(
         (x - 1) * cellSize,

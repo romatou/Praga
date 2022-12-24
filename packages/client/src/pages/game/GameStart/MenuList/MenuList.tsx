@@ -1,31 +1,45 @@
 import React from 'react'
 import { Box, Button } from '@mui/material'
-import userIcon from '../../../../assets/user-icon.svg'
-import chatIcon from '../../../../assets/chat-icon.svg'
-import ratingIcon from '../../../../assets/rating-icon.svg'
-import questionIcon from '../../../../assets/question-icon.svg'
-import exitIcon from '../../../../assets/exit-icon.svg'
 import MenuItem from '../MenuItem'
 import { logout } from '../../../../store/actions/AuthActionCreators'
 import { useAppDispatch } from '../../../../store'
 import { useNavigate } from 'react-router-dom'
+import PersonIcon from '@mui/icons-material/Person'
+import StarOutlineIcon from '@mui/icons-material/StarOutline'
+import ForumIcon from '@mui/icons-material/Forum'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 const links = [
-  { title: 'Профиль игрока', src: userIcon, alt: 'профиль', to: '/profile' },
-  { title: 'Сообщения', src: chatIcon, alt: 'сообщения', to: '/forum' },
-  { title: 'Рейтинги', src: ratingIcon, alt: 'рейтинги', to: '/ranking' },
-  { title: 'Помощь', src: questionIcon, alt: 'помощь', to: '/forum' },
-  { title: 'Выход', src: exitIcon, alt: 'выход', to: '/' },
+  {
+    title: 'Профиль игрока',
+    Icon: <PersonIcon sx={{ fontSize: 40 }} color="secondary" />,
+    alt: 'профиль',
+    to: '/profile',
+  },
+  {
+    title: 'Форум',
+    Icon: <ForumIcon sx={{ fontSize: 40 }} color="secondary" />,
+    alt: 'форум',
+    to: '/forum',
+  },
+  {
+    title: 'Рейтинги',
+    Icon: <StarOutlineIcon sx={{ fontSize: 40 }} color="secondary" />,
+    alt: 'рейтинги',
+    to: '/ranking',
+  },
+  {
+    title: 'Выход',
+    Icon: <LogoutIcon sx={{ fontSize: 40 }} color="secondary" />,
+    alt: 'выход',
+    to: '/',
+  },
 ]
 
 export default function MenuList() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const logOut = () => {
-    dispatch(logout())
-    navigate('/auth')
-  }
   return (
     <Box
       component="ul"
@@ -43,7 +57,6 @@ export default function MenuList() {
       {links.map(props => (
         <MenuItem key={props.title} {...props} />
       ))}
-      <Button onClick={logOut}>Выйти</Button>
     </Box>
   )
 }

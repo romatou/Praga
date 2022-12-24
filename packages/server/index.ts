@@ -5,8 +5,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
-// @ts-ignore
-import sequelize from '../db'
+import sequelize from './db'
 
 dotenv.config()
 
@@ -17,7 +16,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
     await sequelize.authenticate()
     console.log('Соединение с базой данных установлено')
   } catch (e) {
-    console.error('Невозможно установить соединение с базой данных:', e)
+    console.error('Невозможно установить соединение с базой данных')
   }
 
   const index = isDev
@@ -73,7 +72,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       const appHtml = render(url)
 
       const html = template.replace(`<!--ssr-->`, appHtml)
-
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       isDev && vite.ssrFixStacktrace(e as Error)

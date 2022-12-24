@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { UserRequest, PassWord } from '@store/types'
+import { UserRequest, PassWord } from '../types'
 
 import axiosInstance from '../../services/BaseApi'
 
