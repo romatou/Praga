@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import Login from './pages/LoginPage/Login'
 import Register from './pages/register/Register'
@@ -13,6 +15,8 @@ import ForumDetail from './pages/forum/ForumDetail'
 import Ranking from './pages/ranking'
 import NotFound from './pages/not-found/NotFound'
 import ServerError from './pages/server-error/ServerError'
+import { selectUserData } from '@store/slices/UserSlice'
+import { useAppSelector } from './store';
 
 function App() {
   useEffect(() => {
@@ -25,7 +29,18 @@ function App() {
 
     fetchServerData()
   }, [])
+
+  const { selectedTheme } =  useAppSelector(selectUserData);
+  
+const theme = createTheme({
+  palette: {
+    mode: selectedTheme,
+  },
+});
+
   return (
+    <ThemeProvider theme={theme}>
+    <CssBaseline />
     <Routes>
       <Route path={'/'} element={<Intro />} />
       <Route path={'/auth'} element={<Login />} />
@@ -40,6 +55,7 @@ function App() {
       <Route path={'/500'} element={<ServerError />} />
       <Route path={'/*'} element={<NotFound />} />
     </Routes>
+    </ThemeProvider>
   )
 }
 

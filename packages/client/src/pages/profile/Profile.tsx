@@ -13,8 +13,7 @@ import {
   fetchUser,
 } from '../../store/actions/ProfileActionCreators'
 import { logout } from '../../store/actions/AuthActionCreators'
-
-import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 import { showAlert, AlertProps } from '../../store/slices/AlertSlice'
 
 import {
@@ -33,7 +32,7 @@ const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { userData, requestData } = useAppSelector(selectProfileData)
+  const { userData, requestData } = useAppSelector(selectUserData)
 
   const [open, setOpen] = React.useState(false)
 

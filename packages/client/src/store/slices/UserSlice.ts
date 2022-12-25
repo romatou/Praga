@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   editProfileData,
   editAvatar,
   editPasswordData,
   fetchUser,
-} from '../actions/ProfileActionCreators'
-
+} from '../actions/UserActionCreators'
 import { RootState } from '../index'
-import { User, RequestData, RequestDataState, StatusLoading } from '../types'
+import { User, RequestData, RequestDataState, StatusLoading, SelectedTheme } from '../types'
 
 export interface UserState {
   userData: User
   requestData: RequestData
+  selectedTheme: SelectedTheme
 }
 
 const initialState: UserState = {
@@ -26,6 +26,7 @@ const initialState: UserState = {
     second_name: '',
     status: '',
   },
+  selectedTheme: 'dark',
   requestData: {
     getUser: {} as RequestDataState<User>,
     editUser: {} as RequestDataState<User>,
@@ -35,9 +36,19 @@ const initialState: UserState = {
 }
 
 export const UserSlice = createSlice({
-  name: 'profile',
+  name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    getTheme: (state) => {
+      const theme = localStorage.getItem('theme');
+      if (theme) state.selectedTheme = theme as SelectedTheme
+    },
+    setTheme: (state, { payload }: PayloadAction<SelectedTheme>) => {
+      const newTheme = payload === 'dark' ? 'light' : 'dark'
+      state.selectedTheme = newTheme
+      localStorage.setItem('theme', newTheme)
+    }
+  },
   extraReducers: {
     [fetchUser.pending.type]: state => {
       state.requestData.getUser.status = StatusLoading.IN_PROGRESS
@@ -88,6 +99,8 @@ export const UserSlice = createSlice({
   },
 })
 
-export const selectProfileData = (state: RootState) => state.profile
+export const { setTheme } = UserSlice.actions
+
+export const selectUserData = (state: RootState) => state.user
 
 export default UserSlice.reducer
