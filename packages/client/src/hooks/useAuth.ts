@@ -1,4 +1,4 @@
-import { fetchUser } from '../store/actions/AuthActionCreators'
+import { fetchUser } from '../store/actions/UserActionCreators'
 import { useAppDispatch } from '../store/index'
 import { useUser } from '../hooks/useUser'
 import { useNavigate } from 'react-router-dom'

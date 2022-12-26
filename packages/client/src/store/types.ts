@@ -74,5 +74,3 @@ export interface PassWord {
   oldPassword: string
   newPassword: string
 }
-
-export type SelectedTheme = 'dark' | 'light'

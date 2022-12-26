@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Box, Container, Typography } from '@mui/material'
-import { fetchUser } from '../../store/actions/AuthActionCreators'
-import { useAppDispatch, useAppSelector } from '../../store/index'
+import { fetchUser } from '../../store/actions/UserActionCreators'
+import { useAppDispatch } from '../../store/index'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
-import { selectUserData } from '@store/slices/UserSlice'
-import { setTheme } from '@store/slices/UserSlice'
 
 export default function Intro() {
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     dispatch(fetchUser())
   }, [])
@@ -18,15 +17,8 @@ export default function Intro() {
     isAuth()
   }
 
-  const {selectedTheme} =  useAppSelector(selectUserData);
-
-  const handleThemeChange = () => {
-    dispatch(setTheme(selectedTheme))
-  }
-
   return (
     <React.Fragment>
-      <Button onClick={handleThemeChange}>тема</Button>
       <Box sx={{ ...styles.page }}>
         <Container sx={{ height: '100vh' }}>
           <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>

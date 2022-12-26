@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
+// @ts-ignore
 import sequelize from '../db'
 
 dotenv.config()

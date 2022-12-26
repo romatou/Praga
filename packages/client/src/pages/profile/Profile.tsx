@@ -11,7 +11,7 @@ import {
   editAvatar,
   editPasswordData,
   fetchUser,
-} from '../../store/actions/ProfileActionCreators'
+} from '../../store/actions/UserActionCreators'
 import { logout } from '../../store/actions/AuthActionCreators'
 import { selectUserData } from '../../store/slices/UserSlice'
 import { showAlert, AlertProps } from '../../store/slices/AlertSlice'

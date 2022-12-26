@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { getThemeFromStorage, setThemeToStorage, SelectedTheme } from '../../storage/adapters/theme'
 import {
   editProfileData,
   editAvatar,
@@ -6,7 +7,12 @@ import {
   fetchUser,
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
-import { User, RequestData, RequestDataState, StatusLoading, SelectedTheme } from '../types'
+import {
+  User,
+  RequestData,
+  RequestDataState,
+  StatusLoading,
+} from '../types'
 
 export interface UserState {
   userData: User
@@ -39,14 +45,14 @@ export const UserSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getTheme: (state) => {
-      const theme = localStorage.getItem('theme');
-      if (theme) state.selectedTheme = theme as SelectedTheme
+    getTheme: state => {
+      state.selectedTheme = getThemeFromStorage(!!state.userData.id)
     },
-    setTheme: (state, { payload }: PayloadAction<SelectedTheme>) => {
-      const newTheme = payload === 'dark' ? 'light' : 'dark'
+    toggleTheme: (state, {payload}: PayloadAction<SelectedTheme>) => {
+      const newTheme: SelectedTheme = payload === 'dark' ? 'light' : 'dark';
+
+      setThemeToStorage(newTheme, !!state.userData.id)
       state.selectedTheme = newTheme
-      localStorage.setItem('theme', newTheme)
     }
   },
   extraReducers: {
@@ -99,7 +105,7 @@ export const UserSlice = createSlice({
   },
 })
 
-export const { setTheme } = UserSlice.actions
+export const { toggleTheme, getTheme } = UserSlice.actions
 
 export const selectUserData = (state: RootState) => state.user
 

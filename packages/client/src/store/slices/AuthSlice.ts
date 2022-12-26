@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  register,
-  login,
+
   fetchUser,
-  logout,
-} from '../actions/AuthActionCreators'
+
+} from '../actions/UserActionCreators'
+import { logout, register, login } from '../actions/AuthActionCreators'
 import {
   StatusLoading,
   RequestDataState,

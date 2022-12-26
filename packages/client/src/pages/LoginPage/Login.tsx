@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
-import { fetchUser } from '../../store/actions/AuthActionCreators'
+import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'
 
 export default function Login() {
@@ -24,7 +24,7 @@ export default function Login() {
   useEffect(() => {
     dispatch(fetchUser())
     if (user.id) {
-      navigate('/')
+      navigate('/game/start')
     }
   }, [navigate, user])
 
