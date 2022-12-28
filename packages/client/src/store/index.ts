@@ -6,12 +6,14 @@ import authReducer from './slices/AuthSlice'
 import ratingReducer from './slices/RatingSlice'
 import profileReducer from './slices/ProfileSlice'
 import alertReducer from './slices/AlertSlice'
+import forumReducer from './slices/ForumSlice'
 
 const RootReducer = combineReducers({
   auth: authReducer,
   rating: ratingReducer,
   profile: profileReducer,
   alertReducer: alertReducer,
+  forum: forumReducer
 })
 
 export const setupStore = () => {

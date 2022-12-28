@@ -5,7 +5,11 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
-import sequelize from './db'
+import { sequelize } from './db'
+
+import {
+  topicsRouter,
+} from './controllers';
 
 dotenv.config()
 
@@ -14,6 +18,7 @@ const port = Number(process.env.SERVER_PORT) || 3001
 async function createServer(isDev = process.env.NODE_ENV === 'development') {
   try {
     await sequelize.authenticate()
+    await sequelize.sync();
     console.log('Соединение с базой данных установлено')
   } catch (e) {
     console.error('Невозможно установить соединение с базой данных:', e)
@@ -51,7 +56,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       })
     )
   }
-
+  app.use('/api/topics', topicsRouter)
   app.use('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl
@@ -78,6 +83,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       isDev && vite.ssrFixStacktrace(e as Error)
     }
   })
+
 
   return { app }
 }
