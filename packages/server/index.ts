@@ -1,30 +1,25 @@
-import { createServer as createViteServer } from 'vite'
-import express, { Request, Response } from 'express'
-import type { ViteDevServer } from 'vite'
-import dotenv from 'dotenv'
 import cors from 'cors'
+import dotenv from 'dotenv'
+import express, { Request, Response } from 'express'
 import fs from 'fs'
 import path from 'path'
-import sequelize from './db'
+import type { ViteDevServer } from 'vite'
+import { createServer as createViteServer } from 'vite'
+import sequelize from './sequelize'
 
 dotenv.config()
+
+sequelize()
 
 const port = Number(process.env.SERVER_PORT) || 3001
 
 async function createServer(isDev = process.env.NODE_ENV === 'development') {
-  try {
-    await sequelize.authenticate()
-    console.log('Соединение с базой данных установлено')
-  } catch (e) {
-    console.error('Невозможно установить соединение с базой данных')
-  }
-
   const index = isDev
     ? fs.readFileSync(path.resolve(__dirname, '../client/index.html'), 'utf-8')
     : fs.readFileSync(
-        path.resolve(__dirname, '../../client/dist/client/index.html'),
-        'utf-8'
-      )
+      path.resolve(__dirname, '../../client/dist/client/index.html'),
+      'utf-8'
+    )
 
   const app = express()
 
