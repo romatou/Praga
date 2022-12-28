@@ -27,7 +27,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const index = isDev
     ? fs.readFileSync(path.resolve(__dirname, '../client/index.html'), 'utf-8')
     : fs.readFileSync(
-        path.resolve(__dirname, '../../client/index.html'),
+        path.resolve(__dirname, '../../client/dist/client/index.html'),
         'utf-8'
       )
 
