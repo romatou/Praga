@@ -28,8 +28,7 @@ export const createTopic = createAsyncThunk(
       
       console.log('22222')
       console.log(data)
-      const response = await axiosInstanceDB.post(`/topics/add`, {title: '111', description: '222'})
-      console.log(response)
+      const response = await axiosInstanceDB.post(`/topics/add`, data)
       return await response.data
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в отправке данных')

@@ -39,9 +39,9 @@ const Forum = () => {
   const handleClose = () => {
     setOpen(false)
   }
-  dispatch(getTopics())
-  dispatch(createTopic({title: '111', description: '222'}))
-  
+  useEffect(() => {
+    dispatch(getTopics())
+  }, [])
 
   const methods = useForm<forumThemeType>({
     defaultValues: {
@@ -59,13 +59,9 @@ const Forum = () => {
     })
   }, [])
 
-  /*const onSubmitPassword = useCallback((value: forumThemeType) => {
+  const onSubmitPassword = useCallback((value: forumThemeType) => {
     dispatch(createTopic(value))
-  }, [])*/
-
-  const onSubmitPassword = (value: forumThemeType) => {
-    dispatch(createTopic(value))
-  }
+  }, [])
 
   return (
     <RB.Container
@@ -87,7 +83,7 @@ const Forum = () => {
           Создать тему
         </RB.Button>
         <FormProvider {...methods}>
-          <form onSubmit={(event) => console.log(event.target)}>
+          <form onSubmit={handleSubmit(onSubmitPassword)}>
             <RB.Grid
               container
               direction="column"
