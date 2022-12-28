@@ -27,7 +27,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const index = isDev
     ? fs.readFileSync(path.resolve(__dirname, '../client/index.html'), 'utf-8')
     : fs.readFileSync(
-        path.resolve(__dirname, '../../client/dist/client/index.html'),
+        path.resolve(__dirname, '../../client/index.html'),
         'utf-8'
       )
 
@@ -56,6 +56,8 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       })
     )
   }
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }))
   app.use('/api/topics', topicsRouter)
   app.use('*', async (req: Request, res: Response) => {
     try {

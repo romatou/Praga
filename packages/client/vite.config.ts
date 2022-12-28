@@ -30,7 +30,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: { client: 'src/entry-client.tsx', server: 'src/entry-server.tsx' },
+      input: { client: 'src/main.tsx', server: 'src/entry-server.tsx' },
     },
   },
 })
