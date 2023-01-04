@@ -69,9 +69,6 @@ const Forum = () => {
           <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
             <RB.Grid container>
               <RB.Grid item>Тема</RB.Grid>
-              <RB.Grid item sx={{ marginLeft: 'auto' }}>
-                Количество комментариев
-              </RB.Grid>
             </RB.Grid>
           </RB.Grid>
           {status !== 'FETCH_FULFILLED' ? (
