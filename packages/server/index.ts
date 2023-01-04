@@ -34,7 +34,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const app = express()
 
   let vite: ViteDevServer
-
+  
   if (isDev) {
     vite = await createViteServer({
       server: {
@@ -59,6 +59,11 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }))
   app.use('/api/topics', topicsRouter)
+
+  /*app.get('/', (_, res) => {
+    res.json('👋 Howdy from the server :)')
+  })*/
+
   app.use('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl

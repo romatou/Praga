@@ -2,23 +2,42 @@ import { useEffect } from 'react'
 import * as RB from '@mui/material'
 import { useForm, FormProvider } from 'react-hook-form'
 import { forumThemeType } from '../../pages/forum/types'
+import { useAppDispatch, useAppSelector } from '../../store/index'
+import {
+  fetchUser,
+} from '../../store/actions/ProfileActionCreators'
+import { selectProfileData } from '../../store/slices/ProfileSlice'
 
 const ModalThemeNew = (props: any) => {
+  const dispatch = useAppDispatch()
+  const { userData } = useAppSelector(selectProfileData)
+
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [])
+
   const methods = useForm<forumThemeType>({
     defaultValues: {
       title: '',
-      description: ''
+      description: '',
+      userId: userData.id,
+      userLogin: userData.login
     },
     mode: 'onBlur',
   })
   const { register, handleSubmit } = methods
 
   useEffect(() => {
-    methods.reset({
-      title: '',
-      description: ''
-    })
-  }, [])
+    if (userData) {
+      methods.reset({
+        title: '',
+        description: '',
+        userId: userData.id,
+        userLogin: userData.login
+
+      })
+    }
+  }, [userData])
 
   return (
     <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>

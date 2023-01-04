@@ -47,7 +47,7 @@ export const ForumSlice = createSlice({
       state.error = null
     },
     [getTopics.fulfilled.type]: (state, { payload }) => {
-      state.topics = payload
+      state.topics = payload.topics
       state.error = null
       state.status = 'FETCH_FULFILLED'
     },

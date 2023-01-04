@@ -6,22 +6,22 @@ export const topicsRouter = Router();
 const addTopic = async (req: Request, res: Response) => {
   try {
     const { body } = req;
-    const { title, description/*, userId, userLogin*/ } = body;
+    const { title, description, userId, userLogin } = body;
 
     await UserModel.findOrCreate({
       where: {
-        id: 1111,
+        id: userId,
       },
       defaults: {
-        id: 1111,
-        login: 'katerina',
+        id: userId,
+        login: userLogin,
       },
     });
 
     await TopicModel.create({
       title: title,
       description: description,
-      user_id: 1111,
+      user_id: userId,
     });
 
     res.send('OK');
