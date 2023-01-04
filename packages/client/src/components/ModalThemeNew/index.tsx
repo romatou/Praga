@@ -25,18 +25,16 @@ const ModalThemeNew = (props: any) => {
     },
     mode: 'onBlur',
   })
-  const { register, handleSubmit } = methods
+  const { register, handleSubmit, reset } = methods
 
   useEffect(() => {
-    if (userData) {
-      methods.reset({
-        title: '',
-        description: '',
-        userId: userData.id,
-        userLogin: userData.login
+    reset({
+      title: '',
+      description: '',
+      userId: userData.id,
+      userLogin: userData.login
 
-      })
-    }
+    })
   }, [userData])
 
   return (
@@ -44,7 +42,7 @@ const ModalThemeNew = (props: any) => {
       <RB.Dialog open={props.isopen} onClose={props.handleClose}>
         <RB.DialogTitle>Создать тему</RB.DialogTitle>
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(props.onSubmitTheme)}>
+          <form onSubmit={handleSubmit((data) => {props.onSubmitTheme(data); reset()})}>
             <RB.DialogContent>
               <RB.Grid
                 container
@@ -72,7 +70,7 @@ const ModalThemeNew = (props: any) => {
             </RB.DialogContent>
             <RB.DialogActions>
               <RB.Button size="small" type="submit" onClick={props.handleClose}>
-                Сохранить
+                Добавить
               </RB.Button>
             </RB.DialogActions>
           </form>

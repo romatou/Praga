@@ -31,12 +31,11 @@ const Forum = () => {
   }
   useEffect(() => {
     dispatch(getTopics())
-    console.log(topics, status)
   }, [])
-
   const onSubmitSaveTheme = useCallback((value: forumThemeType) => {
-    dispatch(createTopic(value))
-    console.log(topics, status)
+    dispatch(createTopic(value)).then(function() {
+      return dispatch(getTopics());
+    })
   }, [])
 
   return (
@@ -49,15 +48,6 @@ const Forum = () => {
         background: '#D5D5D5',
       }}>
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
-        <RB.Button
-          variant="text"
-          size="small"
-          sx={{
-            marginTop: 1,
-          }}
-          onClick={() => setOpen(true)}>
-          Создать тему
-        </RB.Button>
         <RB.Grid
           container
           spacing={2}
@@ -67,9 +57,25 @@ const Forum = () => {
           alignItems="center"
           >
           <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
-            <RB.Grid container>
+            <RB.Grid 
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="flex-end"
+            >
               <RB.Grid item>Тема</RB.Grid>
-            </RB.Grid>
+              <RB.Grid item sx={{ marginLeft: 'auto' }}>
+                <RB.Button
+                  variant="text"
+                  size="small"
+                  sx={{
+                    marginTop: 1,
+                  }}
+                  onClick={() => setOpen(true)}>
+                  Создать тему
+                </RB.Button>
+              </RB.Grid>
+            </RB.Grid>  
           </RB.Grid>
           {status !== 'FETCH_FULFILLED' ? (
               <RB.CircularProgress />

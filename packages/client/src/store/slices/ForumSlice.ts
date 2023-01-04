@@ -60,8 +60,7 @@ export const ForumSlice = createSlice({
       state.status = 'FETCHING'
       state.error = null
     },
-    [createTopic.fulfilled.type]: (state, { payload }) => {
-      state.topics = payload
+    [createTopic.fulfilled.type]: (state) => {
       state.error = null
       state.status = 'FETCH_FULFILLED'
     },

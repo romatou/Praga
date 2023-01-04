@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import { axiosInstanceDB } from '../../services/BaseApi'
+import { useAppDispatch } from '../index'
 
 export type CreateTopic = {
   title: string;

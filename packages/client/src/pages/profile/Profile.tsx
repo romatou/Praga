@@ -73,7 +73,6 @@ const Profile = () => {
       const image = payload && payload[0]
       if (image !== null) {
         const formData = new FormData()
-        console.log(image)
         formData.append('avatar', image)
         dispatch(editAvatar(formData))
       }
