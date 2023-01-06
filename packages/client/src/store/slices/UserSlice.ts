@@ -5,6 +5,7 @@ import {
   editAvatar,
   editPasswordData,
   fetchUser,
+  fetchUserTheme,
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
 import {
@@ -38,6 +39,7 @@ const initialState: UserState = {
     editUser: {} as RequestDataState<User>,
     editAvatar: {} as RequestDataState<User>,
     editPassword: {} as RequestDataState,
+    getUserTheme: {} as RequestDataState,
   },
 }
 
@@ -56,6 +58,20 @@ export const UserSlice = createSlice({
     }
   },
   extraReducers: {
+    [fetchUserTheme.pending.type]: state => {
+      state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
+    },
+    [fetchUserTheme.fulfilled.type]: (state, { payload }) => {
+      console.log('payload ', payload.theme.theme);
+      
+      state.selectedTheme = payload.theme.theme
+      state.requestData.getUserTheme.status = StatusLoading.SUCCESS
+    },
+    [fetchUserTheme.rejected.type]: (state, { payload }) => {
+      state.requestData.getUserTheme.errorMessage = payload
+      state.requestData.getUserTheme.status = StatusLoading.ERROR
+    },
+
     [fetchUser.pending.type]: state => {
       state.requestData.getUser.status = StatusLoading.IN_PROGRESS
     },

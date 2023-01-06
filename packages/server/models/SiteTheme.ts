@@ -24,8 +24,4 @@ export default class SiteTheme extends Model<SiteTheme> {
   @Unique
   @Column(DataType.STRING)
   theme: string
-
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  description: string
 }

@@ -4,7 +4,6 @@ import {
   Column,
   DataType,
   ForeignKey,
-  Index,
   Model,
   PrimaryKey,
   Table
@@ -22,16 +21,12 @@ export default class UserTheme extends Model<UserTheme> {
   @Column(DataType.INTEGER)
   override id: number
 
-  @Index
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  theme: string
-
-  @Column(DataType.STRING)
-  device: string
-
   @ForeignKey(() => SiteTheme)
   @AllowNull(false)
   @Column(DataType.INTEGER)
-  themeId: string
+  themeId: number
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  userId: number
 }

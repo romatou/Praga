@@ -1,7 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { UserRequest, PassWord } from '../types'
 
-import axiosInstance from '../../services/BaseApi'
+import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi'
+
+export const fetchUserTheme = createAsyncThunk(
+  '/theme/user-theme',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosInstanceDB.get(`/theme/user-theme`)
+      
+      return await response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Ошибка в получении данных')
+    }
+  }
+)
 
 export const fetchUser = createAsyncThunk(
   '/user/fetchUser',
