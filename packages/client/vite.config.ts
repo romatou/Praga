@@ -1,4 +1,3 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import path from 'path'
@@ -30,7 +29,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: { client: 'src/entry-client.tsx', server: 'src/entry-server.tsx' },
+      input: { main: path.resolve(__dirname, 'index.html') },
     },
   },
 })
