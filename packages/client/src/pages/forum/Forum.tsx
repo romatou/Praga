@@ -24,7 +24,7 @@ const Item = styled(RB.Paper)(({ theme }) => ({
 const Forum = () => {
   const dispatch = useAppDispatch()
   const { topics, comments, error, status } = useAppSelector(selectForumData)
-  
+
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
     setOpen(false)

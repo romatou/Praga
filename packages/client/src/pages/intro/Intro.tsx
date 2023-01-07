@@ -11,9 +11,10 @@ export default function Intro() {
   useEffect(() => {
     dispatch(fetchUser())
   }, [])
-  const isAuth = useAuth()
+  // const isAuth = useAuth()
   const handleClick = () => {
-    isAuth()
+    console.log('click')
+    // isAuth()
   }
 
   return (
