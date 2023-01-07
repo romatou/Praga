@@ -37,6 +37,8 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   
   if (isDev) {
     vite = await createViteServer({
+      root: path.resolve(__dirname, '../client'),
+      configFile: path.resolve(__dirname, '../client/vite.config.js'),
       server: {
         middlewareMode: true,
         watch: {

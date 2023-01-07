@@ -3,158 +3,60 @@ import { useParams } from 'react-router-dom'
 import * as RB from '@mui/material'
 import CardMessange from '../../components/CardMessange'
 import { useForm, FormProvider } from 'react-hook-form'
+import { useAppDispatch, useAppSelector } from '../../store/index'
+import {
+  getComments,
+  createComment
+} from '../../store/actions/ForumActionCreators'
+import { selectForumData } from '../../store/slices/ForumSlice'
+import {
+  fetchUser,
+} from '../../store/actions/ProfileActionCreators'
+import { selectProfileData } from '../../store/slices/ProfileSlice'
 
-const forumData = [
-  {
-    id: '5',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста5',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста25',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-      {
-        id: '4',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-      {
-        id: '5',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '4',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста4',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста24',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста34',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '3',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста3',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста23',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста33',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '2',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста2',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста22',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста32',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '1',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста1',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста21',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста31',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-]
+
 type QuizParams = {
   id: string
 }
 
 const ForumDetail = () => {
   const { id } = useParams<QuizParams>()
+  const dispatch = useAppDispatch()
+  const { topics, comments, error, status } = useAppSelector(selectForumData)
+  const { userData } = useAppSelector(selectProfileData)
   const methods = useForm({
     defaultValues: {
-      messange: '',
+      comment: '',
     },
     mode: 'onBlur',
   })
-  const { register, handleSubmit } = methods
-  const onSubmitMessange = useCallback((value: { messange: string }) => {
-    console.log(value)
+  const { register, handleSubmit, reset } = methods
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [])
+  useEffect(() => {
+    dispatch(getComments({ id: Number(id) }))
+  }, [])
+  
+  const onSubmitMessange = useCallback((value: { comment: string }) => {
+    dispatch(createComment({
+      parentId: null,
+      topicId: Number(id),
+      userId: userData.id,
+      userLogin: userData.login,
+      comment: value.comment})).then(function() {
+        return dispatch(getComments({ id: Number(id) }));
+    })
+    reset()
   }, [])
 
   useEffect(() => {
     methods.reset({
-      messange: '',
+      comment: '',
     })
   }, [])
+
+  
 
   return (
     <RB.Container
@@ -178,19 +80,33 @@ const ForumDetail = () => {
               container
               spacing={2}
               sx={{ height: '60vh', overflow: 'auto' }}>
-              {forumData
-                .find(item => item.id === id)
-                ?.mess.map((item, i) => {
-                  return (
-                    <RB.Grid item xs={12} key={i}>
-                      <CardMessange
-                        name={item.name}
-                        text={item.text}
-                        data={item.data}
-                      />
-                    </RB.Grid>
-                  )
-                })}
+                 {status !== 'FETCH_FULFILLED' ? (
+                    <RB.CircularProgress />
+                  ) : (
+                    <>
+                      {comments?.length ? (
+                        <>
+                          {comments?.map((comment) => {
+                            return (
+                              <RB.Grid item xs={12} key={comment.id}>
+                                <CardMessange
+                                  name={comment.userLogin}
+                                  text={comment.comment}
+                                  data={comment.createdAt}
+                                />
+                              </RB.Grid>
+                            )
+                          })}
+                        </>
+                      ) : (
+                        <RB.Grid item xs={12}>
+                          <RB.Alert severity="info">
+                              Комментарии не найдены
+                          </RB.Alert>
+                        </RB.Grid>
+                      )}
+                    </>
+                  )}
             </RB.Grid>
             <RB.Grid item xs={12} sx={{ width: '478px' }} position="fixed">
               <FormProvider {...methods}>
@@ -212,7 +128,7 @@ const ForumDetail = () => {
                       <RB.Paper
                         component="form"
                         sx={{ p: '2px 4px', alignItems: 'center' }}>
-                        <RB.InputBase {...register('messange')} />
+                        <RB.InputBase {...register('comment')} />
                       </RB.Paper>
                     </RB.Grid>
                     <RB.Grid item xs={12}>

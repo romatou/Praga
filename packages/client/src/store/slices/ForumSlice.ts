@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   getTopics,
-  createTopic
+  createTopic,
+  getComments,
+  createComment
 } from '../actions/ForumActionCreators'
 
 import { RootState } from '../index'
@@ -17,9 +19,10 @@ export type Comment = {
   id: number;
   parentId: number | null;
   comment: string;
-  topic_id: number;
-  user_id: number;
-  user_login: string;
+  topicId: number;
+  userId: number;
+  userLogin: string;
+  createdAt: string
 };
 
 export interface ForumState {
@@ -65,6 +68,33 @@ export const ForumSlice = createSlice({
       state.status = 'FETCH_FULFILLED'
     },
     [createTopic.rejected.type]: (state, { payload }) => {
+      state.error = payload ?? 'Error!'
+      state.status = 'FETCH_FAILED'
+    },
+
+    [getComments.pending.type]: state => {
+      state.status = 'FETCHING'
+      state.error = null
+    },
+    [getComments.fulfilled.type]: (state, { payload }) => {
+      state.comments = payload.comments
+      state.error = null
+      state.status = 'FETCH_FULFILLED'
+    },
+    [getComments.rejected.type]: (state, { payload }) => {
+      state.error = payload ?? 'Error!'
+      state.status = 'FETCH_FAILED'
+    },
+
+    [createComment.pending.type]: state => {
+      state.status = 'FETCHING'
+      state.error = null
+    },
+    [createComment.fulfilled.type]: (state) => {
+      state.error = null
+      state.status = 'FETCH_FULFILLED'
+    },
+    [createComment.rejected.type]: (state, { payload }) => {
       state.error = payload ?? 'Error!'
       state.status = 'FETCH_FAILED'
     }

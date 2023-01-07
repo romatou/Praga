@@ -62,7 +62,7 @@ const createComment = async (req: Request, res: Response) => {
     });
 
     await TopicCommentModel.create({
-      comment,
+      comment: comment,
       topic_id: topicId,
       user_id: userId,
       parent_id: parentId,
