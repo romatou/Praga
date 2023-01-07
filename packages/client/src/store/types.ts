@@ -158,3 +158,8 @@ export type TCreateThreadRequest = {
   topicId: number
   text: string
 }
+
+export interface OauthData {
+  code: string
+  redirect_uri: string
+}

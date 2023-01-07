@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Box, Container, Typography } from '@mui/material'
-import { fetchUser } from '../../store/actions/AuthActionCreators'
-import { useAppDispatch } from '../../store/index'
+import { Box, Container, Button, Typography } from '@mui/material'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { useOAuth } from '../../hooks/useOAuth'
+import { useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
+import React from 'react'
 
 export default function Intro() {
+  const getOAuth = useOAuth()
+  const getAuth = useAuth()
   const dispatch = useAppDispatch()
+
   useEffect(() => {
+    getOAuth()
     dispatch(fetchUser())
   }, [])
-  // const isAuth = useAuth()
-  const handleClick = () => {
-    console.log('click')
-    // isAuth()
-  }
 
   return (
     <React.Fragment>
@@ -32,7 +32,7 @@ export default function Intro() {
                 alignItems: 'flex-start',
               }}>
               <Button
-                variant="contained"
+                onClick={() => getAuth()}
                 sx={{
                   background: '#000',
                   marginBottom: '1rem',
@@ -41,12 +41,7 @@ export default function Intro() {
                     color: '#fff',
                   },
                 }}>
-                <Link
-                  to="/auth"
-                  onClick={handleClick}
-                  style={{ textDecoration: 'none', color: '#fff' }}>
-                  Начать игру
-                </Link>
+                Начать игру
               </Button>
               <Typography>Для игры требуется регистрация</Typography>
             </Box>

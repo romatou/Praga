@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React from 'react'
 import { Box } from '@mui/material'
+=======
+import { Box } from '@mui/material'
+
+>>>>>>> origin/feature/TEA-40-OAuth
 import userIcon from '../../../../assets/user-icon.svg'
 import chatIcon from '../../../../assets/chat-icon.svg'
 import ratingIcon from '../../../../assets/rating-icon.svg'
