@@ -6,6 +6,7 @@ import path from 'path'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import sequelize from './sequelize'
+import { themeRouter } from './controllers/siteTheme'
 
 dotenv.config()
 
@@ -22,6 +23,15 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
     )
 
   const app = express()
+
+  app
+    .disable('x-powered-by')
+    .enable('trust proxy')
+    // .set('query parser', queryParser)
+    // .use(cookieParser())
+    // .use(logger)
+    // .use(router)
+    // .use(notFound); 
 
   let vite: ViteDevServer
 
@@ -47,6 +57,9 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
     )
   }
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }))
+  app.use('/api/theme', themeRouter)
   app.use('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl
