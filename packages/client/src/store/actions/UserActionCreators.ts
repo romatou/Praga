@@ -3,11 +3,38 @@ import { UserRequest, PassWord } from '../types'
 
 import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi'
 
-export const fetchUserTheme = createAsyncThunk(
-  '/theme/user-theme',
-  async (_, thunkAPI) => {
+export const changeUserTheme = createAsyncThunk(
+  '/theme/update',
+  async (data: {userId: number, themeId: number}, thunkAPI) => {
     try {
-      const response = await axiosInstanceDB.get(`/theme/user-theme`)
+      const response = await axiosInstanceDB.post(`/theme/update`, data)
+      
+      return await response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Ошибка в получении данных')
+    }
+  }
+)
+
+export const addUserTheme = createAsyncThunk(
+  '/theme/add',
+  async (userId: number, thunkAPI) => {
+    try {
+      const response = await axiosInstanceDB.post(`/theme/add`, {userId})
+      // console.log('response ', response);
+      
+      return await response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Ошибка в получении данных')
+    }
+  }
+)
+
+export const fetchUserTheme = createAsyncThunk(
+  '/theme/get',
+  async (userId: number, thunkAPI) => {
+    try {
+      const response = await axiosInstanceDB.get(`/theme/get?userId=${userId}`)
       
       return await response.data
     } catch (error) {

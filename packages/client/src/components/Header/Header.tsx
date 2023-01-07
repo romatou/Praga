@@ -4,15 +4,20 @@ import style from './style'
 import { Container, Switch, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { toggleTheme, selectUserData } from '../../store/slices/UserSlice'
+import { changeUserTheme } from '../../store/actions/UserActionCreators'
 
 export default function Header() {
   const dispatch = useAppDispatch()
-  const { selectedTheme } = useAppSelector(selectUserData)
+  const { selectedTheme, userData } = useAppSelector(selectUserData)
 
   const [checked, setChecked] = useState(false)
 
   const handleThemeChange = () => {
-    dispatch(toggleTheme(selectedTheme))
+    if (userData.id) {  
+      dispatch(changeUserTheme({userId: userData.id, themeId: selectedTheme === 'dark' ? 2 : 1}))
+    } else {
+      dispatch(toggleTheme(selectedTheme))
+    }
     setChecked(!checked)
   }
 

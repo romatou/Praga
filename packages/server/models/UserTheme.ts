@@ -10,12 +10,17 @@ import {
 } from 'sequelize-typescript'
 import SiteTheme from './SiteTheme'
 
+type TUserTheme = {
+  themeId: number,
+  userId: number
+}
+
 @Table({
   timestamps: false,
   paranoid: true,
   tableName: 'user_theme',
 })
-export default class UserTheme extends Model<UserTheme> {
+export default class UserTheme extends Model<TUserTheme> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)

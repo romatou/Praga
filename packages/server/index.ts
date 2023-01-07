@@ -6,11 +6,12 @@ import path from 'path'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import sequelize from './sequelize'
-import { themeRouter } from './controllers/siteTheme'
+// import { themeRouter } from './controllers/siteTheme'
+import { userThemeRouter } from './controllers/userTheme'
 
 dotenv.config()
 
-// sequelize()
+sequelize()
 
 const port = Number(process.env.SERVER_PORT) || 3001
 
@@ -54,7 +55,8 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }))
-  app.use('/api/theme', themeRouter)
+  // app.use('/api/theme', userThemeRouter)
+  app.use('/api/theme', userThemeRouter)
   app.use('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl

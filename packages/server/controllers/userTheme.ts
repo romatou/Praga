@@ -1,8 +1,102 @@
+import { Router, Request, Response } from 'express';
+import UserTheme from '../models/UserTheme';
 
-// import { Router, Request, Response } from 'express';
-// import UserTheme from '../models/UserTheme';
+export const userThemeRouter = Router();
 
-// export const themeRouter = Router();
+const addUserTheme = async (req: Request, res: Response) => {
+  try {
+    const { body: { userId } } = req;
+
+     await UserTheme.findOrCreate({
+      where: {
+        userId,
+      },
+      defaults: {
+        themeId: 1,
+        userId
+      },
+      
+    });
+    
+    res.send('OK');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send();
+  }
+} 
+
+const getUserTheme = async (req: Request<any, any, any, {userId: number}>, res: Response) => {
+
+  try {
+    const { query: { userId } } = req;
+
+    const data = await UserTheme.findOne({
+      where: {
+        userId: userId,
+      },
+    });
+    
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send();
+  }
+}
+
+const changeUserTheme = async (req: Request<any, any, {userId: number, themeId: number}, any>, res: Response) => {
+  try {
+    const { body: { userId, themeId } } = req;
+
+    const data =  await UserTheme.update(
+      { themeId },
+      {
+        where: {  userId },
+        returning: true,
+        
+      },
+      ).then(() => {
+        const response = UserTheme.findOne({
+          where: {
+            userId: userId,
+          },
+        });                      
+
+        return response
+    }).then(response => {
+       res.send(response?.dataValues)
+    });
+    
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send();
+  }
+}
+
+
+// const getUserTheme = async (req: Request, res: Response) => {
+//   try {
+//     const { body: { userId } } = req;
+// console.log(req);
+
+//     const data = await UserTheme.findOne({
+//       where: {
+//         userId,
+//       },
+//     });
+
+//     res.send({
+//       theme: data,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send();
+//   }
+// }
+
+userThemeRouter.route('/get').get(getUserTheme);
+userThemeRouter.route('/add').post(addUserTheme);
+userThemeRouter.route('/update').post(changeUserTheme);
 
 // const addThemeToUser = async (req: Request, res: Response) => {
 //   try {

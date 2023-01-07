@@ -6,6 +6,8 @@ import {
   editPasswordData,
   fetchUser,
   fetchUserTheme,
+  addUserTheme,
+  changeUserTheme,
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
 import {
@@ -40,6 +42,8 @@ const initialState: UserState = {
     editAvatar: {} as RequestDataState<User>,
     editPassword: {} as RequestDataState,
     getUserTheme: {} as RequestDataState,
+    addUserTheme: {} as RequestDataState,
+    changeUserTheme: {} as RequestDataState,
   },
 }
 
@@ -58,13 +62,40 @@ export const UserSlice = createSlice({
     }
   },
   extraReducers: {
+    [changeUserTheme.pending.type]: state => {
+      state.requestData.changeUserTheme.status = StatusLoading.IN_PROGRESS
+    },
+    [changeUserTheme.fulfilled.type]: (state, {payload: {themeId}}) => {
+      const newTheme = themeId === 1 ? 'dark' : 'light'
+      state.selectedTheme = newTheme
+      
+      state.requestData.changeUserTheme.status = StatusLoading.SUCCESS
+    },
+    [changeUserTheme.rejected.type]: (state, { payload }) => {
+      state.requestData.changeUserTheme.errorMessage = payload
+      state.requestData.changeUserTheme.status = StatusLoading.ERROR
+    },
+
+    
+    [addUserTheme.pending.type]: state => {
+      state.requestData.addUserTheme.status = StatusLoading.IN_PROGRESS
+    },
+    [addUserTheme.fulfilled.type]: (state) => {
+      state.requestData.addUserTheme.status = StatusLoading.SUCCESS
+    },
+    [addUserTheme.rejected.type]: (state, { payload }) => {
+      state.requestData.addUserTheme.errorMessage = payload
+      state.requestData.addUserTheme.status = StatusLoading.ERROR
+    },
+
     [fetchUserTheme.pending.type]: state => {
       state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
     },
-    [fetchUserTheme.fulfilled.type]: (state, { payload }) => {
-      console.log('payload ', payload.theme.theme);
+    [fetchUserTheme.fulfilled.type]: (state, { payload: {themeId} }) => {
+
       
-      state.selectedTheme = payload.theme.theme
+      const newTheme = themeId === 1 ? 'dark' : 'light'
+      state.selectedTheme = newTheme
       state.requestData.getUserTheme.status = StatusLoading.SUCCESS
     },
     [fetchUserTheme.rejected.type]: (state, { payload }) => {
