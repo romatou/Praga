@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { UserRequest, PassWord } from '../types'
 
-import {axiosInstance} from '../../services/BaseApi'
+import { axiosInstance } from '../../services/BaseApi'
 
 export const fetchUser = createAsyncThunk(
   '/user/fetchUser',

@@ -13,8 +13,13 @@ export default function Header() {
   const [checked, setChecked] = useState(false)
 
   const handleThemeChange = () => {
-    if (userData.id) {  
-      dispatch(changeUserTheme({userId: userData.id, themeId: selectedTheme === 'dark' ? 2 : 1}))
+    if (userData.id) {
+      dispatch(
+        changeUserTheme({
+          userId: userData.id,
+          themeId: selectedTheme === 'dark' ? 2 : 1,
+        })
+      )
     } else {
       dispatch(toggleTheme(selectedTheme))
     }

@@ -5,10 +5,10 @@ import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi'
 
 export const changeUserTheme = createAsyncThunk(
   '/theme/update',
-  async (data: {userId: number, themeId: number}, thunkAPI) => {
+  async (data: { userId: number; themeId: number }, thunkAPI) => {
     try {
       const response = await axiosInstanceDB.post(`/theme/update`, data)
-      
+
       return await response.data
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в получении данных')
@@ -20,9 +20,8 @@ export const addUserTheme = createAsyncThunk(
   '/theme/add',
   async (userId: number, thunkAPI) => {
     try {
-      const response = await axiosInstanceDB.post(`/theme/add`, {userId})
-      // console.log('response ', response);
-      
+      const response = await axiosInstanceDB.post(`/theme/add`, { userId })
+
       return await response.data
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в получении данных')
@@ -35,7 +34,7 @@ export const fetchUserTheme = createAsyncThunk(
   async (userId: number, thunkAPI) => {
     try {
       const response = await axiosInstanceDB.get(`/theme/get?userId=${userId}`)
-      
+
       return await response.data
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в получении данных')

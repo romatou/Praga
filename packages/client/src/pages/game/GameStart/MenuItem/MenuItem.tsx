@@ -7,11 +7,10 @@ import { itemStyles, linkStyles } from './styles'
 interface MenuItemProps {
   title: string
   Icon: React.ReactNode
-  alt: string
   to: string
 }
 
-export default function MenuItem({ title, Icon, alt, to }: MenuItemProps) {
+export default function MenuItem({ title, Icon, to }: MenuItemProps) {
   if (!to) return null
 
   return (

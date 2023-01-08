@@ -6,12 +6,12 @@ import {
   ForeignKey,
   Model,
   PrimaryKey,
-  Table
+  Table,
 } from 'sequelize-typescript'
 import SiteTheme from './SiteTheme'
 
-type TUserTheme = {
-  themeId: number,
+export type TUserTheme = {
+  themeId: number
   userId: number
 }
 

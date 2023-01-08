@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import App from './App'
-import { setupStore } from './store'
+import { RootState, setupStore } from './store'
 import ErrorBoundary from './components/ErrorBoundary'
 
-const store = setupStore()
+const store = setupStore(window.__PRELOADED_STATE__)
+
+declare global {
+  interface Window {
+    __PRELOADED_STATE__: RootState
+  }
+}
 
 // window.addEventListener('load', () => {
 //   if ('serviceWorker' in navigator) {

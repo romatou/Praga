@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getThemeFromStorage, setThemeToStorage, SelectedTheme } from '../../storage/adapters/theme'
+import {
+  getThemeFromStorage,
+  setThemeToStorage,
+  SelectedTheme,
+} from '../../storage/adapters/theme'
 import {
   editProfileData,
   editAvatar,
@@ -10,12 +14,7 @@ import {
   changeUserTheme,
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
-import {
-  User,
-  RequestData,
-  RequestDataState,
-  StatusLoading,
-} from '../types'
+import { User, RequestData, RequestDataState, StatusLoading } from '../types'
 
 export interface UserState {
   userData: User
@@ -54,21 +53,22 @@ export const UserSlice = createSlice({
     getTheme: state => {
       state.selectedTheme = getThemeFromStorage(!!state.userData.id)
     },
-    toggleTheme: (state, {payload}: PayloadAction<SelectedTheme>) => {
-      const newTheme: SelectedTheme = payload === 'dark' ? 'light' : 'dark';
+    toggleTheme: (state, { payload }: PayloadAction<SelectedTheme>) => {
+      const newTheme: SelectedTheme = payload === 'dark' ? 'light' : 'dark'
 
       setThemeToStorage(newTheme, !!state.userData.id)
       state.selectedTheme = newTheme
-    }
+    },
   },
   extraReducers: {
     [changeUserTheme.pending.type]: state => {
       state.requestData.changeUserTheme.status = StatusLoading.IN_PROGRESS
     },
-    [changeUserTheme.fulfilled.type]: (state, {payload: {themeId}}) => {
+    [changeUserTheme.fulfilled.type]: (state, { payload: { themeId } }) => {
       const newTheme = themeId === 1 ? 'dark' : 'light'
       state.selectedTheme = newTheme
-      
+      setThemeToStorage(newTheme, !!state.userData.id)
+
       state.requestData.changeUserTheme.status = StatusLoading.SUCCESS
     },
     [changeUserTheme.rejected.type]: (state, { payload }) => {
@@ -76,11 +76,10 @@ export const UserSlice = createSlice({
       state.requestData.changeUserTheme.status = StatusLoading.ERROR
     },
 
-    
     [addUserTheme.pending.type]: state => {
       state.requestData.addUserTheme.status = StatusLoading.IN_PROGRESS
     },
-    [addUserTheme.fulfilled.type]: (state) => {
+    [addUserTheme.fulfilled.type]: state => {
       state.requestData.addUserTheme.status = StatusLoading.SUCCESS
     },
     [addUserTheme.rejected.type]: (state, { payload }) => {
@@ -91,11 +90,8 @@ export const UserSlice = createSlice({
     [fetchUserTheme.pending.type]: state => {
       state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
     },
-    [fetchUserTheme.fulfilled.type]: (state, { payload: {themeId} }) => {
-
-      
-      const newTheme = themeId === 1 ? 'dark' : 'light'
-      state.selectedTheme = newTheme
+    [fetchUserTheme.fulfilled.type]: (state, { payload }) => {
+      state.selectedTheme = payload
       state.requestData.getUserTheme.status = StatusLoading.SUCCESS
     },
     [fetchUserTheme.rejected.type]: (state, { payload }) => {

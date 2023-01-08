@@ -18,13 +18,12 @@ export default async function sequelize() {
 
   await sequelize.sync({ force: true })
 
-
-  await SiteTheme.bulkCreate<Model<SiteTheme, {theme: string}>>([
+  await SiteTheme.bulkCreate<Model<SiteTheme, { theme: string }>>([
     {
-      theme: 'dark'
+      theme: 'dark',
     },
     {
-      theme: 'light'
-    }
+      theme: 'light',
+    },
   ])
 }

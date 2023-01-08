@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-
-  fetchUser,
-
-} from '../actions/UserActionCreators'
+import { fetchUser } from '../actions/UserActionCreators'
 import { logout, register, login } from '../actions/AuthActionCreators'
 import {
   StatusLoading,

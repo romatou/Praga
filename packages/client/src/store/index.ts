@@ -14,9 +14,10 @@ const RootReducer = combineReducers({
   alertReducer: alertReducer,
 })
 
-export const setupStore = () => {
+export const setupStore = (state?: RootState) => {
   return configureStore({
     reducer: RootReducer,
+    preloadedState: state,
   })
 }
 
