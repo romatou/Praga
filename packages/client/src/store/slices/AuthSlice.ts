@@ -1,11 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchUser } from '../actions/UserActionCreators'
-import { logout, register, login } from '../actions/AuthActionCreators'
+import {
+  register,
+  login,
+  logout,
+  getServiceId,
+  oauthYandex,
+} from '@store/actions/AuthActionCreators'
+import { RootState } from '../index'
 import {
   StatusLoading,
   RequestDataState,
   RequestData,
   UserData,
+  OauthData,
 } from '../types'
 
 export interface AuthState {
@@ -28,6 +36,8 @@ const initialState: AuthState = {
     signIn: {} as RequestDataState,
     getUserInfo: {} as RequestDataState<UserData>,
     logout: {} as RequestDataState,
+    getServiceId: {} as RequestDataState,
+    oauth: {} as RequestDataState<OauthData>,
   },
 }
 
@@ -81,7 +91,35 @@ export const authSlice = createSlice({
       state.requestData.logout.errorMessage = payload
       state.requestData.logout.status = StatusLoading.ERROR
     },
+    [getServiceId.fulfilled.type]: state => {
+      state.requestData.getServiceId.status = StatusLoading.SUCCESS
+    },
+    [getServiceId.pending.type]: state => {
+      state.requestData.getServiceId.status = StatusLoading.IN_PROGRESS
+    },
+    [getServiceId.rejected.type]: (
+      state,
+      { payload }: PayloadAction<string>
+    ) => {
+      state.requestData.getServiceId.errorMessage = payload
+      state.requestData.getServiceId.status = StatusLoading.ERROR
+    },
+    [oauthYandex.fulfilled.type]: state => {
+      state.requestData.oauth.status = StatusLoading.SUCCESS
+    },
+    [oauthYandex.pending.type]: state => {
+      state.requestData.oauth.status = StatusLoading.IN_PROGRESS
+    },
+    [oauthYandex.rejected.type]: (
+      state,
+      { payload }: PayloadAction<string>
+    ) => {
+      state.requestData.oauth.errorMessage = payload
+      state.requestData.oauth.status = StatusLoading.ERROR
+    },
   },
 })
+
+export const selectUserData = (state: RootState) => state.auth.user
 
 export default authSlice.reducer

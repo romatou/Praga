@@ -21,9 +21,9 @@ export interface RankingResponse {
 }
 
 export interface Ranking {
-  id: number
+  id?: number
   name: string
-  avatar: string
+  avatar?: string
   score: number
 }
 
@@ -73,4 +73,9 @@ export interface Avatar {
 export interface PassWord {
   oldPassword: string
   newPassword: string
+}
+
+export interface OauthData {
+  code: string
+  redirect_uri: string
 }

@@ -1,9 +1,6 @@
 import React from 'react'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import MenuItem from '../MenuItem'
-import { logout } from '../../../../store/actions/AuthActionCreators'
-import { useAppDispatch } from '../../../../store'
-import { useNavigate } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import ForumIcon from '@mui/icons-material/Forum'
@@ -37,9 +34,6 @@ const links = [
 ]
 
 export default function MenuList() {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-
   return (
     <Box
       component="ul"

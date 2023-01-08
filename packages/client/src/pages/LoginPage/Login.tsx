@@ -13,19 +13,35 @@ import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
 import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'
+import { styled } from '@mui/material/styles'
+import { useServiceId } from '../../hooks/useServiceId'
 
 export default function Login() {
   const user = useUser()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const login = useLogin()
+  const location = useServiceId()
+
+  const YandexIdButton = styled(Button)({
+    color: ' white',
+    width: '100%',
+    height: '44px',
+    backgroundColor: 'black',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'black',
+      borderColor: '#0062cc',
+      boxShadow: 'none',
+    },
+  })
 
   useEffect(() => {
-    dispatch(fetchUser())
     if (user.id) {
       navigate('/game/start')
     }
-  }, [navigate, user])
+    dispatch(fetchUser())
+  }, [user.id])
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -83,6 +99,17 @@ export default function Login() {
               {' '}
               Войти
             </Button>
+            <Typography
+              component="p"
+              sx={{ textAlign: 'center', fontSize: '12px' }}>
+              или
+            </Typography>
+            <YandexIdButton
+              onClick={() => location()}
+              // startIcon={<YandexIcon/>}
+            >
+              Войти c Яндекс ID
+            </YandexIdButton>
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
               <Typography

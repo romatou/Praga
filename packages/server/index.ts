@@ -5,12 +5,8 @@ import fs from 'fs'
 import path from 'path'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
-// import queryParser from 'search-query-parser'
-// import cookieParser from 'cookie-parser'
-
 import sequelize from './sequelize'
 import router from './router'
-// import { userThemeRouter } from './controllers/userTheme'
 
 dotenv.config()
 
@@ -22,11 +18,13 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const app = express()
 
   app.disable('x-powered-by').enable('trust proxy')
-  // .set('query parser', queryParser)
-  // .use(cookieParser())
-  // .use(logger)
-  // .use(router)
-  // .use(notFound);
+
+  const index = isDev
+    ? fs.readFileSync(path.resolve(__dirname, '../client/index.html'), 'utf-8')
+    : fs.readFileSync(
+        path.resolve(__dirname, '../../client/dist/client/index.html'),
+        'utf-8'
+      )
 
   let vite: ViteDevServer
 
@@ -60,17 +58,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   app.use('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl
-
-      const index = isDev
-        ? fs.readFileSync(
-            path.resolve(__dirname, '../client/index.html'),
-            'utf-8'
-          )
-        : fs.readFileSync(
-            path.resolve(__dirname, '../../client/dist/client/index.html'),
-            'utf-8'
-          )
-
       let template = index
       let render
       let store

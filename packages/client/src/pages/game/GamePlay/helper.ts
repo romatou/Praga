@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   ShipsSet,
   CellArgs,
@@ -6,6 +7,7 @@ import {
   GeneratedCoords,
   CellIsEngagedArgs,
   CellIsWithinArgs,
+  Winner,
 } from './types'
 
 export enum DirectionsOfGeneration {
@@ -21,6 +23,19 @@ export const cellSize = size / dimMatr //размер ячейки
 export const scaleBoard = 1 //масшатаб игрового поля
 export const canvasWidth = size + 70 //ширина всего канваса
 export const canvasHeight = size + 100 //высота всего канваса
+
+//время неспешного решения о возможном клике
+export const getStepTimeGame = (x: number): string => {
+  const y = (x / 1000).toFixed(2)
+  return y
+}
+
+//время отработки функций
+export const getStepTimeWorkFun = (tHandle: number, tDraw: number): string => {
+  const y = ((tHandle + tDraw) / 1000).toFixed(4)
+
+  return y
+}
 
 export const shipsSet: ShipsSet[] = [
   //размеры кораблей и их количество на доске
@@ -47,7 +62,12 @@ const drawCell = ({ context, cellSize, x, y }: DrawCellArgs): void => {
 //рисовать имя доски
 export const drawNameBoard = (
   context: CanvasRenderingContext2D,
-  font: string
+  font: string,
+  name: string,
+  pausePlayer?: string,
+  pauseComp?: string,
+  pauseWorkFunPlayer?: string,
+  pauseWorkFunСomp?: string
 ): void => {
   context.beginPath()
   context.clearRect(0, 340, 300, 60)
@@ -125,17 +145,21 @@ export const drawStatusShips = (
 export const drawWhoWin = (
   context: CanvasRenderingContext2D,
   name: string,
+  setPlayerIsWin: React.Dispatch<React.SetStateAction<boolean>>,
   countCompShips?: number,
   countPlayerShips?: number
 ): void => {
   const str =
     name === 'computer'
-      ? countCompShips === 0 && 'Вы победитель!!!'
-      : countPlayerShips === 0 && 'Компутер красавчик!!!'
+      ? countCompShips === 0 && Winner.PLAYER_IS_WIN
+      : countPlayerShips === 0 && Winner.COMP_IS_WIN
+
+  if (str === Winner.PLAYER_IS_WIN) setPlayerIsWin(true)
+
   if (!str) return
   context.beginPath()
-  context.clearRect(0, 340, 300, 60)
-  context.rect(0, 340, 300, 60)
+  context.clearRect(0, 340, 330, 60)
+  context.rect(0, 340, 330, 60)
   context.fillStyle = 'burlywood'
   context.fill()
   context.fillStyle = 'rgb(158, 0, 0)'
