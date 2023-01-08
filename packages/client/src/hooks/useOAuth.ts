@@ -8,7 +8,7 @@ export const useOAuth = () => {
     const REDIRECT_URI = DB_URL
     const dispatch = useAppDispatch()
 
-    const url = document?.location.href
+    const url = document?.location.href 
     const code = url.split('=').pop()
 
     return () => {

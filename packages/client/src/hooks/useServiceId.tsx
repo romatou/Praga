@@ -1,6 +1,6 @@
 import { getServiceId } from '../store/actions/AuthActionCreators'
 import { useAppDispatch } from '../store/index'
-import { DB_URL } from 'services/BaseApi'
+import { DB_URL } from '../services/BaseApi'
 
 export const useServiceId = () => {
   const dispatch = useAppDispatch()

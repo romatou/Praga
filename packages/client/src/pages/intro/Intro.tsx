@@ -18,7 +18,7 @@ export default function Intro() {
   }, [])
 
   return (
-    <React.Fragment>
+    <>
       <Box sx={{ ...styles.page }}>
         <Container sx={{ height: '100vh' }}>
           <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
@@ -156,6 +156,6 @@ export default function Intro() {
           </Box>
         </Container>
       </Box>
-    </React.Fragment>
+    </>
   )
 }
