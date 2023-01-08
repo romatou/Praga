@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Button, Box, Container, Typography } from '@mui/material'
 import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'

@@ -1,10 +1,10 @@
-import { getServiceId } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
+import { getServiceId } from '../store/actions/AuthActionCreators'
+import { useAppDispatch } from '../store/index'
+import { DB_URL } from 'services/BaseApi'
 
 export const useServiceId = () => {
   const dispatch = useAppDispatch()
-  const REDIRECT_URI = 'http://localhost:3000'
-  // const REDIRECT_URI =`http://localhost:${__CLIENT_PORT__}`
+  const REDIRECT_URI = DB_URL
 
   return () => {
     dispatch(getServiceId()).then(res => {
