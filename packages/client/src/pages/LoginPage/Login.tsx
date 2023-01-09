@@ -17,7 +17,6 @@ import { useAppDispatch } from '@store/index'
 import { YandexIcon } from '@components/YandexIcon/YandexIcon'
 import { useServiceId } from '../../hooks/useServiceId'
 
-
 export default function Login() {
   const user = useUser()
   const dispatch = useAppDispatch()
@@ -26,6 +25,7 @@ export default function Login() {
   const location = useServiceId()
 
   const YandexIdButton = styled(Button)({
+    margin: '12px 0',
     color: ' white',
     width: '100%',
     height: '44px',
@@ -59,7 +59,6 @@ export default function Login() {
     } as LoginData
     login(authData)
   }
- 
 
   return (
     <ThemeProvider theme={theme}>
@@ -107,14 +106,16 @@ export default function Login() {
               {' '}
               Войти
             </Button>
-            <Typography component="p" sx={{ textAlign: 'center', fontSize: '12px' }}>
-            или
-          </Typography>
-            <YandexIdButton 
-            onClick={()=>location()}
-            // startIcon={<YandexIcon/>}
-            >Войти c Яндекс ID</YandexIdButton>
-            <Stack spacing={2} sx={{ textAlign: 'center' }}>
+            <Typography
+              sx={{ textAlign: 'center' }}>
+              или
+            </Typography>
+            <YandexIdButton
+              onClick={() => location()}
+              startIcon={<YandexIcon/>}>
+              Войти c Яндекс ID
+            </YandexIdButton>
+            <Stack spacing={1} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
               <Link
                 to="/register"

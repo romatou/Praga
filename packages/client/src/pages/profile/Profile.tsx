@@ -28,16 +28,19 @@ import { RequestDataState } from '../../store/types'
 
 import ModalPassword from '../../components/ModalPassword'
 import AlertMessage from '../../components/Alert'
+import { useAuth } from '../../hooks/useAuth'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const { userData, requestData } = useAppSelector(selectProfileData)
-
   const [open, setOpen] = React.useState(false)
 
+  const isAuth = useAuth()
+
   useEffect(() => {
+    isAuth()
     dispatch(fetchUser())
   }, [])
   useEffect(() => {
@@ -205,8 +208,7 @@ const Profile = () => {
             marginTop: 1,
           }}
           onClick={() => {
-            dispatch(logout()).then(()=>navigate('/auth'))
-            
+            dispatch(logout()).then(() => navigate('/auth'))
           }}>
           Выйти из профиля
         </RB.Button>

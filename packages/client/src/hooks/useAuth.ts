@@ -8,12 +8,13 @@ export const useAuth = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   return () => {
-    user.id
-      ? navigate('/game/start')
-      : dispatch(fetchUser()).then(res => {
+    if (!user.id) {
+      dispatch(fetchUser()).then(res => {
         if (res.type === 'auth/fetch/rejected') {
           return navigate('/auth')
         }
       })
+    }
+    return
   }
 }

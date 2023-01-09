@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 import React from 'react'
 import { Box } from '@mui/material'
-=======
-import { Box } from '@mui/material'
-
->>>>>>> origin/feature/TEA-40-OAuth
 import userIcon from '../../../../assets/user-icon.svg'
 import chatIcon from '../../../../assets/chat-icon.svg'
 import ratingIcon from '../../../../assets/rating-icon.svg'
 import questionIcon from '../../../../assets/question-icon.svg'
-import exitIcon from '../../../../assets/exit-icon.svg'
+// import exitIcon from '../../../../assets/exit-icon.svg'
 import MenuItem from '../MenuItem'
 
 const links = [
@@ -20,7 +15,6 @@ const links = [
 ]
 
 export default function MenuList() {
-
   return (
     <Box
       component="ul"

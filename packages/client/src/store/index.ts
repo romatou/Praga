@@ -13,7 +13,7 @@ const RootReducer = combineReducers({
   rating: ratingReducer,
   profile: profileReducer,
   alertReducer: alertReducer,
-  forum: forumReducer
+  forum: forumReducer,
 })
 
 export const setupStore = () => {

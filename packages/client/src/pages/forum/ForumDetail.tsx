@@ -7,9 +7,8 @@ import { getTopics } from '@store/actions/ForumActionCreators'
 import { useAppDispatch, useAppSelector } from '@store/index'
 import { selectForumData } from '@store/slices/ForumSlice'
 
-
 type QuizParams = {
-  id?: string 
+  id?: string
 }
 
 const ForumDetail = () => {
@@ -62,25 +61,33 @@ const ForumDetail = () => {
                 <RB.CircularProgress />
               ) : (
                 <>
-                  {topics?.map((topic) => {
+                  {topics?.map(topic => {
                     if (topic.id === +id) {
                       return (
                         <RB.Grid container direction="column">
                           <RB.Grid item marginBottom={3}>
-                            <RB.Typography variant="h4" component="h1"> {topic.title}</RB.Typography>
+                            <RB.Typography variant="h4" component="h1">
+                              {' '}
+                              {topic.title}
+                            </RB.Typography>
                           </RB.Grid>
                           <RB.Grid item marginBottom={2}>
-                            <RB.Typography variant="subtitle2">Дата публикации: {topic.createdAt}</RB.Typography>
+                            <RB.Typography variant="subtitle2">
+                              Дата публикации: {topic.createdAt}
+                            </RB.Typography>
                           </RB.Grid>
                           <RB.Grid item>
-                            <RB.Typography variant="subtitle1"> {topic.description}</RB.Typography>
+                            <RB.Typography variant="subtitle1">
+                              {' '}
+                              {topic.description}
+                            </RB.Typography>
                           </RB.Grid>
                         </RB.Grid>
                       )
                     }
                   })}
                 </>
-                )}
+              )}
             </RB.Grid>
             <RB.Grid item xs={12} sx={{ width: '478px' }} position="fixed">
               <FormProvider {...methods}>

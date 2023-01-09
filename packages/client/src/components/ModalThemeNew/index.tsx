@@ -3,9 +3,7 @@ import * as RB from '@mui/material'
 import { useForm, FormProvider } from 'react-hook-form'
 import { forumThemeType } from '../../pages/forum/types'
 import { useAppDispatch, useAppSelector } from '../../store/index'
-import {
-  fetchUser,
-} from '../../store/actions/ProfileActionCreators'
+import { fetchUser } from '../../store/actions/ProfileActionCreators'
 import { selectProfileData } from '../../store/slices/ProfileSlice'
 
 const ModalThemeNew = (props: any) => {
@@ -21,7 +19,7 @@ const ModalThemeNew = (props: any) => {
       title: '',
       description: '',
       userId: userData.id,
-      userLogin: userData.login
+      userLogin: userData.login,
     },
     mode: 'onBlur',
   })
@@ -32,8 +30,7 @@ const ModalThemeNew = (props: any) => {
       title: '',
       description: '',
       userId: userData.id,
-      userLogin: userData.login
-
+      userLogin: userData.login,
     })
   }, [userData])
 
@@ -42,7 +39,11 @@ const ModalThemeNew = (props: any) => {
       <RB.Dialog open={props.isopen} onClose={props.handleClose}>
         <RB.DialogTitle>Создать тему</RB.DialogTitle>
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit((data) => {props.onSubmitTheme(data); reset()})}>
+          <form
+            onSubmit={handleSubmit(data => {
+              props.onSubmitTheme(data)
+              reset()
+            })}>
             <RB.DialogContent>
               <RB.Grid
                 container

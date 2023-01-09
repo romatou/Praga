@@ -1,19 +1,18 @@
 import { Box, Container, Button, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
 import { fetchUser } from '@store/actions/AuthActionCreators'
 import { useAppDispatch } from '@store/index'
 import { useOAuth } from '../../hooks/useOAuth'
 import { useEffect } from 'react'
-import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
 import React from 'react'
 
 export default function Intro() {
-  const getOAuth = useOAuth()
-  const getAuth = useAuth()
+  // const getOAuth = useOAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getOAuth()
+    // getOAuth()
     dispatch(fetchUser())
   }, [])
 
@@ -31,23 +30,23 @@ export default function Intro() {
                 flexGrow: '2',
                 alignItems: 'flex-start',
               }}>
-              <Button
-                onClick={() => getAuth()}
-                sx={{
-                  background: '#000',
-                  marginBottom: '1rem',
-                  ':hover': {
-                    backgroundColor: '#000',
-                    color: '#fff',
-                  },
-                }}>
-                Начать игру
-              </Button>
+              <Link to="/game/start" style={styles.link}>
+                <Button
+                  sx={{
+                    background: '#000',
+                    marginBottom: '1rem',
+                    ':hover': {
+                      backgroundColor: '#000',
+                      color: '#fff',
+                    },
+                  }}>
+                  Начать игру
+                </Button>
+              </Link>
               <Typography>Для игры требуется регистрация</Typography>
             </Box>
           </Box>
         </Container>
-
         <Box
           sx={{
             height: '100vh',

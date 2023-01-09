@@ -1,5 +1,5 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
-import { TopicCommentModel, TopicModel, UserModel} from './models';
+import { TopicCommentModel, TopicModel, UserModel } from './models'
 
 const sequelizeOptions: SequelizeOptions = {
   host: 'localhost',
@@ -77,4 +77,4 @@ const CommentsAnswer = sequelize.define(
 
 initTables();*/
 
-export { sequelize }; 
+export { sequelize }

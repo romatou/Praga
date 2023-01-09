@@ -4,11 +4,11 @@ import { axiosInstanceDB } from '../../services/BaseApi'
 import { useAppDispatch } from '../index'
 
 export type CreateTopic = {
-  title: string;
-  description: string;
-  userId?: number;
-  userLogin?: string;
-};
+  title: string
+  description: string
+  userId?: number
+  userLogin?: string
+}
 
 export const getTopics = createAsyncThunk(
   '/topics/all',

@@ -1,34 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {
-  getTopics,
-  createTopic
-} from '../actions/ForumActionCreators'
+import { getTopics, createTopic } from '../actions/ForumActionCreators'
 
 import { RootState } from '../index'
 
 export type Topic = {
-  user_id: number;
-  title: string;
-  description?: string;
-  id: number;
-};
+  user_id: number
+  title: string
+  description?: string
+  id: number
+}
 
 export type Comment = {
-  id: number;
-  parentId: number | null;
-  comment: string;
-  topic_id: number;
-  user_id: number;
-  user_login: string;
-};
+  id: number
+  parentId: number | null
+  comment: string
+  topic_id: number
+  user_id: number
+  user_login: string
+}
 
 export interface ForumState {
-  topics: Topic [],
-  comments: Comment [],
+  topics: Topic[]
+  comments: Comment[]
   error: string | null
   status: 'INIT' | 'FETCHING' | 'FETCH_FULFILLED' | 'FETCH_FAILED' | null
 }
-
 
 const initialState: ForumState = {
   topics: [],
@@ -60,14 +56,14 @@ export const ForumSlice = createSlice({
       state.status = 'FETCHING'
       state.error = null
     },
-    [createTopic.fulfilled.type]: (state) => {
+    [createTopic.fulfilled.type]: state => {
       state.error = null
       state.status = 'FETCH_FULFILLED'
     },
     [createTopic.rejected.type]: (state, { payload }) => {
       state.error = payload ?? 'Error!'
       state.status = 'FETCH_FAILED'
-    }
+    },
   },
 })
 

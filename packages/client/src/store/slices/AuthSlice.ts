@@ -82,6 +82,7 @@ export const authSlice = createSlice({
     },
     [logout.fulfilled.type]: state => {
       state.user = {} as UserData
+      // console.log(state.user)
       state.requestData.logout.status = StatusLoading.SUCCESS
     },
     [logout.pending.type]: state => {
@@ -97,7 +98,10 @@ export const authSlice = createSlice({
     [getServiceId.pending.type]: state => {
       state.requestData.getServiceId.status = StatusLoading.IN_PROGRESS
     },
-    [getServiceId.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+    [getServiceId.rejected.type]: (
+      state,
+      { payload }: PayloadAction<string>
+    ) => {
       state.requestData.getServiceId.errorMessage = payload
       state.requestData.getServiceId.status = StatusLoading.ERROR
     },
@@ -107,7 +111,10 @@ export const authSlice = createSlice({
     [oauthYandex.pending.type]: state => {
       state.requestData.oauth.status = StatusLoading.IN_PROGRESS
     },
-    [oauthYandex.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+    [oauthYandex.rejected.type]: (
+      state,
+      { payload }: PayloadAction<string>
+    ) => {
       state.requestData.oauth.errorMessage = payload
       state.requestData.oauth.status = StatusLoading.ERROR
     },

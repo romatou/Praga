@@ -1,9 +1,9 @@
-import { Model, Table, Column, DataType, AllowNull } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, AllowNull } from 'sequelize-typescript'
 
 export type User = {
-  id: number;
-  login: string;
-};
+  id: number
+  login: string
+}
 
 @Table({
   tableName: 'users',
@@ -11,5 +11,5 @@ export type User = {
 export class UserModel extends Model<User> {
   @AllowNull(false)
   @Column(DataType.STRING)
-  login: string | undefined;
+  login: string | undefined
 }
