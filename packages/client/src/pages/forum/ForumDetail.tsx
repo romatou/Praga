@@ -2,17 +2,15 @@ import React, { useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import * as RB from '@mui/material'
 import CardMessange from '../../components/CardMessange'
-import { useForm, FormProvider } from 'react-hook-form'
+import FormMessange from '../../components/FormSendMess'
 import { useAppDispatch, useAppSelector } from '../../store/index'
 import {
-  getComments,
-  createComment
+  getComments
 } from '../../store/actions/ForumActionCreators'
 import { selectForumData } from '../../store/slices/ForumSlice'
 import {
   fetchUser,
 } from '../../store/actions/ProfileActionCreators'
-import { selectProfileData } from '../../store/slices/ProfileSlice'
 
 
 type QuizParams = {
@@ -22,15 +20,8 @@ type QuizParams = {
 const ForumDetail = () => {
   const { id } = useParams<QuizParams>()
   const dispatch = useAppDispatch()
-  const { topics, comments, error, status } = useAppSelector(selectForumData)
-  const { userData } = useAppSelector(selectProfileData)
-  const methods = useForm({
-    defaultValues: {
-      comment: '',
-    },
-    mode: 'onBlur',
-  })
-  const { register, handleSubmit, reset } = methods
+  const { comments, status } = useAppSelector(selectForumData)
+
   useEffect(() => {
     dispatch(fetchUser())
   }, [])
@@ -38,26 +29,6 @@ const ForumDetail = () => {
     dispatch(getComments({ id: Number(id) }))
   }, [])
   
-  const onSubmitMessange = useCallback((value: { comment: string }) => {
-    dispatch(createComment({
-      parentId: null,
-      topicId: Number(id),
-      userId: userData.id,
-      userLogin: userData.login,
-      comment: value.comment})).then(function() {
-        return dispatch(getComments({ id: Number(id) }));
-    })
-    reset()
-  }, [])
-
-  useEffect(() => {
-    methods.reset({
-      comment: '',
-    })
-  }, [])
-
-  
-
   return (
     <RB.Container
       maxWidth={false}
@@ -79,20 +50,19 @@ const ForumDetail = () => {
             <RB.Grid
               container
               spacing={2}
-              sx={{ height: '60vh', overflow: 'auto' }}>
-                 {status !== 'FETCH_FULFILLED' ? (
+              sx={{ height: '70vh', overflow: 'auto' }}>
+                {status !== 'FETCH_FULFILLED' ? (
                     <RB.CircularProgress />
                   ) : (
                     <>
                       {comments?.length ? (
                         <>
-                          {comments?.map((comment) => {
+                          {comments?.filter(item => item.parent_id === null).map((comment) => {
                             return (
                               <RB.Grid item xs={12} key={comment.id}>
                                 <CardMessange
-                                  name={comment.userLogin}
-                                  text={comment.comment}
-                                  data={comment.createdAt}
+                                  comment={comment}
+                                  childComment={comments?.filter(it=> it.parent_id === comment.id)}
                                 />
                               </RB.Grid>
                             )
@@ -109,43 +79,13 @@ const ForumDetail = () => {
                   )}
             </RB.Grid>
             <RB.Grid item xs={12} sx={{ width: '478px' }} position="fixed">
-              <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmitMessange)}>
-                  <RB.Grid
-                    container
-                    spacing={2}
-                    marginTop={4}
-                    sx={{ width: '478px' }}>
-                    <RB.Grid item xs={12}>
-                      <RB.Typography
-                        gutterBottom
-                        variant="subtitle2"
-                        component="div">
-                        Отправить сообщение
-                      </RB.Typography>
-                    </RB.Grid>
-                    <RB.Grid item xs={12}>
-                      <RB.Paper
-                        component="form"
-                        sx={{ p: '2px 4px', alignItems: 'center' }}>
-                        <RB.InputBase {...register('comment')} />
-                      </RB.Paper>
-                    </RB.Grid>
-                    <RB.Grid item xs={12}>
-                      <RB.Button
-                        type="submit"
-                        variant="contained"
-                        size="small"
-                        color="inherit">
-                        Отправить
-                      </RB.Button>
-                    </RB.Grid>
-                  </RB.Grid>
-                </form>
-              </FormProvider>
+              <FormMessange 
+                  parentId={null}
+                  topicId={Number(id)}
+              />
             </RB.Grid>
           </RB.Grid>
-        </RB.Grid>
+        </RB.Grid> 
       </RB.Container>
     </RB.Container>
   )

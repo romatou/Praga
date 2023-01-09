@@ -7,30 +7,7 @@ import {
 } from '../actions/ForumActionCreators'
 
 import { RootState } from '../index'
-
-export type Topic = {
-  user_id: number;
-  title: string;
-  description?: string;
-  id: number;
-};
-
-export type Comment = {
-  id: number;
-  parentId: number | null;
-  comment: string;
-  topicId: number;
-  userId: number;
-  userLogin: string;
-  createdAt: string
-};
-
-export interface ForumState {
-  topics: Topic [],
-  comments: Comment [],
-  error: string | null
-  status: 'INIT' | 'FETCHING' | 'FETCH_FULFILLED' | 'FETCH_FAILED' | null
-}
+import { ForumState } from '../types'
 
 
 const initialState: ForumState = {

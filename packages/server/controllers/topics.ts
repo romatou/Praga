@@ -65,6 +65,7 @@ const createComment = async (req: Request, res: Response) => {
       comment: comment,
       topic_id: topicId,
       user_id: userId,
+      user_login: userLogin,
       parent_id: parentId,
     });
 

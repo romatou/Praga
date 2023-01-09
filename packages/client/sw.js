@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-site-cache-v1'
+/*const CACHE_NAME = 'my-site-cache-v1'
 
 const URLS = [
   // '/',
@@ -54,4 +54,4 @@ this.addEventListener('activate', event => {
       )
     })
   )
-})
+})*/
