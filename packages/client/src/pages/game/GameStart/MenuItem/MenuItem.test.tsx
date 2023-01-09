@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
-import { BrowserRouter } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 import MenuItem from './MenuItem'
 
@@ -36,24 +36,4 @@ describe('MenuItem component', () => {
 
     expect(screen.queryByRole('listitem')).toBeNull()
   })
-
-  // it('MenuItem snapshot', () => {
-  //   const item = render(
-  //     <BrowserRouter>
-  //       <MenuItem  Icon={<PersonIcon sx={{ fontSize: 40 }} color="secondary" />} title={title} to="/" />
-  //     </BrowserRouter>
-  //   )
-
-  //   expect(item).toMatchSnapshot()
-  // })
-
-  // it('MenuItem empty snapshot', () => {
-  //   const item = render(
-  //     <BrowserRouter>
-  //       <MenuItem  Icon={<PersonIcon sx={{ fontSize: 40 }} color="secondary" />} title={title} to="" />
-  //     </BrowserRouter>
-  //   )
-
-  //   expect(item).toMatchSnapshot()
-  // })
 })

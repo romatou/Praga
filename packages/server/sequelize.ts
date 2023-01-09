@@ -16,14 +16,18 @@ export default async function sequelize() {
   const sequelize = new Sequelize(sequelizeOptions)
   sequelize.addModels([UserTheme, SiteTheme])
 
-  await sequelize.sync({ force: true })
+  try {
+    await sequelize.sync({ force: true })
 
-  await SiteTheme.bulkCreate<Model<SiteTheme, { theme: string }>>([
-    {
-      theme: 'dark',
-    },
-    {
-      theme: 'light',
-    },
-  ])
+    await SiteTheme.bulkCreate<Model<SiteTheme, { theme: string }>>([
+      {
+        theme: 'dark',
+      },
+      {
+        theme: 'light',
+      },
+    ])
+  } catch (e) {
+    console.error('Соединение с базой не может быть установлено')
+  }
 }

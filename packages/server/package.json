@@ -38,6 +38,7 @@
     "cross-env": "^7.0.3",
     "eslint": "8.23.0",
     "jest": "28",
+    "location-href": "^1.0.0",
     "nodemon": "2.0.19",
     "prettier": "2.7.1",
     "ts-jest": "28.0.8",
