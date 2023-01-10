@@ -120,4 +120,6 @@ export const authSlice = createSlice({
   },
 })
 
+export const selectUserData = (state: RootState) => state.auth.user
+
 export default authSlice.reducer

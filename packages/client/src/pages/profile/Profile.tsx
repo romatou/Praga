@@ -208,7 +208,8 @@ const Profile = () => {
             marginTop: 1,
           }}
           onClick={() => {
-            dispatch(logout()).then(() => navigate('/auth'))
+            dispatch(logout()).then(()=>navigate('/auth'))
+           
           }}>
           Выйти из профиля
         </RB.Button>
