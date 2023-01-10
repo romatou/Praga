@@ -21,9 +21,9 @@ export interface RankingResponse {
 }
 
 export interface Ranking {
-  id: number
+  id?: number
   name: string
-  avatar: string
+  avatar?: string
   score: number
 }
 
@@ -103,4 +103,8 @@ export interface ForumState {
   likes: Like[]
   error: string | null
   status: 'INIT' | 'FETCHING' | 'FETCH_FULFILLED' | 'FETCH_FAILED' | null
+}
+export interface OauthData {
+  code: string
+  redirect_uri: string
 }

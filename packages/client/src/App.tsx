@@ -1,30 +1,32 @@
 import React, { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import Login from './pages/LoginPage/Login'
-import Register from './pages/register/Register'
-import Profile from './pages/profile/Profile'
-import GameStart from './pages/game/GameStart'
-import GamePlay from './pages/game/GamePlay'
-import GameResult from './pages/game/GameResult'
-import Intro from './pages/intro/Intro'
-import Forum from './pages/forum/Forum'
-import ForumDetail from './pages/forum/ForumDetail'
-import Ranking from './pages/ranking'
-import NotFound from './pages/not-found/NotFound'
-import ServerError from './pages/server-error/ServerError'
+import Login from '@pages/LoginPage/Login'
+import Register from '@pages/register/Register'
+import Profile from '@pages/profile/Profile'
+import GameStart from '@pages/game/GameStart'
+import GamePlay from '@pages/game/GamePlay'
+import GameResult from '@pages/game/GameResult'
+import Intro from '@pages/intro/Intro'
+import Forum from '@pages/forum/Forum'
+import ForumDetail from '@pages/forum/ForumDetail'
+import Ranking from '@pages/ranking'
+import NotFound from '@pages/not-found/NotFound'
+import ServerError from '@pages/server-error/ServerError'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from './store'
 
 function App() {
-  useEffect(() => {
-    const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data)
-    }
+  // useEffect(() => {
+  //   const fetchServerData = async () => {
+  //     const url = `http://localhost:${__SERVER_PORT__}`
+  //     const response = await fetch(url)
+  //     const data = await response.json()
+  //     console.log(data)
+  //   }
 
-    fetchServerData()
-  }, [])
+  //   fetchServerData()
+  // }, [])
   return (
     <Routes>
       <Route path={'/'} element={<Intro />} />

@@ -8,25 +8,41 @@ import {
   Stack,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { LoginData } from '../../store/types'
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles'
+import { LoginData } from '@store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
-import { fetchUser } from '../../store/actions/AuthActionCreators'
-import { useAppDispatch } from '../../store/index'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { YandexIcon } from '@components/YandexIcon/YandexIcon'
+import { useServiceId } from '../../hooks/useServiceId'
 
 export default function Login() {
   const user = useUser()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const login = useLogin()
+  const location = useServiceId()
+
+  const YandexIdButton = styled(Button)({
+    color: ' white',
+    width: '100%',
+    height: '44px',
+    backgroundColor: 'black',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'black',
+      borderColor: '#0062cc',
+      boxShadow: 'none',
+    },
+  })
 
   useEffect(() => {
-    dispatch(fetchUser())
     if (user.id) {
       navigate('/')
     }
-  }, [navigate, user])
+    dispatch(fetchUser())
+  }, [user.id])
 
   const theme = createTheme({
     typography: {
@@ -42,6 +58,7 @@ export default function Login() {
     } as LoginData
     login(authData)
   }
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,6 +106,13 @@ export default function Login() {
               {' '}
               Войти
             </Button>
+            <Typography component="p" sx={{ textAlign: 'center', fontSize: '12px' }}>
+            или
+          </Typography>
+            <YandexIdButton 
+            onClick={()=>location()}
+            // startIcon={<YandexIcon/>}
+            >Войти c Яндекс ID</YandexIdButton>
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
               <Link

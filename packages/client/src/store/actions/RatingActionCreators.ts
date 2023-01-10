@@ -3,7 +3,7 @@ import { Ranking } from '@store/types'
 
 import { axiosInstance } from '../../services/BaseApi'
 
-const teamName = 'praga'
+const teamName = 'praga-v2'
 const ratingFieldName = 'score'
 
 export const fetchLeaderboard = createAsyncThunk(

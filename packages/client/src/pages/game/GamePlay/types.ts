@@ -49,3 +49,8 @@ export type CellIsWithinArgs = {
   cell: CellArgs
   dimMatr: number
 }
+
+export enum Winner {
+  PLAYER_IS_WIN = 'Вы победитель!!!',
+  COMP_IS_WIN = 'Компутер красавчик!!!',
+}
