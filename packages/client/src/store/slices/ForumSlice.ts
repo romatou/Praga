@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction} from '@reduxjs/toolkit'
 import { getTopics, createTopic } from '../actions/ForumActionCreators'
 
 import { RootState } from '../index'
@@ -37,34 +37,35 @@ export const ForumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {},
-  extraReducers: {
-    [getTopics.pending.type]: state => {
-      state.status = 'FETCHING'
-      state.error = null
-    },
-    [getTopics.fulfilled.type]: (state, { payload }) => {
-      state.topics = payload.topics
-      state.error = null
-      state.status = 'FETCH_FULFILLED'
-    },
-    [getTopics.rejected.type]: (state, { payload }) => {
-      state.error = payload ?? 'Error!'
-      state.status = 'FETCH_FAILED'
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getTopics.pending.type, (state) => {
+        state.status = 'FETCHING'
+        state.error = null
+      })
+      .addCase(getTopics.fulfilled.type, (state, { payload }: PayloadAction<ForumState>) => {
+        state.topics = payload.topics
+        state.error = null
+        state.status = 'FETCH_FULFILLED'
+      })
+      .addCase(getTopics.rejected.type, (state, { payload }: PayloadAction<string>) => {
+        state.error = payload ?? 'Error!'
+        state.status = 'FETCH_FAILED'
+      })
 
-    [createTopic.pending.type]: state => {
-      state.status = 'FETCHING'
-      state.error = null
-    },
-    [createTopic.fulfilled.type]: state => {
-      state.error = null
-      state.status = 'FETCH_FULFILLED'
-    },
-    [createTopic.rejected.type]: (state, { payload }) => {
-      state.error = payload ?? 'Error!'
-      state.status = 'FETCH_FAILED'
-    },
-  },
+      .addCase(createTopic.pending.type, state => {
+        state.status = 'FETCHING'
+        state.error = null
+      })
+      .addCase(createTopic.fulfilled.type, state => {
+        state.error = null
+        state.status = 'FETCH_FULFILLED'
+      })
+      .addCase(createTopic.rejected.type, (state, { payload }: PayloadAction<string>) => {
+        state.error = payload ?? 'Error!'
+        state.status = 'FETCH_FAILED'
+      })
+  }
 })
 
 export const selectForumData = (state: RootState) => state.forum

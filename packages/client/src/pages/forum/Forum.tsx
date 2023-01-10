@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback } from 'react'
 import * as RB from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ModalThemeNew from '../../components/ModalThemeNew'
 import { useAppDispatch, useAppSelector } from '../../store/index'
 import { getTopics, createTopic } from '../../store/actions/ForumActionCreators'
 import { selectForumData } from '../../store/slices/ForumSlice'
 import { forumThemeType } from './types'
 import { useAuth } from '../../hooks/useAuth'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 const Item = styled(RB.Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,8 +21,9 @@ const Item = styled(RB.Paper)(({ theme }) => ({
 const Forum = () => {
   const isAuth = useAuth()
   const dispatch = useAppDispatch()
-  const { topics, comments, error, status } = useAppSelector(selectForumData)
+  const navigate = useNavigate()
 
+  const { topics, comments, error, status } = useAppSelector(selectForumData)
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
     setOpen(false)
@@ -46,6 +48,14 @@ const Forum = () => {
         width: '100vw',
         background: '#D5D5D5',
       }}>
+
+      <RB.Button
+        variant="text"
+        onClick={() => navigate('/game/start')}
+        startIcon={<ArrowBackIcon />}>
+        На главную
+      </RB.Button>
+      
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container

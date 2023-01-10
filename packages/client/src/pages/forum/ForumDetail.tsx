@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as RB from '@mui/material'
 import CardMessange from '../../components/CardMessange'
 import { useForm, FormProvider } from 'react-hook-form'
 import { getTopics } from '@store/actions/ForumActionCreators'
 import { useAppDispatch, useAppSelector } from '@store/index'
 import { selectForumData } from '@store/slices/ForumSlice'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 type QuizParams = {
   id?: string
@@ -13,9 +14,10 @@ type QuizParams = {
 
 const ForumDetail = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const { topics, comments, error, status } = useAppSelector(selectForumData)
   const { id } = useParams<QuizParams>()
-  console.log(id)
 
   const methods = useForm({
     defaultValues: {
@@ -44,6 +46,13 @@ const ForumDetail = () => {
         width: '100vw',
         background: '#D5D5D5',
       }}>
+        <RB.Button
+        variant="text"
+        onClick={() => navigate('/forum')}
+        startIcon={<ArrowBackIcon />}>
+        Назад
+      </RB.Button>
+
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container

@@ -82,7 +82,6 @@ export const authSlice = createSlice({
     },
     [logout.fulfilled.type]: state => {
       state.user = {} as UserData
-      // console.log(state.user)
       state.requestData.logout.status = StatusLoading.SUCCESS
     },
     [logout.pending.type]: state => {
