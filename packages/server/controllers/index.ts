@@ -1,1 +1,1 @@
-export { topicsRouter } from './topics';
+export { topicsRouter } from './topics'

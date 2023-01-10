@@ -1,12 +1,12 @@
-import { Router, Request, Response } from 'express';
-import { TopicModel, UserModel, TopicCommentModel } from '../models';
+import { Router, Request, Response } from 'express'
+import { TopicModel, UserModel, TopicCommentModel, LikeModel } from '../models'
 
-export const topicsRouter = Router();
+export const topicsRouter = Router()
 
 const addTopic = async (req: Request, res: Response) => {
   try {
-    const { body } = req;
-    const { title, description, userId, userLogin } = body;
+    const { body } = req
+    const { title, description, userId, userLogin } = body
 
     await UserModel.findOrCreate({
       where: {
@@ -16,40 +16,40 @@ const addTopic = async (req: Request, res: Response) => {
         id: userId,
         login: userLogin,
       },
-    });
+    })
 
     await TopicModel.create({
       title: title,
       description: description,
       user_id: userId,
-    });
+    })
 
-    res.send('OK');
+    res.send('OK')
   } catch (error) {
-    console.log(error);
-    res.status(400).send();
+    console.log(error)
+    res.status(400).send()
   }
-};
+}
 
 const getAll = async (req: Request, res: Response) => {
   try {
-    const { body } = req;
+    const { body } = req
     console.log(body)
 
-    const data = await TopicModel.findAll();
+    const data = await TopicModel.findAll()
     res.send({
       topics: data,
-    });
+    })
   } catch (error) {
-    console.log(error);
-    res.status(400).send();
+    console.log(error)
+    res.status(400).send()
   }
-};
+}
 
 const createComment = async (req: Request, res: Response) => {
   try {
-    const { body } = req;
-    const { parentId, comment, topicId, userId, userLogin } = body;
+    const { body } = req
+    const { parentId, comment, topicId, userId, userLogin } = body
 
     await UserModel.findOrCreate({
       where: {
@@ -59,7 +59,7 @@ const createComment = async (req: Request, res: Response) => {
         id: userId,
         login: userLogin,
       },
-    });
+    })
 
     await TopicCommentModel.create({
       comment: comment,
@@ -67,51 +67,124 @@ const createComment = async (req: Request, res: Response) => {
       user_id: userId,
       user_login: userLogin,
       parent_id: parentId,
-    });
+    })
 
-    res.send('OK');
+    res.send('OK')
   } catch (error) {
-    console.log(error);
-    res.status(400).send();
+    console.log(error)
+    res.status(400).send()
   }
-};
+}
 
 const deleteComment = async (req: Request, res: Response) => {
   try {
-    const { body } = req;
-    const { id } = body;
+    const { body } = req
+    const { id } = body
 
-    const comment = await TopicCommentModel.findByPk(id);
-    await comment?.destroy();
+    const comment = await TopicCommentModel.findByPk(id)
+    await comment?.destroy()
 
-    res.send('OK');
+    res.send('OK')
   } catch (error) {
-    console.log(error);
-    res.status(400).send();
+    console.log(error)
+    res.status(400).send()
   }
-};
+}
 
 const getComment = async (req: Request, res: Response) => {
   try {
-    const { body } = req;
-    const { id } = body;
+    const { body } = req
+    const { id } = body
 
     const data = await TopicCommentModel.findAll({
       where: {
         topic_id: id,
       },
-    });
+    })
     res.send({
       comments: data,
-    });
+    })
   } catch (error) {
-    console.log(error);
-    res.status(400).send();
+    console.log(error)
+    res.status(400).send()
   }
-};
+}
 
-topicsRouter.route('/add').post(addTopic);
-topicsRouter.route('/all').get(getAll);
-topicsRouter.route('/add-comment').post(createComment);
-topicsRouter.route('/delete-comment').delete(deleteComment);
-topicsRouter.route('/get-comments').post(getComment);
+const addLike = async (req: Request, res: Response) => {
+  try {
+    const { body } = req
+    const { isLike, commentId, userId, userLogin } = body
+
+    await UserModel.findOrCreate({
+      where: {
+        id: userId,
+      },
+      defaults: {
+        id: userId,
+        login: userLogin,
+      },
+    })
+
+    const foundItem = await LikeModel.findOne({
+      where: {
+        comment_id: commentId,
+        user_id: userId,
+      },
+    })
+    if (!foundItem) {
+      await LikeModel.create({
+        comment_id: commentId,
+        isLike: isLike,
+        user_id: userId,
+      })
+    } else {
+      await LikeModel.update(
+        { isLike: isLike },
+        {
+          where: {
+            comment_id: commentId,
+            user_id: userId,
+          },
+        }
+      )
+    }
+    const data = await LikeModel.findAll({
+      where: {
+        user_id: userId,
+      },
+    })
+    res.send({
+      likes: data,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+}
+
+const getLikes = async (req: Request, res: Response) => {
+  try {
+    const { body } = req
+    const { id } = body
+
+    const data = await LikeModel.findAll({
+      where: {
+        user_id: id,
+      },
+    })
+    res.send({
+      likes: data,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+}
+
+topicsRouter.route('/add').post(addTopic)
+topicsRouter.route('/all').get(getAll)
+topicsRouter.route('/add-comment').post(createComment)
+topicsRouter.route('/delete-comment').delete(deleteComment)
+topicsRouter.route('/get-comments').post(getComment)
+topicsRouter.route('/add-like').post(addLike)
+topicsRouter.route('/get-likes').post(getLikes)

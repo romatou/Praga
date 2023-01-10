@@ -3,16 +3,18 @@ import {
   getTopics,
   createTopic,
   getComments,
-  createComment
+  createComment,
+  createLike,
+  getLikes,
 } from '../actions/ForumActionCreators'
 
 import { RootState } from '../index'
 import { ForumState } from '../types'
 
-
 const initialState: ForumState = {
   topics: [],
   comments: [],
+  likes: [],
   error: null,
   status: null,
 }
@@ -40,7 +42,7 @@ export const ForumSlice = createSlice({
       state.status = 'FETCHING'
       state.error = null
     },
-    [createTopic.fulfilled.type]: (state) => {
+    [createTopic.fulfilled.type]: state => {
       state.error = null
       state.status = 'FETCH_FULFILLED'
     },
@@ -67,14 +69,42 @@ export const ForumSlice = createSlice({
       state.status = 'FETCHING'
       state.error = null
     },
-    [createComment.fulfilled.type]: (state) => {
+    [createComment.fulfilled.type]: state => {
       state.error = null
       state.status = 'FETCH_FULFILLED'
     },
     [createComment.rejected.type]: (state, { payload }) => {
       state.error = payload ?? 'Error!'
       state.status = 'FETCH_FAILED'
-    }
+    },
+
+    [createLike.pending.type]: state => {
+      state.status = 'FETCHING'
+      state.error = null
+    },
+    [createLike.fulfilled.type]: (state, { payload }) => {
+      state.likes = payload.likes
+      state.error = null
+      state.status = 'FETCH_FULFILLED'
+    },
+    [createLike.rejected.type]: (state, { payload }) => {
+      state.error = payload ?? 'Error!'
+      state.status = 'FETCH_FAILED'
+    },
+
+    [getLikes.pending.type]: state => {
+      state.status = 'FETCHING'
+      state.error = null
+    },
+    [getLikes.fulfilled.type]: (state, { payload }) => {
+      state.likes = payload.likes
+      state.error = null
+      state.status = 'FETCH_FULFILLED'
+    },
+    [getLikes.rejected.type]: (state, { payload }) => {
+      state.error = payload ?? 'Error!'
+      state.status = 'FETCH_FAILED'
+    },
   },
 })
 

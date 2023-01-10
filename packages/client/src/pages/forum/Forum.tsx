@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
 import * as RB from '@mui/material'
-import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
 import ModalThemeNew from '../../components/ModalThemeNew'
@@ -19,7 +18,7 @@ const Item = styled(RB.Paper)(({ theme }) => ({
 }))
 const Forum = () => {
   const dispatch = useAppDispatch()
-  const { topics, comments, error, status } = useAppSelector(selectForumData)
+  const { topics, status } = useAppSelector(selectForumData)
 
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
@@ -55,30 +54,10 @@ const Forum = () => {
             <RB.Grid
               container
               direction="row"
-              justifyContent="space-between"
-              alignItems="center">
-              <Link
-                to="/game/start"
-                style={{ color: 'inherit', textDecoration: 'none' }}>
-                <RB.Button
-                  variant="text"
-                  size="small"
-                  sx={{
-                    marginTop: 1,
-                  }}>
-                  &lArr; назад
-                </RB.Button>
-              </Link>
-
-              <RB.Grid
-                item
-                sx={{
-                  fontWeight: '400',
-                  fontSize: '1.5rem',
-                }}>
-                Все темы форума
-              </RB.Grid>
-              <RB.Grid item sx={{ marginRight: '1px' }}>
+              justifyContent="center"
+              alignItems="flex-end">
+              <RB.Grid item>Тема</RB.Grid>
+              <RB.Grid item sx={{ marginLeft: 'auto' }}>
                 <RB.Button
                   variant="text"
                   size="small"
