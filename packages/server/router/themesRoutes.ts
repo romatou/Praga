@@ -1,17 +1,13 @@
-import ThemeAPI from '../controllers/ThemeAPI'
 import { Router } from 'express'
+import { create, get, update } from '../controllers/ThemeAPI'
 
 const themesRoutes = (router: Router) => {
   const themesRouter: Router = Router()
 
-  // themesRouter.route('/get').get(ThemeAPI.get);
-  // themesRouter.route('/add').post(ThemeAPI.create);
-  // themesRouter.route('/update').post(ThemeAPI.update);
-
   themesRouter
-    .get('/get', [], ThemeAPI.get)
-    .post('/add', [], ThemeAPI.create)
-    .post('/update', [], ThemeAPI.update)
+    .get('/get', [], get)
+    .post('/add', [], create)
+    .post('/update', [], update)
 
   router.use('/api/theme', themesRouter)
 }

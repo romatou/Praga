@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import style from './style'
 import { Container, Switch, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { toggleTheme, selectUserData } from '../../store/slices/UserSlice'
 import { changeUserTheme } from '../../store/actions/UserActionCreators'
+import { selectUserData, toggleTheme } from '../../store/slices/UserSlice'
+import style from './style'
 
 export default function Header() {
   const dispatch = useAppDispatch()
@@ -23,7 +23,7 @@ export default function Header() {
     } else {
       dispatch(toggleTheme(selectedTheme))
     }
-    setChecked(!checked)
+    setChecked(prevChecked => !prevChecked)
   }
 
   useEffect(() => {

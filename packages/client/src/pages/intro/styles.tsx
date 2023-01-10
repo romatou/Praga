@@ -16,8 +16,6 @@ const styles = {
     textTransform: 'uppercase',
   },
   window: {
-    border: '2px solid #000',
-    boxShadow: '2px 4px 4px rgba(0, 0, 0, 0.25)',
     width: '75%',
     height: 'auto',
     borderRadius: '6px',

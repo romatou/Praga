@@ -1,7 +1,7 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { UserRequest, PassWord } from '../types'
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { PassWord, UserRequest } from '../types';
 
-import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi'
+import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi';
 
 export const changeUserTheme = createAsyncThunk(
   '/theme/update',

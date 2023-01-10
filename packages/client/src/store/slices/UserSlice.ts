@@ -1,20 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AnyAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   getThemeFromStorage,
-  setThemeToStorage,
   SelectedTheme,
+  setThemeToStorage
 } from '../../storage/adapters/theme'
 import {
-  editProfileData,
-  editAvatar,
-  editPasswordData,
-  fetchUser,
-  fetchUserTheme,
   addUserTheme,
   changeUserTheme,
+  editAvatar,
+  editPasswordData,
+  editProfileData,
+  fetchUser,
+  fetchUserTheme
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
-import { User, RequestData, RequestDataState, StatusLoading } from '../types'
+import { RequestData, RequestDataState, StatusLoading, User } from '../types'
 
 export interface UserState {
   userData: User
@@ -60,91 +60,104 @@ export const UserSlice = createSlice({
       state.selectedTheme = newTheme
     },
   },
-  extraReducers: {
-    [changeUserTheme.pending.type]: state => {
-      state.requestData.changeUserTheme.status = StatusLoading.IN_PROGRESS
-    },
-    [changeUserTheme.fulfilled.type]: (state, { payload: { themeId } }) => {
-      const newTheme = themeId === 1 ? 'dark' : 'light'
-      state.selectedTheme = newTheme
-      setThemeToStorage(newTheme, !!state.userData.id)
+  extraReducers: builder => {
+    builder
+      .addCase(changeUserTheme.pending.type, state => {
+        state.requestData.changeUserTheme.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(changeUserTheme.fulfilled.type, (state, action: AnyAction) => {
+        const newTheme = action.payload.themeId === 1 ? 'dark' : 'light'
+        state.selectedTheme = newTheme
+        setThemeToStorage(newTheme, !!state.userData.id)
 
-      state.requestData.changeUserTheme.status = StatusLoading.SUCCESS
-    },
-    [changeUserTheme.rejected.type]: (state, { payload }) => {
-      state.requestData.changeUserTheme.errorMessage = payload
-      state.requestData.changeUserTheme.status = StatusLoading.ERROR
-    },
-
-    [addUserTheme.pending.type]: state => {
-      state.requestData.addUserTheme.status = StatusLoading.IN_PROGRESS
-    },
-    [addUserTheme.fulfilled.type]: state => {
-      state.requestData.addUserTheme.status = StatusLoading.SUCCESS
-    },
-    [addUserTheme.rejected.type]: (state, { payload }) => {
-      state.requestData.addUserTheme.errorMessage = payload
-      state.requestData.addUserTheme.status = StatusLoading.ERROR
-    },
-
-    [fetchUserTheme.pending.type]: state => {
-      state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
-    },
-    [fetchUserTheme.fulfilled.type]: (state, { payload }) => {
-      state.selectedTheme = payload
-      state.requestData.getUserTheme.status = StatusLoading.SUCCESS
-    },
-    [fetchUserTheme.rejected.type]: (state, { payload }) => {
-      state.requestData.getUserTheme.errorMessage = payload
-      state.requestData.getUserTheme.status = StatusLoading.ERROR
-    },
-
-    [fetchUser.pending.type]: state => {
-      state.requestData.getUser.status = StatusLoading.IN_PROGRESS
-    },
-    [fetchUser.fulfilled.type]: (state, { payload }) => {
-      state.userData = payload
-      state.requestData.getUser.status = StatusLoading.SUCCESS
-    },
-    [fetchUser.rejected.type]: (state, { payload }) => {
-      state.requestData.getUser.errorMessage = payload
-      state.requestData.getUser.status = StatusLoading.ERROR
-    },
-
-    [editProfileData.pending.type]: state => {
-      state.requestData.editUser.status = StatusLoading.IN_PROGRESS
-    },
-    [editProfileData.fulfilled.type]: (state, { payload }) => {
-      state.userData = payload
-      state.requestData.editUser.status = StatusLoading.SUCCESS
-    },
-    [editProfileData.rejected.type]: (state, { payload }) => {
-      state.requestData.editUser.errorMessage = payload
-      state.requestData.editUser.status = StatusLoading.ERROR
-    },
-
-    [editAvatar.pending.type]: state => {
-      state.requestData.editAvatar.status = StatusLoading.IN_PROGRESS
-    },
-    [editAvatar.fulfilled.type]: (state, { payload }) => {
-      state.userData = payload
-      state.requestData.editAvatar.status = StatusLoading.SUCCESS
-    },
-    [editAvatar.rejected.type]: (state, { payload }) => {
-      state.requestData.editAvatar.errorMessage = payload
-      state.requestData.editAvatar.status = StatusLoading.ERROR
-    },
-
-    [editPasswordData.pending.type]: state => {
-      state.requestData.editPassword.status = StatusLoading.IN_PROGRESS
-    },
-    [editPasswordData.fulfilled.type]: state => {
-      state.requestData.editPassword.status = StatusLoading.SUCCESS
-    },
-    [editPasswordData.rejected.type]: (state, { payload }) => {
-      state.requestData.editPassword.errorMessage = payload
-      state.requestData.editPassword.status = StatusLoading.ERROR
-    },
+        state.requestData.changeUserTheme.status = StatusLoading.SUCCESS
+      })
+      .addCase(
+        changeUserTheme.rejected.type,
+        (state, { payload }: AnyAction) => {
+          state.requestData.changeUserTheme.errorMessage = payload
+          state.requestData.changeUserTheme.status = StatusLoading.ERROR
+        }
+      )
+      .addCase(addUserTheme.pending.type, state => {
+        state.requestData.addUserTheme.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(addUserTheme.fulfilled.type, state => {
+        state.requestData.addUserTheme.status = StatusLoading.SUCCESS
+      })
+      .addCase(addUserTheme.rejected.type, (state, { payload }: AnyAction) => {
+        state.requestData.addUserTheme.errorMessage = payload
+        state.requestData.addUserTheme.status = StatusLoading.ERROR
+      })
+      .addCase(fetchUserTheme.pending.type, state => {
+        state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(
+        fetchUserTheme.fulfilled.type,
+        (state, { payload }: AnyAction) => {
+          state.selectedTheme = payload
+          state.requestData.getUserTheme.status = StatusLoading.SUCCESS
+        }
+      )
+      .addCase(
+        fetchUserTheme.rejected.type,
+        (state, { payload }: AnyAction) => {
+          state.requestData.getUserTheme.errorMessage = payload
+          state.requestData.getUserTheme.status = StatusLoading.ERROR
+        }
+      )
+      .addCase(fetchUser.pending.type, state => {
+        state.requestData.getUser.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(fetchUser.fulfilled.type, (state, { payload }: AnyAction) => {
+        state.userData = payload
+        state.requestData.getUser.status = StatusLoading.SUCCESS
+      })
+      .addCase(fetchUser.rejected.type, (state, { payload }: AnyAction) => {
+        state.requestData.getUser.errorMessage = payload
+        state.requestData.getUser.status = StatusLoading.ERROR
+      })
+      .addCase(editProfileData.pending.type, state => {
+        state.requestData.editUser.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(
+        editProfileData.fulfilled.type,
+        (state, { payload }: AnyAction) => {
+          state.userData = payload
+          state.requestData.editUser.status = StatusLoading.SUCCESS
+        }
+      )
+      .addCase(
+        editProfileData.rejected.type,
+        (state, { payload }: AnyAction) => {
+          state.requestData.editUser.errorMessage = payload
+          state.requestData.editUser.status = StatusLoading.ERROR
+        }
+      )
+      .addCase(editAvatar.pending.type, state => {
+        state.requestData.editAvatar.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(editAvatar.fulfilled.type, (state, { payload }: AnyAction) => {
+        state.userData = payload
+        state.requestData.editAvatar.status = StatusLoading.SUCCESS
+      })
+      .addCase(editAvatar.rejected.type, (state, { payload }: AnyAction) => {
+        state.requestData.editAvatar.errorMessage = payload
+        state.requestData.editAvatar.status = StatusLoading.ERROR
+      })
+      .addCase(editPasswordData.pending.type, state => {
+        state.requestData.editPassword.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(editPasswordData.fulfilled.type, state => {
+        state.requestData.editPassword.status = StatusLoading.SUCCESS
+      })
+      .addCase(
+        editPasswordData.rejected.type,
+        (state, { payload }: AnyAction) => {
+          state.requestData.editPassword.errorMessage = payload
+          state.requestData.editPassword.status = StatusLoading.ERROR
+        }
+      )
   },
 })
 
