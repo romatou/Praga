@@ -16,38 +16,19 @@ export const changeUserTheme = createAsyncThunk(
   }
 )
 
-export const addUserTheme = createAsyncThunk(
-  '/theme/add',
-  async (userId: number, thunkAPI) => {
-    try {
-      const response = await axiosInstanceDB.post(`/theme/add`, { userId })
-
-      return await response.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Ошибка в получении данных')
-    }
-  }
-)
-
-export const fetchUserTheme = createAsyncThunk(
-  '/theme/get',
-  async (userId: number, thunkAPI) => {
-    try {
-      const response = await axiosInstanceDB.get(`/theme/get?userId=${userId}`)
-
-      return await response.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Ошибка в получении данных')
-    }
-  }
-)
-
 export const fetchUser = createAsyncThunk(
   '/user/fetchUser',
   async (_, thunkAPI) => {
     try {
-      const response = await axiosInstance.get(`/auth/user`)
-      return await response.data
+      const user = await axiosInstance.get(`/auth/user`)
+
+      const { id } = user.data
+
+      await axiosInstanceDB.post(`/theme/add`, { userId: id })
+
+      const userTheme = await axiosInstanceDB.get(`/theme/get?userId=${id}`)
+
+      return { user: user.data, userTheme: userTheme.data }
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в получении данных')
     }

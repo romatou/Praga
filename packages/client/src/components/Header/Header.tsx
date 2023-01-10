@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { changeUserTheme } from '../../store/actions/UserActionCreators'
-import { selectUserData, toggleTheme } from '../../store/slices/UserSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 import style from './style'
 
 export default function Header() {
@@ -20,9 +20,8 @@ export default function Header() {
           themeId: selectedTheme === 'dark' ? 2 : 1,
         })
       )
-    } else {
-      dispatch(toggleTheme(selectedTheme))
     }
+    
     setChecked(prevChecked => !prevChecked)
   }
 
@@ -43,7 +42,7 @@ export default function Header() {
           Морской бой
         </Link>
       </Typography>
-      <Switch onChange={handleThemeChange} checked={checked} />
+      {userData.id ? <Switch onChange={handleThemeChange} checked={checked} /> : null}
     </Container>
   )
 }

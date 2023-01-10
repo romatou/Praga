@@ -8,7 +8,7 @@ import React, {
   memo,
 } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/index'
-import { selectUserData } from '@store/slices/AuthSlice'
+import { selectUserData } from '@store/slices/UserSlice'
 import {
   fetchLeaderboard,
   sendDataToLeaderboard,
@@ -109,10 +109,11 @@ const Board = ({
 
   useEffect(() => {
     if (playerIsWin && user) {
-      const currentUser = ratingData.find(({ data: { id } }) => id === user.id)
-      const score = (currentUser && currentUser.data.score + 1) ?? 1
+      const { userData: { avatar, id, display_name } } = user
 
-      const { avatar, id, display_name } = user
+      const currentUser = ratingData.find(({ data }) => data.id === id)
+      const score = (currentUser && currentUser.data.score + 1) ?? 1
+      
       dispatch(
         sendDataToLeaderboard({
           avatar,

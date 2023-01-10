@@ -1,20 +1,20 @@
-import { AnyAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  getThemeFromStorage,
-  SelectedTheme,
-  setThemeToStorage
-} from '../../storage/adapters/theme'
-import {
-  addUserTheme,
   changeUserTheme,
   editAvatar,
   editPasswordData,
   editProfileData,
   fetchUser,
-  fetchUserTheme
 } from '../actions/UserActionCreators'
 import { RootState } from '../index'
-import { RequestData, RequestDataState, StatusLoading, User } from '../types'
+import { 
+  RequestData,
+  RequestDataState, 
+  SelectedTheme, 
+  StatusLoading, 
+  User, 
+  UserDataWithTheme 
+} from '../types'
 
 export interface UserState {
   userData: User
@@ -40,80 +40,42 @@ const initialState: UserState = {
     editUser: {} as RequestDataState<User>,
     editAvatar: {} as RequestDataState<User>,
     editPassword: {} as RequestDataState,
-    getUserTheme: {} as RequestDataState,
-    addUserTheme: {} as RequestDataState,
     changeUserTheme: {} as RequestDataState,
   },
 }
 
+
+
 export const UserSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    getTheme: state => {
-      state.selectedTheme = getThemeFromStorage(!!state.userData.id)
-    },
-    toggleTheme: (state, { payload }: PayloadAction<SelectedTheme>) => {
-      const newTheme: SelectedTheme = payload === 'dark' ? 'light' : 'dark'
-
-      setThemeToStorage(newTheme, !!state.userData.id)
-      state.selectedTheme = newTheme
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(changeUserTheme.pending.type, state => {
         state.requestData.changeUserTheme.status = StatusLoading.IN_PROGRESS
       })
-      .addCase(changeUserTheme.fulfilled.type, (state, action: AnyAction) => {
-        const newTheme = action.payload.themeId === 1 ? 'dark' : 'light'
+      .addCase(changeUserTheme.fulfilled.type, (state, { payload: {themeId} }: PayloadAction<{themeId: number}>) => {
+        const newTheme = themeId === 1 ? 'dark' : 'light'
         state.selectedTheme = newTheme
-        setThemeToStorage(newTheme, !!state.userData.id)
-
         state.requestData.changeUserTheme.status = StatusLoading.SUCCESS
       })
       .addCase(
         changeUserTheme.rejected.type,
-        (state, { payload }: AnyAction) => {
+        (state, { payload }: PayloadAction<string>) => {
           state.requestData.changeUserTheme.errorMessage = payload
           state.requestData.changeUserTheme.status = StatusLoading.ERROR
-        }
-      )
-      .addCase(addUserTheme.pending.type, state => {
-        state.requestData.addUserTheme.status = StatusLoading.IN_PROGRESS
-      })
-      .addCase(addUserTheme.fulfilled.type, state => {
-        state.requestData.addUserTheme.status = StatusLoading.SUCCESS
-      })
-      .addCase(addUserTheme.rejected.type, (state, { payload }: AnyAction) => {
-        state.requestData.addUserTheme.errorMessage = payload
-        state.requestData.addUserTheme.status = StatusLoading.ERROR
-      })
-      .addCase(fetchUserTheme.pending.type, state => {
-        state.requestData.getUserTheme.status = StatusLoading.IN_PROGRESS
-      })
-      .addCase(
-        fetchUserTheme.fulfilled.type,
-        (state, { payload }: AnyAction) => {
-          state.selectedTheme = payload
-          state.requestData.getUserTheme.status = StatusLoading.SUCCESS
-        }
-      )
-      .addCase(
-        fetchUserTheme.rejected.type,
-        (state, { payload }: AnyAction) => {
-          state.requestData.getUserTheme.errorMessage = payload
-          state.requestData.getUserTheme.status = StatusLoading.ERROR
         }
       )
       .addCase(fetchUser.pending.type, state => {
         state.requestData.getUser.status = StatusLoading.IN_PROGRESS
       })
-      .addCase(fetchUser.fulfilled.type, (state, { payload }: AnyAction) => {
-        state.userData = payload
+      .addCase(fetchUser.fulfilled.type, (state, { payload: {user, userTheme} }: PayloadAction<UserDataWithTheme>) => {
+        state.userData = user
+        state.selectedTheme = userTheme
         state.requestData.getUser.status = StatusLoading.SUCCESS
       })
-      .addCase(fetchUser.rejected.type, (state, { payload }: AnyAction) => {
+      .addCase(fetchUser.rejected.type, (state, { payload }: PayloadAction<string>) => {
         state.requestData.getUser.errorMessage = payload
         state.requestData.getUser.status = StatusLoading.ERROR
       })
@@ -122,14 +84,14 @@ export const UserSlice = createSlice({
       })
       .addCase(
         editProfileData.fulfilled.type,
-        (state, { payload }: AnyAction) => {
+        (state, { payload }: PayloadAction<User>) => {
           state.userData = payload
           state.requestData.editUser.status = StatusLoading.SUCCESS
         }
       )
       .addCase(
         editProfileData.rejected.type,
-        (state, { payload }: AnyAction) => {
+        (state, { payload }: PayloadAction<string>) => {
           state.requestData.editUser.errorMessage = payload
           state.requestData.editUser.status = StatusLoading.ERROR
         }
@@ -137,11 +99,11 @@ export const UserSlice = createSlice({
       .addCase(editAvatar.pending.type, state => {
         state.requestData.editAvatar.status = StatusLoading.IN_PROGRESS
       })
-      .addCase(editAvatar.fulfilled.type, (state, { payload }: AnyAction) => {
+      .addCase(editAvatar.fulfilled.type, (state, { payload }: PayloadAction<User>) => {
         state.userData = payload
         state.requestData.editAvatar.status = StatusLoading.SUCCESS
       })
-      .addCase(editAvatar.rejected.type, (state, { payload }: AnyAction) => {
+      .addCase(editAvatar.rejected.type, (state, { payload }: PayloadAction<string>) => {
         state.requestData.editAvatar.errorMessage = payload
         state.requestData.editAvatar.status = StatusLoading.ERROR
       })
@@ -153,15 +115,13 @@ export const UserSlice = createSlice({
       })
       .addCase(
         editPasswordData.rejected.type,
-        (state, { payload }: AnyAction) => {
+        (state, { payload }: PayloadAction<string>) => {
           state.requestData.editPassword.errorMessage = payload
           state.requestData.editPassword.status = StatusLoading.ERROR
         }
       )
   },
 })
-
-export const { toggleTheme, getTheme } = UserSlice.actions
 
 export const selectUserData = (state: RootState) => state.user
 

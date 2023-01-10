@@ -17,34 +17,16 @@ import Ranking from './pages/ranking'
 import NotFound from './pages/not-found/NotFound'
 import ServerError from './pages/server-error/ServerError'
 import { useAppDispatch, useAppSelector } from './store'
-import { getTheme, selectUserData } from './store/slices/UserSlice'
-import {
-  addUserTheme,
-  fetchUser,
-  fetchUserTheme,
-} from './store/actions/UserActionCreators'
+import {  selectUserData } from './store/slices/UserSlice'
+import { fetchUser } from './store/actions/UserActionCreators'
 
 function App() {
   const dispatch = useAppDispatch()
-  const { selectedTheme, userData } = useAppSelector(selectUserData)
+  const { selectedTheme } = useAppSelector(selectUserData)
 
   useEffect(() => {
     dispatch(fetchUser())
   }, [])
-
-  useEffect(() => {
-    if (userData.id) {
-      dispatch(fetchUserTheme(userData.id))
-    } else {
-      dispatch(getTheme())
-    }
-  }, [userData, selectedTheme])
-
-  useEffect(() => {
-    if (userData.id) {
-      dispatch(addUserTheme(userData.id))
-    }
-  }, [userData])
 
   const theme = createTheme({
     palette: {

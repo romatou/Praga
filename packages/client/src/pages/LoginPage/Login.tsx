@@ -37,11 +37,11 @@ export default function Login() {
   })
 
   useEffect(() => {
-    if (user.id) {
+    if (user.userData.id) {
       navigate('/game/start')
     }
     dispatch(fetchUser())
-  }, [user.id])
+  }, [user.userData.id])
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
