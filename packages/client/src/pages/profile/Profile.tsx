@@ -27,17 +27,22 @@ import {
 } from './types'
 
 import AlertMessage from '../../components/Alert'
+import { useAuth } from '../../hooks/useAuth'
 import ModalPassword from '../../components/ModalPassword'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
+  const { userData, requestData } = useAppSelector(selectProfileData)
   const { userData, requestData } = useAppSelector(selectUserData)
 
   const [open, setOpen] = React.useState(false)
 
+  const isAuth = useAuth()
+
   useEffect(() => {
+    isAuth()
     dispatch(fetchUser())
   }, [])
   useEffect(() => {
@@ -73,7 +78,6 @@ const Profile = () => {
       const image = payload && payload[0]
       if (image !== null) {
         const formData = new FormData()
-        console.log(image)
         formData.append('avatar', image)
         dispatch(editAvatar(formData))
       }

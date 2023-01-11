@@ -1,5 +1,13 @@
 import React from 'react'
 import { Box } from '@mui/material'
+<<<<<<< HEAD
+import userIcon from '../../../../assets/user-icon.svg'
+import chatIcon from '../../../../assets/chat-icon.svg'
+import ratingIcon from '../../../../assets/rating-icon.svg'
+import questionIcon from '../../../../assets/question-icon.svg'
+// import exitIcon from '../../../../assets/exit-icon.svg'
+=======
+>>>>>>> main
 import MenuItem from '../MenuItem'
 import PersonIcon from '@mui/icons-material/Person'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
@@ -7,6 +15,12 @@ import ForumIcon from '@mui/icons-material/Forum'
 import LogoutIcon from '@mui/icons-material/Logout'
 
 const links = [
+<<<<<<< HEAD
+  { title: 'Профиль игрока', src: userIcon, alt: 'профиль', to: '/profile' },
+  { title: 'Форум', src: chatIcon, alt: 'сообщения', to: '/forum' },
+  { title: 'Рейтинги', src: ratingIcon, alt: 'рейтинги', to: '/ranking' },
+  { title: 'Помощь', src: questionIcon, alt: 'помощь', to: '/forum' },
+=======
   {
     title: 'Профиль игрока',
     Icon: <PersonIcon sx={{ fontSize: 40 }} color="secondary" />,
@@ -31,6 +45,7 @@ const links = [
     alt: 'выход',
     to: '/',
   },
+>>>>>>> main
 ]
 
 export default function MenuList() {

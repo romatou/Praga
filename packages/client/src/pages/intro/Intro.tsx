@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import { Box, Container, Button, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { useOAuth } from '../../hooks/useOAuth'
+import { useEffect } from 'react'
+=======
 import { Box, Button, Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { useOAuth } from '../../hooks/useOAuth'
@@ -5,15 +13,19 @@ import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'
 
 import { useAuth } from '../../hooks/useAuth'
+>>>>>>> main
 import styles from './styles'
 
 export default function Intro() {
-  const getOAuth = useOAuth()
-  const getAuth = useAuth()
+  // const getOAuth = useOAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+<<<<<<< HEAD
+    // getOAuth()
+=======
     if (getOAuth) getOAuth()
+>>>>>>> main
     dispatch(fetchUser())
   }, [])
 
@@ -38,6 +50,39 @@ export default function Intro() {
             <Typography sx={{ color: 'black' }}>
               Для игры требуется регистрация
             </Typography>
+<<<<<<< HEAD
+            <Box
+              sx={{
+                ...styles.containerCentered,
+                flexGrow: '2',
+                alignItems: 'flex-start',
+              }}>
+              <Link to="/game/start" style={styles.link}>
+                <Button
+                  sx={{
+                    background: '#000',
+                    marginBottom: '1rem',
+                    ':hover': {
+                      backgroundColor: '#000',
+                      color: '#fff',
+                    },
+                  }}>
+                  Начать игру
+                </Button>
+              </Link>
+              <Typography>Для игры требуется регистрация</Typography>
+            </Box>
+          </Box>
+        </Container>
+        <Box
+          sx={{
+            height: '100vh',
+            ...styles.containerCentered,
+          }}>
+          <Box sx={{ ...styles.window }}>
+            <Typography component="h2" sx={{ ...styles.heading }}>
+              История игры
+=======
           </Box>
         </Box>
       </Container>
@@ -73,6 +118,7 @@ export default function Intro() {
               которой были изображены самолеты, летящие над Колизеем
               Лос-Анджелеса. Все эти ранние выпуски игры состояли из
               предварительно напечатанных листов бумаги.
+>>>>>>> main
             </Typography>
           </Box>
         </Box>
@@ -126,3 +172,4 @@ export default function Intro() {
     </Box>
   )
 }
+

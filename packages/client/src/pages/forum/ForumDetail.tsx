@@ -1,144 +1,24 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as RB from '@mui/material'
 import CardMessange from '../../components/CardMessange'
 import { useForm, FormProvider } from 'react-hook-form'
+import { getTopics } from '@store/actions/ForumActionCreators'
+import { useAppDispatch, useAppSelector } from '@store/index'
+import { selectForumData } from '@store/slices/ForumSlice'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
-const forumData = [
-  {
-    id: '5',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста5',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста25',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-      {
-        id: '4',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-      {
-        id: '5',
-        name: 'Дмитрий',
-        text: 'Проверка текста35',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '4',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста4',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста24',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста34',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '3',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста3',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста23',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста33',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '2',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста2',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста22',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста32',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-  {
-    id: '1',
-    mess: [
-      {
-        id: '1',
-        name: 'Дмитрий',
-        text: 'Проверка текста1',
-        data: '16.02.12 16:40',
-      },
-      {
-        id: '2',
-        name: 'Алексей',
-        text: 'Проверка текста21',
-        data: '16.02.12 16:46',
-      },
-      {
-        id: '3',
-        name: 'Дмитрий',
-        text: 'Проверка текста31',
-        data: '16.02.12 16:49',
-      },
-    ],
-  },
-]
 type QuizParams = {
-  id: string
+  id?: string
 }
 
 const ForumDetail = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const { topics, comments, error, status } = useAppSelector(selectForumData)
   const { id } = useParams<QuizParams>()
+
   const methods = useForm({
     defaultValues: {
       messange: '',
@@ -154,6 +34,7 @@ const ForumDetail = () => {
     methods.reset({
       messange: '',
     })
+    dispatch(getTopics())
   }, [])
 
   return (
@@ -165,6 +46,13 @@ const ForumDetail = () => {
         width: '100vw',
         background: '#D5D5D5',
       }}>
+        <RB.Button
+        variant="text"
+        onClick={() => navigate('/forum')}
+        startIcon={<ArrowBackIcon />}>
+        Назад
+      </RB.Button>
+
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
@@ -178,19 +66,37 @@ const ForumDetail = () => {
               container
               spacing={2}
               sx={{ height: '60vh', overflow: 'auto' }}>
-              {forumData
-                .find(item => item.id === id)
-                ?.mess.map((item, i) => {
-                  return (
-                    <RB.Grid item xs={12} key={i}>
-                      <CardMessange
-                        name={item.name}
-                        text={item.text}
-                        data={item.data}
-                      />
-                    </RB.Grid>
-                  )
-                })}
+              {status !== 'FETCH_FULFILLED' ? (
+                <RB.CircularProgress />
+              ) : (
+                <>
+                  {topics?.map(topic => {
+                    if (topic.id === +id) {
+                      return (
+                        <RB.Grid container direction="column">
+                          <RB.Grid item marginBottom={3}>
+                            <RB.Typography variant="h4" component="h1">
+                              {' '}
+                              {topic.title}
+                            </RB.Typography>
+                          </RB.Grid>
+                          <RB.Grid item marginBottom={2}>
+                            <RB.Typography variant="subtitle2">
+                              Дата публикации: {topic.createdAt}
+                            </RB.Typography>
+                          </RB.Grid>
+                          <RB.Grid item>
+                            <RB.Typography variant="subtitle1">
+                              {' '}
+                              {topic.description}
+                            </RB.Typography>
+                          </RB.Grid>
+                        </RB.Grid>
+                      )
+                    }
+                  })}
+                </>
+              )}
             </RB.Grid>
             <RB.Grid item xs={12} sx={{ width: '478px' }} position="fixed">
               <FormProvider {...methods}>

@@ -14,6 +14,7 @@ declare global {
   }
 }
 
+
 window.addEventListener('load', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
@@ -29,6 +30,7 @@ window.addEventListener('load', () => {
       })
   }
 })
+
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,

@@ -15,6 +15,7 @@ import {
 
 import Board from './Board'
 import { CellArgs } from './types'
+import { useAuth } from '../../../hooks/useAuth'
 
 const Game = (): ReactElement => {
   const [playerShips, setPlayerShips] = useState<CellArgs[][]>(
@@ -34,6 +35,11 @@ const Game = (): ReactElement => {
     setCompShips(generateShipsLayout(shipsSet, dimMatr))
     setGameIsFinished(prevGameIsFinished => !prevGameIsFinished)
   }
+  const isAuth = useAuth()
+
+  useEffect(() => {
+    isAuth()
+  }, [])
 
   useEffect(() => {
     if (checkShipsLength3(compShips)) {
