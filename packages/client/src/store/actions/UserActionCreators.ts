@@ -1,14 +1,34 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { UserRequest, PassWord } from '../types'
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { PassWord, UserRequest } from '../types';
 
-import { axiosInstance } from '../../services/BaseApi'
+import { axiosInstance, axiosInstanceDB } from '../../services/BaseApi';
+
+export const changeUserTheme = createAsyncThunk(
+  '/theme/update',
+  async (data: { userId: number; themeId: number }, thunkAPI) => {
+    try {
+      const response = await axiosInstanceDB.post(`/theme/update`, data)
+
+      return await response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Ошибка в получении данных')
+    }
+  }
+)
 
 export const fetchUser = createAsyncThunk(
   '/user/fetchUser',
   async (_, thunkAPI) => {
     try {
-      const response = await axiosInstance.get(`/auth/user`)
-      return await response.data
+      const user = await axiosInstance.get(`/auth/user`)
+
+      const { id } = user.data
+
+      await axiosInstanceDB.post(`/theme/add`, { userId: id })
+
+      const userTheme = await axiosInstanceDB.get(`/theme/get?userId=${id}`)
+
+      return { user: user.data, userTheme: userTheme.data }
     } catch (error) {
       return thunkAPI.rejectWithValue('Ошибка в получении данных')
     }

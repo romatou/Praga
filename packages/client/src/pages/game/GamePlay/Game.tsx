@@ -1,16 +1,16 @@
-import React, { useState, useMemo, ReactElement, useEffect } from 'react'
+import HouseboatIcon from '@mui/icons-material/Houseboat'
+import RowingIcon from '@mui/icons-material/Rowing'
+import SailingIcon from '@mui/icons-material/Sailing'
+import { Box, Button, Container, Typography } from '@mui/material'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { buttonStyles, game, gameBoard, wrapButton, wrapShip } from './styles'
-import { Container, Button, Box, Typography } from '@mui/material'
-import cell1 from '../../../assets/cell1.svg'
-import cell2 from '../../../assets/cell2.svg'
-import cell3 from '../../../assets/cell3.svg'
 
 import {
-  generateShipsLayout,
-  shipsSet,
+  checkShipsLength3,
   dimMatr,
   generateCoords,
-  checkShipsLength3,
+  generateShipsLayout,
+  shipsSet
 } from './helper'
 
 import Board from './Board'
@@ -112,12 +112,7 @@ const Game = (): ReactElement => {
             </Button>
             <Box sx={{ ...wrapShip }}>
               <Box sx={{ display: 'flex', marginTop: '1rem' }}>
-                <Box
-                  component="img"
-                  src={cell1}
-                  alt="лодка"
-                  sx={{ maxWidth: '4rem' }}
-                />
+                <RowingIcon sx={{ width: '4rem', height: '4rem' }} />
                 <Typography
                   component="p"
                   sx={{
@@ -127,12 +122,7 @@ const Game = (): ReactElement => {
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex' }}>
-                <Box
-                  component="img"
-                  src={cell2}
-                  alt="яхта"
-                  sx={{ maxWidth: '4rem' }}
-                />
+                <HouseboatIcon sx={{ width: '4rem', height: '4rem' }} />
                 <Typography
                   component="p"
                   sx={{
@@ -142,12 +132,7 @@ const Game = (): ReactElement => {
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex' }}>
-                <Box
-                  component="img"
-                  src={cell3}
-                  alt="фрегат"
-                  sx={{ maxWidth: '4rem' }}
-                />
+                <SailingIcon sx={{ width: '4rem', height: '4rem' }} />
                 <Typography
                   component="p"
                   sx={{

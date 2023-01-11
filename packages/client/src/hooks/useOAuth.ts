@@ -1,6 +1,6 @@
-import { oauthYandex, fetchUser } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
-import { OauthData } from '@store/types'
+import { fetchUser, oauthYandex } from '../store/actions/AuthActionCreators'
+import { useAppDispatch } from '../store/index'
+import { OauthData } from '../store/types'
 
 export const useOAuth = () => {
   const REDIRECT_URI = 'http://localhost:3001'
@@ -20,5 +20,5 @@ export const useOAuth = () => {
         }
       })
     }
-  }
+}
 }

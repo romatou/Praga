@@ -25,7 +25,9 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
     },
   },
-  optimizeDeps: {
-    include: ['esm-dep > cjs-dep'],
+  build: {
+    rollupOptions: {
+      input: { main: path.resolve(__dirname, 'index.html') },
+    },
   },
 })

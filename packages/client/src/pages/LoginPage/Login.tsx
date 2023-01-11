@@ -8,8 +8,7 @@ import {
   Stack,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles'
-import { LoginData } from '@store/types'
+import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
 import { fetchUser } from '@store/actions/AuthActionCreators'
@@ -39,17 +38,12 @@ export default function Login() {
   })
 
   useEffect(() => {
-    if (user.id) {
-      navigate('/')
+    if (user.userData.id) {
+      navigate('/game/start')
     }
     dispatch(fetchUser())
-  }, [user.id])
+  }, [user.userData.id])
 
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Roboto, sans-serif',
-    },
-  })
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -61,7 +55,7 @@ export default function Login() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <Box color="primary">
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -117,18 +111,19 @@ export default function Login() {
             </YandexIdButton>
             <Stack spacing={1} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
-              <Link
+              <Typography
                 to="/register"
                 style={{
                   textDecoration: 'none',
-                  fontFamily: 'Roboto, sans-serif',
-                }}>
+                  color: 'red',
+                }}
+                component={Link}>
                 Создать аккаунт
-              </Link>
+              </Typography>
             </Stack>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </Box>
   )
 }
