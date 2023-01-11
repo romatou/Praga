@@ -1,6 +1,5 @@
 import { SvgIcon } from '@mui/material';
 export const YandexIcon = () => {
-<<<<<<< HEAD
   return (
     <SvgIcon viewBox="0 0 44 44" sx={{ width: "24", height: "24", fill: "none", xmlns: "http://www.w3.org/2000/svg" }}>
       <rect width="44" height="44" rx="22" fill="#FC3F1D" />
@@ -8,8 +7,3 @@ export const YandexIcon = () => {
     </SvgIcon>
   );
 }
-
-=======
-  return <img src={icon} />
-}
->>>>>>> main
