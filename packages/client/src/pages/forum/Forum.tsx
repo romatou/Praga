@@ -9,11 +9,11 @@ import { selectForumData } from '../../store/slices/ForumSlice'
 import { forumThemeType } from './types'
 
 const Item = styled(RB.Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
-  color: theme.palette.text.secondary,
+  color: theme.palette.mode === 'dark' ? '#000' : '#fff',
   width: '478px',
 }))
 const Forum = () => {

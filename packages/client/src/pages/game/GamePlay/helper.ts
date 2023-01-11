@@ -26,16 +26,16 @@ export const canvasHeight = size + 100 //высота всего канваса
 
 //время неспешного решения о возможном клике
 export const getStepTimeGame = (x: number): string => {
-  const y = (x / 1000).toFixed(2);
-  return y;
-};
+  const y = (x / 1000).toFixed(2)
+  return y
+}
 
 //время отработки функций
 export const getStepTimeWorkFun = (tHandle: number, tDraw: number): string => {
-  const y = ((tHandle + tDraw) / 1000).toFixed(4);
+  const y = ((tHandle + tDraw) / 1000).toFixed(4)
 
-  return y;
-};
+  return y
+}
 
 export const shipsSet: ShipsSet[] = [
   //размеры кораблей и их количество на доске
@@ -69,36 +69,16 @@ export const drawNameBoard = (
   pauseWorkFunPlayer?: string,
   pauseWorkFunСomp?: string
 ): void => {
-  context.beginPath();
-  context.clearRect(0, 340, 330, 60);
-  context.rect(0, 340, 330, 60);
-  context.fillStyle = "burlywood";
-  context.fill();
-  context.fillStyle = "blue";
-  context.font = "italic " + 12 + "pt Arial";
-  context.fillText(`${font}`, 40, 360);
-  context.font = "italic " + 9 + "pt Arial";
-  if (name === "player") {
-    pausePlayer = pausePlayer === undefined ? "" : pausePlayer;
-    pauseWorkFunPlayer =
-      pauseWorkFunPlayer === undefined ? "" : pauseWorkFunPlayer;
-    context.fillText(
-      `секунды сомнения ${pausePlayer}; тормоз обработки ${pauseWorkFunPlayer};`,
-      2,
-      378
-    );
-  } else {
-    pauseComp = pauseComp === undefined ? "" : pauseComp;
-    pauseWorkFunСomp = pauseWorkFunСomp === undefined ? "" : pauseWorkFunСomp;
-    context.fillText(
-      `секундная дума компа ${pauseComp}; тормоз обработки ${pauseWorkFunСomp};`,
-      2,
-      378
-    );
-  }
-
-  context.closePath();
-};
+  context.beginPath()
+  context.clearRect(0, 340, 300, 60)
+  context.rect(0, 340, 300, 60)
+  context.fillStyle = 'white'
+  context.fill()
+  context.fillStyle = 'black'
+  context.font = 'italic ' + 12 + 'pt Arial'
+  context.fillText(`${font}`, 40, 360)
+  context.closePath()
+}
 
 //генерировать координаты
 export const generateCoords = (cellCount: number): GeneratedCoords => {
@@ -120,7 +100,7 @@ export const drawLatterCoords = (
 ): void => {
   let i = 15
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 12 + 'pt Arial'
   font.forEach(el => {
     context.fillText(`${el}`, i, 320)
@@ -136,7 +116,7 @@ export const drawNumberCoords = (
 ): void => {
   let i = 24
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 13 + 'pt Arial'
   font.forEach(el => {
     context.fillText(`${el}`, 306, i)
@@ -155,7 +135,7 @@ export const drawStatusShips = (
   const num = name === 'computer' ? countCompShips : countPlayerShips
 
   context.beginPath()
-  context.fillStyle = 'blue'
+  context.fillStyle = 'black'
   context.font = 'italic ' + 11 + 'pt Arial'
   context.fillText(`Осталось уничтожить: ${num}`, 10, 395)
   context.closePath()
@@ -177,15 +157,15 @@ export const drawWhoWin = (
   if (str === Winner.PLAYER_IS_WIN) setPlayerIsWin(true)
 
   if (!str) return
-  context.beginPath();
-  context.clearRect(0, 340, 330, 60);
-  context.rect(0, 340, 330, 60);
-  context.fillStyle = "burlywood";
-  context.fill();
-  context.fillStyle = "rgb(158, 0, 0)";
-  context.font = "italic " + 20 + "pt Arial";
-  context.fillText(`${str}`, 10, 370);
-  context.closePath();
+  context.beginPath()
+  context.clearRect(0, 340, 330, 60)
+  context.rect(0, 340, 330, 60)
+  context.fillStyle = 'burlywood'
+  context.fill()
+  context.fillStyle = 'rgb(158, 0, 0)'
+  context.font = 'italic ' + 20 + 'pt Arial'
+  context.fillText(`${str}`, 10, 370)
+  context.closePath()
 }
 
 // рисовать ячейки
@@ -307,7 +287,7 @@ export const drawSunkenShips = (
       context.lineTo(x * cellSize, y * cellSize)
       context.moveTo((x - 1) * cellSize + cellSize, (y - 1) * cellSize)
       context.lineTo(x * cellSize - cellSize, y * cellSize)
-      context.strokeStyle = 'blue'
+      context.strokeStyle = 'black'
       context.fillStyle = 'rgb(255, 82, 82)'
       context.fillRect(
         (x - 1) * cellSize,

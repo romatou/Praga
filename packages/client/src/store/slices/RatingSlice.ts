@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   fetchLeaderboard,
-  sendDataToLeaderboard,
+  sendDataToLeaderboard
 } from '../actions/RatingActionCreators'
 
 import { useAppSelector } from '../index'
 import {
-  StatusLoading,
-  RequestDataState,
-  RequestData,
-  RankingResponse,
   Ranking,
+  RankingResponse,
+  RequestData,
+  RequestDataState,
+  StatusLoading
 } from '../types'
 
 export interface RatingState {
@@ -30,33 +30,34 @@ export const ratingSlice = createSlice({
   name: 'rating',
   initialState,
   reducers: {},
-  extraReducers: {
-    [fetchLeaderboard.fulfilled.type]: (
-      state,
-      { payload }: PayloadAction<RankingResponse[]>
-    ) => {
-      state.ratingData = payload
-      state.requestData.getLeaderboard.status = StatusLoading.SUCCESS
-    },
-    [fetchLeaderboard.pending.type]: state => {
-      state.requestData.getLeaderboard.status = StatusLoading.IN_PROGRESS
-    },
-    [fetchLeaderboard.rejected.type]: (
-      state,
-      { payload }: PayloadAction<string>
-    ) => {
-      state.requestData.getLeaderboard.errorMessage = payload
-      state.requestData.getLeaderboard.status = StatusLoading.ERROR
-    },
-    [sendDataToLeaderboard.fulfilled.type]: state => {
-      state.requestData.addToLeaderboard.status = StatusLoading.SUCCESS
-    },
-    [sendDataToLeaderboard.pending.type]: state => {
-      state.requestData.addToLeaderboard.status = StatusLoading.IN_PROGRESS
-    },
-    [sendDataToLeaderboard.rejected.type]: state => {
-      state.requestData.addToLeaderboard.status = StatusLoading.ERROR
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(
+        fetchLeaderboard.fulfilled.type,
+        (state, { payload }: PayloadAction<RankingResponse[]>) => {
+          state.ratingData = payload
+          state.requestData.getLeaderboard.status = StatusLoading.SUCCESS
+        }
+      )
+      .addCase(fetchLeaderboard.pending.type, state => {
+        state.requestData.getLeaderboard.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(
+        fetchLeaderboard.rejected.type,
+        (state, { payload }: PayloadAction<string>) => {
+          state.requestData.getLeaderboard.errorMessage = payload
+          state.requestData.getLeaderboard.status = StatusLoading.ERROR
+        }
+      )
+      .addCase(sendDataToLeaderboard.fulfilled.type, state => {
+        state.requestData.addToLeaderboard.status = StatusLoading.SUCCESS
+      })
+      .addCase(sendDataToLeaderboard.pending.type, state => {
+        state.requestData.addToLeaderboard.status = StatusLoading.IN_PROGRESS
+      })
+      .addCase(sendDataToLeaderboard.rejected.type, state => {
+        state.requestData.addToLeaderboard.status = StatusLoading.ERROR
+      })
   },
 })
 

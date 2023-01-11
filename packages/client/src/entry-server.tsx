@@ -6,7 +6,7 @@ import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 import React from 'react'
 
-const store = setupStore()
+export const store = setupStore()
 
 export function render(url: string | Partial<Location>) {
   return ReactDOMServer.renderToString(

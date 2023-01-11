@@ -1,9 +1,7 @@
-import { Router, Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import { TopicModel, UserModel, TopicCommentModel, LikeModel } from '../models'
 
-export const topicsRouter = Router()
-
-const addTopic = async (req: Request, res: Response) => {
+export const addTopic = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { title, description, userId, userLogin } = body
@@ -31,7 +29,7 @@ const addTopic = async (req: Request, res: Response) => {
   }
 }
 
-const getAll = async (req: Request, res: Response) => {
+export const getAll = async (req: Request, res: Response) => {
   try {
     const { body } = req
     console.log(body)
@@ -46,7 +44,7 @@ const getAll = async (req: Request, res: Response) => {
   }
 }
 
-const createComment = async (req: Request, res: Response) => {
+export const createComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { parentId, comment, topicId, userId, userLogin } = body
@@ -76,7 +74,7 @@ const createComment = async (req: Request, res: Response) => {
   }
 }
 
-const deleteComment = async (req: Request, res: Response) => {
+export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { id } = body
@@ -91,7 +89,7 @@ const deleteComment = async (req: Request, res: Response) => {
   }
 }
 
-const getComment = async (req: Request, res: Response) => {
+export const getComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { id } = body
@@ -110,7 +108,7 @@ const getComment = async (req: Request, res: Response) => {
   }
 }
 
-const addLike = async (req: Request, res: Response) => {
+export const addLike = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { isLike, commentId, userId, userLogin } = body
@@ -162,7 +160,7 @@ const addLike = async (req: Request, res: Response) => {
   }
 }
 
-const getLikes = async (req: Request, res: Response) => {
+export const getLikes = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { id } = body
@@ -180,11 +178,3 @@ const getLikes = async (req: Request, res: Response) => {
     res.status(400).send()
   }
 }
-
-topicsRouter.route('/add').post(addTopic)
-topicsRouter.route('/all').get(getAll)
-topicsRouter.route('/add-comment').post(createComment)
-topicsRouter.route('/delete-comment').delete(deleteComment)
-topicsRouter.route('/get-comments').post(getComment)
-topicsRouter.route('/add-like').post(addLike)
-topicsRouter.route('/get-likes').post(getLikes)

@@ -2,7 +2,6 @@ export const containerStyles = {
   position: 'relative',
   width: '100vw',
   height: '100vh',
-  backgroundColor: '#D5D5D5',
   margin: 0,
   display: 'flex',
   alignItems: 'center',
@@ -38,9 +37,4 @@ export const startBtnStyles = {
   borderRadius: '6px',
   minWidth: 270,
   fontSize: '20px',
-  backgroundColor: 'black',
-  '&:hover': {
-    backgroundColor: 'black',
-    color: 'white',
-  },
 }

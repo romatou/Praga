@@ -8,13 +8,12 @@ import {
   Stack,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles'
-import { LoginData } from '@store/types'
+import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
-import { fetchUser } from '@store/actions/AuthActionCreators'
-import { useAppDispatch } from '@store/index'
-import { YandexIcon } from '@components/YandexIcon/YandexIcon'
+import { fetchUser } from '../../store/actions/UserActionCreators'
+import { useAppDispatch } from '../../store/index'
+import { styled } from '@mui/material/styles'
 import { useServiceId } from '../../hooks/useServiceId'
 
 export default function Login() {
@@ -38,17 +37,12 @@ export default function Login() {
   })
 
   useEffect(() => {
-    if (user.id) {
-      navigate('/')
+    if (user.userData.id) {
+      navigate('/game/start')
     }
     dispatch(fetchUser())
-  }, [user.id])
+  }, [user.userData.id])
 
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Roboto, sans-serif',
-    },
-  })
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -61,7 +55,7 @@ export default function Login() {
  
 
   return (
-    <ThemeProvider theme={theme}>
+    <Box color="primary">
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -106,27 +100,32 @@ export default function Login() {
               {' '}
               Войти
             </Button>
-            <Typography component="p" sx={{ textAlign: 'center', fontSize: '12px' }}>
-            или
-          </Typography>
-            <YandexIdButton 
-            onClick={()=>location()}
-            // startIcon={<YandexIcon/>}
-            >Войти c Яндекс ID</YandexIdButton>
+            <Typography
+              component="p"
+              sx={{ textAlign: 'center', fontSize: '12px' }}>
+              или
+            </Typography>
+            <YandexIdButton
+              onClick={() => location()}
+              // startIcon={<YandexIcon/>}
+            >
+              Войти c Яндекс ID
+            </YandexIdButton>
             <Stack spacing={2} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
-              <Link
+              <Typography
                 to="/register"
                 style={{
                   textDecoration: 'none',
-                  fontFamily: 'Roboto, sans-serif',
-                }}>
+                  color: 'red',
+                }}
+                component={Link}>
                 Создать аккаунт
-              </Link>
+              </Typography>
             </Stack>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </Box>
   )
 }

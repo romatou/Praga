@@ -4,7 +4,7 @@ import ImageIcon from '@mui/icons-material/Image'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useAppDispatch, useAppSelector } from '../../store/index'
 import { selectForumData } from '../../store/slices/ForumSlice'
-import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 import FormMessange from '../FormSendMess'
 import { Comment } from '../../store/types'
 import { createLike } from '../../store/actions/ForumActionCreators'
@@ -17,7 +17,7 @@ interface Props {
 const CardMessange = (props: Props) => {
   const dispatch = useAppDispatch()
   const { status } = useAppSelector(selectForumData)
-  const { userData } = useAppSelector(selectProfileData)
+  const { userData } = useAppSelector(selectUserData)
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => {
     setOpen(!open)

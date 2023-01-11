@@ -10,7 +10,7 @@ import {
   getLikes,
 } from '../../store/actions/ForumActionCreators'
 import { selectForumData } from '../../store/slices/ForumSlice'
-import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 import { fetchUser } from '../../store/actions/ProfileActionCreators'
 
 type QuizParams = {
@@ -21,7 +21,7 @@ const ForumDetail = () => {
   const { id } = useParams<QuizParams>()
   const dispatch = useAppDispatch()
   const { topics, likes, comments, status } = useAppSelector(selectForumData)
-  const { userData } = useAppSelector(selectProfileData)
+  const { userData } = useAppSelector(selectUserData)
 
   useEffect(() => {
     dispatch(fetchUser())

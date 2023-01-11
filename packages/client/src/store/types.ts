@@ -108,3 +108,10 @@ export interface OauthData {
   code: string
   redirect_uri: string
 }
+
+export type SelectedTheme = 'dark' | 'light'
+
+export type UserDataWithTheme = {
+  user: User
+  userTheme: SelectedTheme
+}
