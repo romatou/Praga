@@ -6,14 +6,12 @@ import authReducer from './slices/AuthSlice'
 import ratingReducer from './slices/RatingSlice'
 import userReducer from './slices/UserSlice'
 import alertReducer from './slices/AlertSlice'
-import forumReducer from './slices/ForumSlice'
 
 const RootReducer = combineReducers({
   auth: authReducer,
   rating: ratingReducer,
   user: userReducer,
   alertReducer: alertReducer,
-  forum: forumReducer,
 })
 
 export const setupStore = (state?: RootState) => {

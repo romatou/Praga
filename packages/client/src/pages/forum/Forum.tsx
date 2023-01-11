@@ -1,15 +1,15 @@
-import React, { useEffect, useCallback } from 'react'
+import React from 'react'
 import * as RB from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Link, useNavigate } from 'react-router-dom'
-import ModalThemeNew from '../../components/ModalThemeNew'
-import { useAppDispatch, useAppSelector } from '../../store/index'
-import { getTopics, createTopic } from '../../store/actions/ForumActionCreators'
-import { selectForumData } from '../../store/slices/ForumSlice'
-import { forumThemeType } from './types'
-import { useAuth } from '../../hooks/useAuth'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Link } from 'react-router-dom'
 
+const forumData = [
+  { name: 'Возможности игры', count: 10, id: 5 },
+  { name: 'Баги', count: 4, id: 1 },
+  { name: 'Идеи', count: 8, id: 2 },
+  { name: 'Новости', count: 20, id: 3 },
+  { name: 'Жалобы', count: 10, id: 4 },
+]
 const Item = styled(RB.Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
   ...theme.typography.body2,
@@ -18,104 +18,51 @@ const Item = styled(RB.Paper)(({ theme }) => ({
   color: theme.palette.mode === 'dark' ? '#000' : '#fff',
   width: '478px',
 }))
-const Forum = () => {
-  const isAuth = useAuth()
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-
-  const { topics, comments, error, status } = useAppSelector(selectForumData)
-  const [open, setOpen] = React.useState(false)
-  const handleClose = () => {
-    setOpen(false)
-  }
-
-  useEffect(() => {
-    isAuth()
-    dispatch(getTopics())
-  }, [])
-  const onSubmitSaveTheme = useCallback((value: forumThemeType) => {
-    dispatch(createTopic(value)).then(function () {
-      return dispatch(getTopics())
-    })
-  }, [])
-
-  return (
-    <RB.Container
-      maxWidth={false}
-      sx={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        background: '#D5D5D5',
-      }}>
-
-      <RB.Button
-        variant="text"
-        onClick={() => navigate('/game/start')}
-        startIcon={<ArrowBackIcon />}>
-        На главную
-      </RB.Button>
-      
-      <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
-        <RB.Grid
-          container
-          spacing={2}
-          marginTop={4}
-          direction="column"
-          justifyContent="center"
-          alignItems="center">
-          <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
-            <RB.Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="flex-end">
-              <RB.Grid item>Тема</RB.Grid>
-              <RB.Grid item sx={{ marginLeft: 'auto' }}>
-                <RB.Button
-                  variant="text"
-                  size="small"
-                  sx={{
-                    marginTop: 1,
-                  }}
-                  onClick={() => setOpen(true)}>
-                  Создать тему
-                </RB.Button>
-              </RB.Grid>
+const Forum = () => (
+  <RB.Container
+    maxWidth={false}
+    sx={{
+      position: 'relative',
+      height: '100vh',
+      width: '100vw',
+    }}>
+    <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
+      <RB.Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        marginTop={4}>
+        <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
+          <RB.Grid container>
+            <RB.Grid item>Тема</RB.Grid>
+            <RB.Grid item sx={{ marginLeft: 'auto' }}>
+              Количество комментариев
             </RB.Grid>
           </RB.Grid>
-          {status !== 'FETCH_FULFILLED' ? (
-            <RB.CircularProgress />
-          ) : (
-            <>
-              {topics?.map(({ title, description, id }) => (
-                <RB.Grid item xs={12} key={id}>
-                  <Item>
-                    <Link
-                      to={'/forum/' + id}
-                      style={{ color: 'inherit', textDecoration: 'none' }}>
-                      <RB.Grid container>
-                        <RB.Tooltip title={description}>
-                          <RB.Grid item>{title}</RB.Grid>
-                        </RB.Tooltip>
-                      </RB.Grid>
-                    </Link>
-                  </Item>
-                </RB.Grid>
-              ))}
-            </>
-          )}
         </RB.Grid>
-      </RB.Container>
-      {
-        <ModalThemeNew
-          isopen={open}
-          handleClose={handleClose}
-          onSubmitTheme={onSubmitSaveTheme}
-        />
-      }
+        {forumData.map((it, i) => {
+          return (
+            <RB.Grid item xs={12} key={i}>
+              <Item>
+                <Link
+                  to={'/forum/' + it.id}
+                  style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <RB.Grid container>
+                    <RB.Grid item>{it.name}</RB.Grid>
+                    <RB.Grid item sx={{ marginLeft: 'auto' }}>
+                      {it.count}
+                    </RB.Grid>
+                  </RB.Grid>
+                </Link>
+              </Item>
+            </RB.Grid>
+          )
+        })}
+      </RB.Grid>
     </RB.Container>
-  )
-}
+  </RB.Container>
+)
 
 export default Forum
