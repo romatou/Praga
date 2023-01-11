@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { LoginData, OauthData, UserData } from '@store/types'
-
-import axiosInstance from '../../services/BaseApi'
+import { axiosInstance } from '../../services/BaseApi'
+import { LoginData, OauthData, UserData } from '../../store/types'
 
 export const register = createAsyncThunk(
   'auth/register',

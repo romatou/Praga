@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Ranking } from '@store/types'
+import { Ranking } from '../types'
 
-import axiosInstance from '../../services/BaseApi'
+import { axiosInstance } from '../../services/BaseApi'
 
 const teamName = 'praga-v2'
 const ratingFieldName = 'score'

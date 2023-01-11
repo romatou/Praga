@@ -1,39 +1,39 @@
-import React, { useEffect, useCallback } from 'react'
-import * as RB from '@mui/material'
-import { LoadingButton } from '@mui/lab'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useForm, FormProvider } from 'react-hook-form'
+import { LoadingButton } from '@mui/lab'
+import * as RB from '@mui/material'
+import React, { useCallback, useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import avatarDummy from '../../assets/avatar-dummy.png'
 
-import { useAppDispatch, useAppSelector } from '../../store/index'
+import { logout } from '../../store/actions/AuthActionCreators'
 import {
-  editProfileData,
   editAvatar,
   editPasswordData,
-  fetchUser,
-} from '../../store/actions/ProfileActionCreators'
-import { logout } from '../../store/actions/AuthActionCreators'
+  editProfileData,
+  fetchUser
+} from '../../store/actions/UserActionCreators'
+import { useAppDispatch, useAppSelector } from '../../store/index'
+import { AlertProps, showAlert } from '../../store/slices/AlertSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 
-import { selectProfileData } from '../../store/slices/ProfileSlice'
-import { showAlert, AlertProps } from '../../store/slices/AlertSlice'
-
+import { RequestDataState } from '../../store/types'
 import {
+  InputLabel,
+  passwordType,
   TYPES_ALERT,
   TYPES_ALERT_MESS,
-  InputLabel,
-  userType,
-  passwordType,
+  userType
 } from './types'
-import { RequestDataState } from '../../store/types'
 
-import ModalPassword from '../../components/ModalPassword'
 import AlertMessage from '../../components/Alert'
+import ModalPassword from '../../components/ModalPassword'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { userData, requestData } = useAppSelector(selectProfileData)
+  const { userData, requestData } = useAppSelector(selectUserData)
 
   const [open, setOpen] = React.useState(false)
 
@@ -139,8 +139,9 @@ const Profile = () => {
             sx={{ width: 120, height: 120 }}
             alt="avatar"
             src={
-              'https://ya-praktikum.tech/api/v2/resources' +
-              (userData?.avatar ?? '')
+              userData.avatar
+                ? 'https://ya-praktikum.tech/api/v2/resources' + userData.avatar
+                : avatarDummy
             }
           />
         </RB.IconButton>
@@ -206,8 +207,7 @@ const Profile = () => {
             marginTop: 1,
           }}
           onClick={() => {
-            dispatch(logout()).then(()=>navigate('/auth'))
-            
+            dispatch(logout()).then(() => navigate('/auth'))
           }}>
           Выйти из профиля
         </RB.Button>

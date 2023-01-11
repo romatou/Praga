@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import { Box, Button, Container, Typography } from '@mui/material'
 import MenuList from './MenuList'
-import playWithUser from '../../../assets/play-with-user.svg'
-import playWithComp from '../../../assets/play-with-comp.svg'
 import {
   containerStyles,
   contentStyles,
@@ -11,6 +9,9 @@ import {
   startBtnStyles,
 } from './styles'
 import { useAuth } from '../../../hooks/useAuth'
+
+import GroupIcon from '@mui/icons-material/Group'
+import ComputerIcon from '@mui/icons-material/Computer'
 
 export default function GameStart() {
   const isAuth = useAuth()
@@ -22,24 +23,17 @@ export default function GameStart() {
       <MenuList />
       <Box sx={contentStyles}>
         <Box sx={imagesStyles}>
-          <Box
+          {/*  <Box
             component="img"
             src={playWithUser}
             alt="играть с другом"
             sx={imgStyles}
-          />
+          /> */}
+          <GroupIcon sx={{ fontSize: 180 }} />
           <Typography component="span" sx={{ fontSize: 32 }}>
             VS
           </Typography>
-          <Box
-            component="img"
-            src={playWithComp}
-            alt="играть с компьютером"
-            sx={{
-              ...imgStyles,
-              padding: '24px',
-            }}
-          />
+          <ComputerIcon sx={{ fontSize: 180 }} />
         </Box>
         <Button variant="contained" sx={startBtnStyles} href="/game/play">
           Начать игру
