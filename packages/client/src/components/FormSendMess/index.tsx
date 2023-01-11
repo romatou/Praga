@@ -7,7 +7,7 @@ import {
   getComments,
   createComment,
 } from '../../store/actions/ForumActionCreators'
-import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { selectUserData } from '../../store/slices/UserSlice'
 
 interface Props {
   parentId: number | null
@@ -16,7 +16,7 @@ interface Props {
 
 const FormMessange = (props: Props) => {
   const dispatch = useAppDispatch()
-  const { userData } = useAppSelector(selectProfileData)
+  const { userData } = useAppSelector(selectUserData)
   const methods = useForm({
     defaultValues: {
       comment: '',
@@ -41,13 +41,13 @@ const FormMessange = (props: Props) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmitMessange)}>
-        <RB.Grid container spacing={2} marginTop={4}>
+        <RB.Grid container spacing={2} marginTop={1}>
           <RB.Grid item xs={12}>
             <RB.Typography gutterBottom variant="subtitle2" component="div">
               Отправить сообщение
             </RB.Typography>
           </RB.Grid>
-          <RB.Grid item xs={12}>
+          <RB.Grid item xs={8}>
             <RB.Paper
               component="form"
               sx={{ p: '2px 4px', alignItems: 'center' }}>
@@ -56,26 +56,14 @@ const FormMessange = (props: Props) => {
           </RB.Grid>
           <RB.Grid
             item
-            xs={12}
+            xs={4}
             container
             direction="row"
             justifyContent="space-between"
             alignItems="center">
-            <Link
-              to="/forum"
-              style={{ color: 'inherit', textDecoration: 'none' }}>
-              <RB.Button
-                variant="text"
-                size="small"
-                sx={{
-                  marginTop: 1,
-                }}>
-                &lArr; назад
-              </RB.Button>
-            </Link>
             <RB.Button
               type="submit"
-              variant="contained"
+              variant="outlined"
               size="small"
               color="inherit">
               Отправить

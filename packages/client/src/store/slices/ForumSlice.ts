@@ -23,10 +23,11 @@ export const ForumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(getTopics.pending.type, state => {
+      .addCase(getTopics.pending.type, (state) => {
         state.status = 'FETCHING'
+        state.error = null
       })
       .addCase(getTopics.fulfilled.type, (state, { payload }: PayloadAction<ForumState>) => {
         state.topics = payload.topics

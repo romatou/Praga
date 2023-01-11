@@ -6,6 +6,7 @@ import {
   oauthYandex,
   register
 } from '@store/actions/AuthActionCreators'
+
 import { fetchUser } from '../actions/UserActionCreators'
 import { RootState } from '../index'
 import {

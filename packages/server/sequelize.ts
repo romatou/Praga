@@ -12,14 +12,15 @@ export default async function sequelize() {
     database: process.env.POSTGRES_DB,
     dialect: 'postgres',
     logging: false,
+    models: [UserTheme, SiteTheme, TopicCommentModel, TopicModel, UserModel, LikeModel]
   }
 
   const sequelize = new Sequelize(sequelizeOptions)
-  sequelize.addModels([UserTheme, SiteTheme, TopicCommentModel, TopicModel, UserModel, LikeModel])
 
   try {
+    await sequelize.authenticate()
     await sequelize.sync({ force: true })
-
+    console.log('Соединение с базой данных установлено')
     await SiteTheme.bulkCreate<Model<SiteTheme, { theme: string }>>([
       {
         theme: 'dark',

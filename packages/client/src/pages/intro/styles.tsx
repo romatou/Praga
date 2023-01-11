@@ -44,6 +44,9 @@ const styles = {
     margin: '1rem 0',
     borderRadius: '6px',
   },
+  link: {
+    textDecoration: 'none',
+  },
 }
 
 export default styles

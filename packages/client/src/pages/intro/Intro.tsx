@@ -6,10 +6,10 @@ import { useAppDispatch } from '../../store/index'
 
 import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
+import { Link } from 'react-router-dom'
 
 export default function Intro() {
   const getOAuth = useOAuth()
-  const getAuth = useAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -21,27 +21,29 @@ export default function Intro() {
     <Box sx={{ ...styles.page }}>
       <Container sx={{ height: '100vh' }}>
         <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
-          <Box
-            sx={{
-              ...styles.containerCentered,
-              flexGrow: '2',
-              alignItems: 'flex-start',
-            }}>
-            <Button
-              onClick={getAuth}
-              sx={{ marginBottom: '1rem' }}
-              variant="contained"
-              size="large"
-              color="secondary">
-              Начать игру
-            </Button>
-            <Typography sx={{ color: 'black' }}>
-              Для игры требуется регистрация
-            </Typography>
+            <Box
+              sx={{
+                ...styles.containerCentered,
+                flexGrow: '2',
+                alignItems: 'flex-start',
+              }}>
+              <Link to="/game/start" style={styles.link}>
+                <Button
+                  sx={{
+                    background: '#000',
+                    marginBottom: '1rem',
+                    ':hover': {
+                      backgroundColor: '#000',
+                      color: '#fff',
+                    },
+                  }}>
+                  Начать игру
+                </Button>
+              </Link>
+              <Typography>Для игры требуется регистрация</Typography>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-
+        </Container>
       <Box
         sx={{
           height: '100vh',
@@ -77,7 +79,6 @@ export default function Intro() {
           </Box>
         </Box>
       </Box>
-
       <Box
         sx={{
           height: '100vh',
@@ -126,3 +127,4 @@ export default function Intro() {
     </Box>
   )
 }
+

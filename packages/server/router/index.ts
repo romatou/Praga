@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import themesRoutes from './themesRoutes'
-import topicsRouter from './ForumRoutes'
+import topicsRouter from './forumRoutes'
 
 const router: Router = Router()
 

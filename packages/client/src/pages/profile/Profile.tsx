@@ -27,6 +27,7 @@ import {
 } from './types'
 
 import AlertMessage from '../../components/Alert'
+import { useAuth } from '../../hooks/useAuth'
 import ModalPassword from '../../components/ModalPassword'
 
 const Profile = () => {
@@ -37,7 +38,10 @@ const Profile = () => {
 
   const [open, setOpen] = React.useState(false)
 
+  const isAuth = useAuth()
+
   useEffect(() => {
+    isAuth()
     dispatch(fetchUser())
   }, [])
   useEffect(() => {

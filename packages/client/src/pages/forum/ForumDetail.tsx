@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as RB from '@mui/material'
 import CardMessange from '../../components/CardMessange'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import FormMessange from '../../components/FormSendMess'
 import { useAppDispatch, useAppSelector } from '../../store/index'
 import {
@@ -11,16 +12,18 @@ import {
 } from '../../store/actions/ForumActionCreators'
 import { selectForumData } from '../../store/slices/ForumSlice'
 import { selectUserData } from '../../store/slices/UserSlice'
-import { fetchUser } from '../../store/actions/ProfileActionCreators'
+import { fetchUser } from '../../store/actions/UserActionCreators'
 
 type QuizParams = {
-  id: string
+  id?: string
 }
 
 const ForumDetail = () => {
-  const { id } = useParams<QuizParams>()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const { topics, likes, comments, status } = useAppSelector(selectForumData)
+  const { id } = useParams<QuizParams>()
   const { userData } = useAppSelector(selectUserData)
 
   useEffect(() => {
@@ -37,12 +40,24 @@ const ForumDetail = () => {
   return (
     <RB.Container
       maxWidth={false}
-      sx={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        background: '#D5D5D5',
-      }}>
+    >
+      <RB.Grid container>
+        <RB.Grid item xs={5}>
+            <RB.Button
+            variant="text"
+            onClick={() => navigate('/forum')}
+            startIcon={<ArrowBackIcon />}>
+            Назад
+          </RB.Button>
+        </RB.Grid>
+        <RB.Grid item xs={7}>
+          <RB.Typography variant="h5" component="div">
+            {topics?.find(item => item.id === Number(id))?.title}
+          </RB.Typography>
+        </RB.Grid>
+      </RB.Grid>
+      
+      
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
@@ -50,15 +65,12 @@ const ForumDetail = () => {
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          marginTop={4}>
-          <RB.Typography variant="h5" component="div">
-            {topics?.find(item => item.id === Number(id))?.title}
-          </RB.Typography>
+          marginTop={1}>
           <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
             <RB.Grid
               container
               spacing={2}
-              sx={{ height: '65vh', overflow: 'auto' }}>
+              sx={{ height: '55vh', overflow: 'auto' }}>
               {status !== 'FETCH_FULFILLED' ? (
                 <RB.CircularProgress />
               ) : (
