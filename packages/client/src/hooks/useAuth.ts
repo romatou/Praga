@@ -7,7 +7,7 @@ export const useAuth = () => {
   const user = useUser()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  
+
   return () => {
     if (!user.id) {
       dispatch(fetchUser()).then(res => {
