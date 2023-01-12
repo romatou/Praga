@@ -14,6 +14,7 @@ import {
   Typography,
   Button,
 } from '@mui/material'
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import avatarStub from '@assets/avatar-stub.svg'
 import { useAppDispatch } from '@store/index'

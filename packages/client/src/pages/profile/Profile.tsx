@@ -34,7 +34,6 @@ const Profile = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { userData, requestData } = useAppSelector(selectProfileData)
   const { userData, requestData } = useAppSelector(selectUserData)
 
   const [open, setOpen] = React.useState(false)

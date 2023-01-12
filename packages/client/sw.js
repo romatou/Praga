@@ -1,13 +1,6 @@
 const CACHE_NAME = 'my-site-cache-v1'
 
-<<<<<<< HEAD
-
-const URLS = [
-  './src/main.tsx',
-]
-=======
 const URLS = ['./src/main.tsx']
->>>>>>> main
 
 this.addEventListener('install', event => {
   event.waitUntil(

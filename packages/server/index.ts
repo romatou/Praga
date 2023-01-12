@@ -4,7 +4,6 @@ import express, { Request, Response } from 'express'
 import fs from 'fs'
 import path from 'path'
 
-import { topicsRouter } from './controllers'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import sequelize from './sequelize'
@@ -54,14 +53,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       })
     )
   }
-  app.use(express.json())
-  app.use(express.urlencoded({ extended: true }))
-  app.use('/api/topics', topicsRouter)
-
-  /*app.get('/', (_, res) => {
-    res.json('👋 Howdy from the server :)')
-  })*/
-
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(router)

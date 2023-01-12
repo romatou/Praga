@@ -3,12 +3,12 @@ import * as RB from '@mui/material'
 import { useForm, FormProvider } from 'react-hook-form'
 import { forumThemeType } from '../../pages/forum/types'
 import { useAppDispatch, useAppSelector } from '../../store/index'
-import { fetchUser } from '../../store/actions/ProfileActionCreators'
-import { selectProfileData } from '../../store/slices/ProfileSlice'
+import { fetchUser } from '../../store/actions/UserActionCreators'
+import { selectUserData } from '../../store/slices/UserSlice'
 
 const ModalThemeNew = (props: any) => {
   const dispatch = useAppDispatch()
-  const { userData } = useAppSelector(selectProfileData)
+  const { userData } = useAppSelector(selectUserData)
 
   useEffect(() => {
     dispatch(fetchUser())

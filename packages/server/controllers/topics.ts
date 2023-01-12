@@ -1,9 +1,7 @@
-import { Router, Request, Response } from 'express'
-import { TopicModel, UserModel, TopicCommentModel } from '../models'
+import type { Request, Response } from 'express'
+import { TopicModel, UserModel, TopicCommentModel, LikeModel } from '../models'
 
-export const topicsRouter = Router()
-
-const addTopic = async (req: Request, res: Response) => {
+export const addTopic = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { title, description, userId, userLogin } = body
@@ -31,7 +29,7 @@ const addTopic = async (req: Request, res: Response) => {
   }
 }
 
-const getAll = async (req: Request, res: Response) => {
+export const getAll = async (req: Request, res: Response) => {
   try {
     const { body } = req
     console.log(body)
@@ -46,7 +44,7 @@ const getAll = async (req: Request, res: Response) => {
   }
 }
 
-const createComment = async (req: Request, res: Response) => {
+export const createComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { parentId, comment, topicId, userId, userLogin } = body
@@ -62,9 +60,10 @@ const createComment = async (req: Request, res: Response) => {
     })
 
     await TopicCommentModel.create({
-      comment,
+      comment: comment,
       topic_id: topicId,
       user_id: userId,
+      user_login: userLogin,
       parent_id: parentId,
     })
 
@@ -75,7 +74,7 @@ const createComment = async (req: Request, res: Response) => {
   }
 }
 
-const deleteComment = async (req: Request, res: Response) => {
+export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { id } = body
@@ -90,7 +89,7 @@ const deleteComment = async (req: Request, res: Response) => {
   }
 }
 
-const getComment = async (req: Request, res: Response) => {
+export const getComment = async (req: Request, res: Response) => {
   try {
     const { body } = req
     const { id } = body
@@ -109,8 +108,73 @@ const getComment = async (req: Request, res: Response) => {
   }
 }
 
-topicsRouter.route('/add').post(addTopic)
-topicsRouter.route('/all').get(getAll)
-topicsRouter.route('/add-comment').post(createComment)
-topicsRouter.route('/delete-comment').delete(deleteComment)
-topicsRouter.route('/get-comments').post(getComment)
+export const addLike = async (req: Request, res: Response) => {
+  try {
+    const { body } = req
+    const { isLike, commentId, userId, userLogin } = body
+
+    await UserModel.findOrCreate({
+      where: {
+        id: userId,
+      },
+      defaults: {
+        id: userId,
+        login: userLogin,
+      },
+    })
+
+    const foundItem = await LikeModel.findOne({
+      where: {
+        comment_id: commentId,
+        user_id: userId,
+      },
+    })
+    if (!foundItem) {
+      await LikeModel.create({
+        comment_id: commentId,
+        isLike: isLike,
+        user_id: userId,
+      })
+    } else {
+      await LikeModel.update(
+        { isLike: isLike },
+        {
+          where: {
+            comment_id: commentId,
+            user_id: userId,
+          },
+        }
+      )
+    }
+    const data = await LikeModel.findAll({
+      where: {
+        user_id: userId,
+      },
+    })
+    res.send({
+      likes: data,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+}
+
+export const getLikes = async (req: Request, res: Response) => {
+  try {
+    const { body } = req
+    const { id } = body
+
+    const data = await LikeModel.findAll({
+      where: {
+        user_id: id,
+      },
+    })
+    res.send({
+      likes: data,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send()
+  }
+}
