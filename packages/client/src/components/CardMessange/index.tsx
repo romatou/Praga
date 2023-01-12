@@ -20,7 +20,7 @@ const CardMessange = (props: Props) => {
   const { userData } = useAppSelector(selectUserData)
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => {
-    setOpen(!open)
+    setOpen(prevOpen => !prevOpen)
   }
 
   const addLike = (value: boolean) => {
