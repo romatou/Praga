@@ -14,7 +14,8 @@ declare global {
   }
 }
 
-window.addEventListener('load', () => {
+
+/*window.addEventListener('load', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
@@ -28,7 +29,8 @@ window.addEventListener('load', () => {
         console.log('ServiceWorker registration failed: ', error)
       })
   }
-})
+})*/
+
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,

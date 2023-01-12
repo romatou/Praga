@@ -7,13 +7,14 @@ import {
   Button,
   Stack,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginData } from '../../store/types'
 import { useLogin } from '../../hooks/useLogin'
 import { useUser } from '../../hooks/useUser'
-import { fetchUser } from '../../store/actions/UserActionCreators'
-import { useAppDispatch } from '../../store/index'
-import { styled } from '@mui/material/styles'
+import { fetchUser } from '@store/actions/AuthActionCreators'
+import { useAppDispatch } from '@store/index'
+import { YandexIcon } from '@components/YandexIcon/YandexIcon'
 import { useServiceId } from '../../hooks/useServiceId'
 
 export default function Login() {
@@ -24,6 +25,7 @@ export default function Login() {
   const location = useServiceId()
 
   const YandexIdButton = styled(Button)({
+    margin: '12px 0',
     color: ' white',
     width: '100%',
     height: '44px',
@@ -52,7 +54,6 @@ export default function Login() {
     } as LoginData
     login(authData)
   }
- 
 
   return (
     <Box color="primary">
@@ -101,17 +102,15 @@ export default function Login() {
               Войти
             </Button>
             <Typography
-              component="p"
-              sx={{ textAlign: 'center', fontSize: '12px' }}>
+              sx={{ textAlign: 'center' }}>
               или
             </Typography>
             <YandexIdButton
               onClick={() => location()}
-              // startIcon={<YandexIcon/>}
-            >
+              startIcon={<YandexIcon/>}>
               Войти c Яндекс ID
             </YandexIdButton>
-            <Stack spacing={2} sx={{ textAlign: 'center' }}>
+            <Stack spacing={1} sx={{ textAlign: 'center' }}>
               <Typography>Еще не зарегистрированы?</Typography>
               <Typography
                 to="/register"

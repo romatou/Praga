@@ -75,10 +75,45 @@ export interface PassWord {
   newPassword: string
 }
 
+export type Topic = {
+  user_id: number
+  title: string
+  description?: string
+  id: number
+}
+
+export type Comment = {
+  id: number
+  createdAt: string
+  topic_id: number
+  parent_id: number | null
+  user_id: number
+  user_login: string
+  comment: string
+}
+
+export type Like = {
+  user_id: number
+  comment_id: number
+  isLike: boolean
+}
+export interface ForumState {
+  topics: Topic[]
+  comments: Comment[]
+  likes: Like[]
+  error: string | null
+  status: 'INIT' | 'FETCHING' | 'FETCH_FULFILLED' | 'FETCH_FAILED' | null
+}
 export interface OauthData {
   code: string
   redirect_uri: string
 }
+
+export interface OauthData {
+  code: string
+  redirect_uri: string
+}
+
 
 export type SelectedTheme = 'dark' | 'light'
 
