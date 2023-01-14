@@ -1,49 +1,49 @@
 import { Box, Button, Container, Typography } from '@mui/material'
-import { useEffect } from 'react'
-import { useOAuth } from '../../hooks/useOAuth'
-import { fetchUser } from '../../store/actions/UserActionCreators'
-import { useAppDispatch } from '../../store/index'
+// import { useEffect } from 'react'
+// import { useOAuth } from '../../hooks/useOAuth'
+// import { fetchUser } from '../../store/actions/UserActionCreators'
+// import { useAppDispatch } from '../../store/index'
 
-import { useAuth } from '../../hooks/useAuth'
+// import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
 import { Link } from 'react-router-dom'
 
 export default function Intro() {
-  const getOAuth = useOAuth()
-  const dispatch = useAppDispatch()
+  // const getOAuth = useOAuth()
+  // const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    if (getOAuth) getOAuth()
-    dispatch(fetchUser())
-  }, [])
+  // useEffect(() => {
+  //   if (getOAuth) getOAuth()
+  //   dispatch(fetchUser())
+  // }, [])
 
   return (
     <Box sx={{ ...styles.page }}>
       <Container sx={{ height: '100vh' }}>
         <Box sx={{ display: 'flex', flexFlow: 'column', height: '100vh' }}>
-            <Box
-              sx={{
-                ...styles.containerCentered,
-                flexGrow: '2',
-                alignItems: 'flex-start',
-              }}>
-              <Link to="/game/start" style={styles.link}>
-                <Button
-                  sx={{
-                    background: '#000',
-                    marginBottom: '1rem',
-                    ':hover': {
-                      backgroundColor: '#000',
-                      color: '#fff',
-                    },
-                  }}>
-                  Начать игру
-                </Button>
-              </Link>
-              <Typography>Для игры требуется регистрация</Typography>
-            </Box>
+          <Box
+            sx={{
+              ...styles.containerCentered,
+              flexGrow: '2',
+              alignItems: 'flex-start',
+            }}>
+            <Link to="/game/start" style={styles.link}>
+              <Button
+                sx={{
+                  background: '#000',
+                  marginBottom: '1rem',
+                  ':hover': {
+                    backgroundColor: '#000',
+                    color: '#fff',
+                  },
+                }}>
+                Начать игру
+              </Button>
+            </Link>
+            <Typography>Для игры требуется регистрация</Typography>
           </Box>
-        </Container>
+        </Box>
+      </Container>
       <Box
         sx={{
           height: '100vh',
@@ -127,4 +127,3 @@ export default function Intro() {
     </Box>
   )
 }
-

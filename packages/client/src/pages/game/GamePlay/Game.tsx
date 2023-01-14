@@ -10,7 +10,7 @@ import {
   dimMatr,
   generateCoords,
   generateShipsLayout,
-  shipsSet
+  shipsSet,
 } from './helper'
 
 import Board from './Board'
