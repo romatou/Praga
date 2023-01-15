@@ -1,25 +1,15 @@
+import {
+  Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography
+} from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Box,
-  TableRow,
-  TableHead,
-  TableContainer,
-  TableCell,
-  TableBody,
-  Table,
-  TableFooter,
-  TablePagination,
-  Paper,
-  Typography,
-  Button,
-} from '@mui/material'
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import avatarStub from '@assets/avatar-stub.svg'
-import { useAppDispatch } from '@store/index'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { fetchLeaderboard } from '@store/actions/RatingActionCreators'
+import { useAppDispatch } from '@store/index'
 import { selectRatingData } from '@store/slices/RatingSlice'
+import { useAuth } from '../../hooks/useAuth'
 import { avatarContainer, container } from './styles'
 
 export default function Ranking() {
@@ -31,7 +21,10 @@ export default function Ranking() {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
+  const isAuth = useAuth()
+
   useEffect(() => {
+    isAuth()
     dispatch(fetchLeaderboard())
   }, [])
 

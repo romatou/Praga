@@ -15,7 +15,7 @@ import {
 } from '../../store/actions/UserActionCreators'
 import { useAppDispatch, useAppSelector } from '../../store/index'
 import { AlertProps, showAlert } from '../../store/slices/AlertSlice'
-import { selectUserData } from '../../store/slices/UserSlice'
+import { resetUser, selectUserData } from '../../store/slices/UserSlice'
 
 import { RequestDataState } from '../../store/types'
 import {
@@ -27,8 +27,8 @@ import {
 } from './types'
 
 import AlertMessage from '../../components/Alert'
-import { useAuth } from '../../hooks/useAuth'
 import ModalPassword from '../../components/ModalPassword'
+import { useAuth } from '../../hooks/useAuth'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
@@ -210,7 +210,10 @@ const Profile = () => {
             marginTop: 1,
           }}
           onClick={() => {
-            dispatch(logout()).then(() => navigate('/auth'))
+            dispatch(logout()).then(() => {
+              dispatch(resetUser())
+              navigate('/auth')
+            })
           }}>
           Выйти из профиля
         </RB.Button>
