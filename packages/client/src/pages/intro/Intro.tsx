@@ -1,21 +1,21 @@
 import { Box, Button, Container, Typography } from '@mui/material'
-// import { useEffect } from 'react'
-// import { useOAuth } from '../../hooks/useOAuth'
-// import { fetchUser } from '../../store/actions/UserActionCreators'
-// import { useAppDispatch } from '../../store/index'
+import { useEffect } from 'react'
+import { useOAuth } from '../../hooks/useOAuth'
+import { fetchUser } from '../../store/actions/UserActionCreators'
+import { useAppDispatch } from '../../store/index'
 
-// import { useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 import styles from './styles'
 import { Link } from 'react-router-dom'
 
 export default function Intro() {
-  // const getOAuth = useOAuth()
-  // const dispatch = useAppDispatch()
+  const getOAuth = useOAuth()
+  const dispatch = useAppDispatch()
 
-  // useEffect(() => {
-  //   if (getOAuth) getOAuth()
-  //   dispatch(fetchUser())
-  // }, [])
+  useEffect(() => {
+    if (getOAuth) getOAuth()
+    dispatch(fetchUser())
+  }, [])
 
   return (
     <Box sx={{ ...styles.page }}>
