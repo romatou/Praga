@@ -11,7 +11,7 @@ services:
         CLIENT_PORT: ${CLIENT_PORT}
     restart: always
     ports:
-      - '${CLIENT_PORT}:3000'
+      - '${CLIENT_PORT}:${CLIENT_PORT}'
     environment:
       - CLIENT_PORT=${CLIENT_PORT}
     networks:
