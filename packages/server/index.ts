@@ -71,9 +71,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
         store = (await vite.ssrLoadModule('../client/src/entry-server.tsx'))
           .store
       } else {
-        const ssrEntryPoint = require.resolve(
-          '../../client/dist/ssr/entry-server.cjs'
-        )
+        const ssrEntryPoint = require.resolve('client/ssr/entry-server.cjs')
         render = (await import(ssrEntryPoint)).render
 
         store = (await import(ssrEntryPoint)).store

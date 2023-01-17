@@ -23,7 +23,8 @@
     "reflect-metadata": "0.1.13",
     "search-query-parser": "1.6.0",
     "sequelize": "6.28.0",
-    "sequelize-typescript": "2.1.5"
+    "sequelize-typescript": "2.1.5",
+    "vite": "3.0.7"
   },
   "devDependencies": {
     "@types/cors": "2.8.12",
