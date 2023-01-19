@@ -64,7 +64,7 @@ const Forum = () => {
           direction="column"
           justifyContent="center"
           alignItems="center">
-          <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
+          <RB.Grid  item xs={12} sx={{ width: '478px' }}>
             <RB.Grid
               container
               direction="row"

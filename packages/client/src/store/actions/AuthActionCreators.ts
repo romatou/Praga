@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { REDIRECT_URI } from '../../hooks/useServiceId'
 import { axiosInstance } from '../../services/BaseApi'
 import { LoginData, OauthData, UserData } from '../../store/types'
 
@@ -50,7 +51,9 @@ export const getServiceId = createAsyncThunk(
   'auth/serviceid',
   async (_, thunkApi) => {
     try {
-      const response = await axiosInstance.get('oauth/yandex/service-id')
+      // const response = await axiosInstance.get('oauth/yandex/service-id')
+      const response = await axiosInstance.get('oauth/yandex/service-id', {params: {redirect_uri:`${REDIRECT_URI}`}})
+
       return response.data
     } catch (e) {
       return thunkApi.rejectWithValue('No such redirect_uri refistered')

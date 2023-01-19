@@ -8,14 +8,14 @@ import {
   Typography
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { fetchUser } from '@store/actions/AuthActionCreators'
+import { Link, useNavigate } from 'react-router-dom'
+import { LoginData } from '../../store/types'
+import { useLogin } from '../../hooks/useLogin'
+import { useUser } from '../../hooks/useUser'
+import { fetchUser } from '@store/actions/UserActionCreators'
 import { useAppDispatch } from '@store/index'
 import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useLogin } from '../../hooks/useLogin'
 import { useServiceId } from '../../hooks/useServiceId'
-import { useUser } from '../../hooks/useUser'
-import { LoginData } from '../../store/types'
 
 export default function Login() {
   const user = useUser()

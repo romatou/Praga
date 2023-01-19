@@ -1,18 +1,23 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { useOAuth } from '../../hooks/useOAuth'
 import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'
 
 import styles from './styles'
 
 export default function Intro() {
-  const getAuth = useAuth()
+  console
+  // const getAuth = useAuth()
+  const getOAuth = useOAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchUser())
-  }, [])
+    getOAuth()
+    }, [])
 
   return (
     <Box sx={{ ...styles.page }}>
@@ -24,14 +29,17 @@ export default function Intro() {
               flexGrow: '2',
               alignItems: 'flex-start',
             }}>
-            <Button
-              onClick={getAuth}
+              <Link to='/game/start'>
+              <Button
+              // onClick={getAuth}
               sx={{ marginBottom: '1rem' }}
               variant="contained"
               size="large"
               color="secondary">
               Начать игру
             </Button>
+              </Link>
+            
             <Typography sx={{ color: 'black' }}>
               Для игры требуется регистрация
             </Typography>

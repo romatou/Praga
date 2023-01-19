@@ -9,7 +9,7 @@ export const useAuth = () => {
   const navigate = useNavigate()
 
   return () => {
-    if (!user.userData?.id) {
+    if (user.userData.id === 0) {
       dispatch(fetchUser()).then(res => {
         if (res.type === '/user/fetchUser/rejected') {
           return navigate('/auth')

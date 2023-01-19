@@ -1,24 +1,53 @@
 import { fetchUser, oauthYandex } from '../store/actions/AuthActionCreators'
 import { useAppDispatch } from '../store/index'
 import { OauthData } from '../store/types'
+import { REDIRECT_URI } from './useServiceId'
 
 export const useOAuth = () => {
-  const REDIRECT_URI = 'http://localhost:3001'
+  // console.log('oauth')
+
   const dispatch = useAppDispatch()
   const url = document.location.href
-  const code = url.split('=').pop()
+  const token = url.split('token=').pop()
   return () => {
-    if (/code/.test(url)) {
+    if (/token/.test(url)) {
       dispatch(
         oauthYandex({
-          code: code,
+          code: token,
           redirect_uri: REDIRECT_URI,
         } as OauthData)
-      ).then(res => {
-        if (res.payload === 'OK') {
-          dispatch(fetchUser())
-        }
-      })
+      )
+        .then(res => {
+          if (res.payload === 'OK') {
+            dispatch(fetchUser())
+          }
+        })
     }
+    return
+  }
 }
-}
+
+
+// export const useOAuth = () => {
+//   console.log('oauth')
+
+//   const dispatch = useAppDispatch()
+//   const url = document.location.href
+//   const token = url.split('token=').pop()
+//   return () => {
+//     if (/token/.test(url)) {
+//       dispatch(
+//         oauthYandex({
+//           code: token,
+//           redirect_uri: REDIRECT_URI,
+//         } as OauthData)
+//       )
+//         .then(res => {
+//           if (res.payload === 'OK') {
+//             dispatch(fetchUser())
+//           }
+//         })
+//     }
+//     return
+//   }
+// }

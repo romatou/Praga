@@ -29,6 +29,7 @@ import {
 import AlertMessage from '../../components/Alert'
 import ModalPassword from '../../components/ModalPassword'
 import { useAuth } from '../../hooks/useAuth'
+import { YA_URL_API } from '../../services/BaseApi'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
@@ -43,6 +44,7 @@ const Profile = () => {
   useEffect(() => {
     isAuth()
     dispatch(fetchUser())
+    
   }, [])
   useEffect(() => {
     getAlert(requestData.editAvatar, 'Аватар: ')
@@ -143,7 +145,8 @@ const Profile = () => {
             alt="avatar"
             src={
               userData.avatar
-                ? 'https://ya-praktikum.tech/api/v2/resources' + userData.avatar
+              ? YA_URL_API  + '/resources' + userData.avatar
+                // ? 'https://ya-praktikum.tech/api/v2/resources' + userData.avatar
                 : avatarDummy
             }
           />
@@ -214,6 +217,7 @@ const Profile = () => {
               dispatch(resetUser())
               navigate('/auth')
             })
+
           }}>
           Выйти из профиля
         </RB.Button>
