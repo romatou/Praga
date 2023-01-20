@@ -48,17 +48,18 @@ const Forum = () => {
         width: '100vw',
         background: '#D5D5D5',
       }}>
-
       <RB.Button
         variant="text"
         onClick={() => navigate('/game/start')}
         startIcon={<ArrowBackIcon />}>
         На главную
       </RB.Button>
-      
+
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
+          item
+          xs={12}
           spacing={2}
           marginTop={4}
           direction="column"
