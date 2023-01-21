@@ -558,3 +558,15 @@ export const generateShipsLayout = (
 
   return ships
 }
+
+export const musicControl = (sound: HTMLAudioElement | null, ms = 1000) => {
+  if (sound) {
+    sound.play()
+    setTimeout(() => {
+      if (sound) {
+        sound.pause();
+        sound.currentTime = 0
+      }
+    }, ms)
+  }
+}

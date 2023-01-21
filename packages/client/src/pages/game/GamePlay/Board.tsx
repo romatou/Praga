@@ -7,6 +7,7 @@ import React, {
   ReactElement,
   memo,
 } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@store/index'
 import { selectUserData } from '@store/slices/UserSlice'
 import {
@@ -14,6 +15,8 @@ import {
   sendDataToLeaderboard,
 } from '@store/actions/RatingActionCreators'
 import { selectRatingData } from '@store/slices/RatingSlice'
+import shotSoundEffect from '../../../assets/media/shot.mp3'
+import explosionSoundEffect from '../../../assets/media/explosion.wav'
 
 import {
   drawCells,
@@ -36,6 +39,7 @@ import {
   canvasHeight,
   getStepTimeGame,
   getStepTimeWorkFun,
+  musicControl,
 } from './helper'
 
 import { CellArgs, BoardProps } from './types'
@@ -65,6 +69,8 @@ const Board = ({
   const user = useAppSelector(selectUserData)
   const ratingData = selectRatingData()
 
+  const navigate = useNavigate();
+
   const [sunkenShipsPlayer, setSunkenShipsPlayer] = useState<CellArgs[]>([]) //затонувшие корабли player
   const [sunkenShipsComp, setSunkenShipsComp] = useState<CellArgs[]>([]) //затонувшие корабли comp
 
@@ -78,6 +84,14 @@ const Board = ({
   const [countCompShips, setCountCompShips] = useState(allCompShips) //Количество кораблей для уничтожения
 
   const [playerIsWin, setPlayerIsWin] = useState(false)
+
+  const [shotSound, setShotSound] = useState<HTMLAudioElement | null>(null)
+  const [explosionSound, setExplosionSound] = useState<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    setShotSound(new Audio(shotSoundEffect));
+    setExplosionSound(new Audio(explosionSoundEffect));
+  }, [])
 
   useEffect(() => {
     dispatch(fetchLeaderboard())
@@ -124,6 +138,7 @@ const Board = ({
       )
 
       setPlayerIsWin(false)
+      navigate('/game/result')
     }
   }, [playerIsWin, user, ratingData])
 
@@ -268,6 +283,8 @@ const Board = ({
   const handleCellClick = (event: {
     nativeEvent: { offsetX: number; offsetY: number }
   }) => {
+
+
     if (countCompShips === 0 || countPlayerShips === 0) return
     if (currentPlayer === name) return //если текущий ход равен глобальному currentPlayer(тек. ход), то ничего не делаем
 
@@ -286,10 +303,14 @@ const Board = ({
         setSunkenShipsComp([...sunkenShipsComp, cell]) //если найден корабль противника то внесем его ячейку в потопленные
         setCountCompShips(countCompShips! - 1) //отнимем коли-во кораблей противника
         currentPlayer = 'player' // ход остается за игроком
+        
+        musicControl(explosionSound)
       } else {
         if (cellIsEngaged({ cell, engagedCells: pastCellsPlayer })) return // если клик по уже пустой клетке
         setPastCellsPlayer([...pastCellsPlayer, cell]) // сохранить пустую клетку
         currentPlayer = 'computer' // т к ход мимо переход стрельбы к компу
+
+        musicControl(shotSound, 400)
       }
     }
 
