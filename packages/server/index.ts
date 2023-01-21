@@ -10,7 +10,7 @@ import { createServer as createViteServer } from 'vite'
 import router from './router'
 import sequelize from './sequelize'
 import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware'
-import { isAuthMiddleware } from './isAuthMiddleware'
+// import { isAuthMiddleware } from './isAuthMiddleware'
 
 dotenv.config()
 
@@ -84,7 +84,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       let template = index
       let render
       let store
-  
+
       if (isDev) {
         template = await vite.transformIndexHtml(url, template)
   
@@ -99,15 +99,21 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   
         store = (await import(ssrEntryPoint)).store
       }
-  
-      const appHtml = render(url)
-
+      // console.log('authCookie:', req.cookies.authCookie)
+      let appHtml;
+      
+      if(!req.cookies.authCookie && !req.cookies.uuid ) {
+         appHtml = render('/auth')
+      } else {
+        appHtml = render(url)
+      }
+      
       const state = store.getState()
   
       const preloadedState = `<script>window.__PRELOADED_STATE__  = ${JSON.stringify(
         state
       )}</script>`
-  
+      
       const html = template
         .replace(`<!--ssr-->`, appHtml)
         .replace('<!--state-->', preloadedState)
@@ -117,10 +123,9 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       isDev && vite.ssrFixStacktrace(e as Error)
     }
   }
-  // app.use('*',  renderMiddleware)
+  app.use('*',  renderMiddleware)
 
-  app.use('*', isAuthMiddleware, renderMiddleware)
-
+  // app.use('*', isAuthMiddleware, renderMiddleware)
 //middleware отвечающий за рендер
   // app.use('*', async (req: Request, res: Response) => {
   //   try {
