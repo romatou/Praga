@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
-import { createTheme } from '@mui/material/styles'
-import Login from './pages/LoginPage/Login'
-import Register from './pages/register/Register'
-import Profile from './pages/profile/Profile'
-import GameStart from './pages/game/GameStart'
-import GamePlay from './pages/game/GamePlay'
-import GameResult from './pages/game/GameResult'
-import Intro from './pages/intro/Intro'
 import Forum from './pages/forum/Forum'
 import ForumDetail from './pages/forum/ForumDetail'
-import Ranking from './pages/ranking'
+import GamePlay from './pages/game/GamePlay'
+import GameResult from './pages/game/GameResult'
+import GameStart from './pages/game/GameStart'
+import Intro from './pages/intro/Intro'
+import Login from './pages/LoginPage/Login'
 import NotFound from './pages/not-found/NotFound'
+import Profile from './pages/profile/Profile'
+import Ranking from './pages/ranking'
+import Register from './pages/register/Register'
 import ServerError from './pages/server-error/ServerError'
 import { useAppDispatch, useAppSelector } from './store'
-import {  selectUserData } from './store/slices/UserSlice'
 import { fetchUser } from './store/actions/UserActionCreators'
+import { selectUserData } from './store/slices/UserSlice'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -33,17 +32,15 @@ function App() {
       mode: selectedTheme,
       ...(selectedTheme === 'light'
         ? {
-            // palette values for light mode
-            primary: { main: '#000000' },
-            secondary: { main: '#ffffff' },
-            neutral: { main: '#ffffff' },
-          }
+          // palette values for light mode
+          primary: { main: '#000000' },
+          secondary: { main: '#ffffff' },
+        }
         : {
-            // palette values for dark mode
-            primary: { main: '#ffffff' },
-            secondary: { main: '#000000' },
-            neutral: { main: '#000000' },
-          }),
+          // palette values for dark mode
+          primary: { main: '#ffffff' },
+          secondary: { main: '#000000' },
+        }),
     },
   })
 
