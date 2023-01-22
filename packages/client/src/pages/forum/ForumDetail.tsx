@@ -1,18 +1,18 @@
-import React, { useEffect, useCallback } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import * as RB from '@mui/material'
-import CardMessange from '../../components/CardMessange'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import * as RB from '@mui/material'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import CardMessange from '../../components/CardMessange'
 import FormMessange from '../../components/FormSendMess'
-import { useAppDispatch, useAppSelector } from '../../store/index'
 import {
   getComments,
-  getTopics,
   getLikes,
+  getTopics
 } from '../../store/actions/ForumActionCreators'
+import { fetchUser } from '../../store/actions/UserActionCreators'
+import { useAppDispatch, useAppSelector } from '../../store/index'
 import { selectForumData } from '../../store/slices/ForumSlice'
 import { selectUserData } from '../../store/slices/UserSlice'
-import { fetchUser } from '../../store/actions/UserActionCreators'
 
 type QuizParams = {
   id?: string
@@ -38,12 +38,10 @@ const ForumDetail = () => {
   }, [userData])
 
   return (
-    <RB.Container
-      maxWidth={false}
-    >
+    <RB.Container maxWidth={false}>
       <RB.Grid container>
         <RB.Grid item xs={5}>
-            <RB.Button
+          <RB.Button
             variant="text"
             onClick={() => navigate('/forum')}
             startIcon={<ArrowBackIcon />}>
@@ -56,8 +54,6 @@ const ForumDetail = () => {
           </RB.Typography>
         </RB.Grid>
       </RB.Grid>
-      
-      
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
@@ -66,7 +62,7 @@ const ForumDetail = () => {
           alignItems="center"
           spacing={2}
           marginTop={1}>
-          <RB.Grid item xs={12} sx={{ width: '478px' }} spacing={12}>
+          <RB.Grid item xs={12} sx={{ width: '478px' }}>
             <RB.Grid
               container
               spacing={2}

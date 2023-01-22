@@ -2,8 +2,10 @@ version: '3.9'
 
 services:
   app:
-    container_name: app
-    image: romatou/praga-app
+    container_name: praga-app
+    build:
+      context: .
+      target: production
     restart: always
     expose:
       - '${SERVER_PORT}'

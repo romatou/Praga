@@ -2,13 +2,12 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 import fs from 'fs'
+import helmet from 'helmet'
 import path from 'path'
-
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
-import sequelize from './sequelize'
 import router from './router'
-import helmet from 'helmet'
+import sequelize from './sequelize'
 
 dotenv.config()
 
@@ -24,9 +23,9 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const index = isDev
     ? fs.readFileSync(path.resolve(__dirname, '../client/index.html'), 'utf-8')
     : fs.readFileSync(
-        path.resolve(__dirname, '../../client/dist/client/index.html'),
-        'utf-8'
-      )
+      path.resolve(__dirname, '../../client/dist/index.html'),
+      'utf-8'
+    )
 
   let vite: ViteDevServer
 
@@ -48,7 +47,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
     app.use(cors())
   } else {
     app.use(
-      express.static(path.resolve(__dirname, '../../client/dist/client'), {
+      express.static(path.resolve(__dirname, '../../client/dist'), {
         index: false,
       })
     )
@@ -56,22 +55,24 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
 
-  app.use(
-    helmet.contentSecurityPolicy({
-      useDefaults: true,
-      directives: {
-        'default-src':
-          helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
-        'script-src': [
-          "'self'",
-          "https: 'unsafe-inline'",
-          'https://ya-praktikum.tech/api/v2/auth/user',
-          'https://ya-praktikum.tech/api/v2/user/profile',
-          'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
-        ],
-      },
-    })
-  )
+  if (!isDev) {
+    app.use(
+      helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+          'default-src':
+            helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
+          'script-src': [
+            "'self'",
+            "https: 'unsafe-inline'",
+            'https://ya-praktikum.tech/api/v2/auth/user',
+            'https://ya-praktikum.tech/api/v2/user/profile',
+            'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
+          ],
+        },
+      })
+    )
+  }
 
   app.use(router)
   app.use('*', async (req: Request, res: Response) => {

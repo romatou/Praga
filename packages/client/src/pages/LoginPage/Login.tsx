@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react'
+import { YandexIcon } from '@components/YandexIcon/YandexIcon'
 import {
-  Container,
   Box,
-  TextField,
-  Typography,
   Button,
+  Container,
   Stack,
+  TextField,
+  Typography
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Link, useNavigate } from 'react-router-dom'
-import { LoginData } from '../../store/types'
-import { useLogin } from '../../hooks/useLogin'
-import { useUser } from '../../hooks/useUser'
 import { fetchUser } from '@store/actions/AuthActionCreators'
 import { useAppDispatch } from '@store/index'
-import { YandexIcon } from '@components/YandexIcon/YandexIcon'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLogin } from '../../hooks/useLogin'
 import { useServiceId } from '../../hooks/useServiceId'
+import { useUser } from '../../hooks/useUser'
+import { LoginData } from '../../store/types'
 
 export default function Login() {
   const user = useUser()
@@ -24,18 +24,14 @@ export default function Login() {
   const login = useLogin()
   const location = useServiceId()
 
+  const selectedTheme = user.selectedTheme
+
   const YandexIdButton = styled(Button)({
     margin: '12px 0',
-    color: ' white',
+    color: selectedTheme === 'light' ? ' white' : ' black',
     width: '100%',
-    height: '44px',
-    backgroundColor: 'black',
+    backgroundColor: selectedTheme === 'light' ? ' black' : ' white',
     textTransform: 'none',
-    '&:hover': {
-      backgroundColor: 'black',
-      borderColor: '#0062cc',
-      boxShadow: 'none',
-    },
   })
 
   useEffect(() => {
@@ -101,13 +97,10 @@ export default function Login() {
               {' '}
               Войти
             </Button>
-            <Typography
-              sx={{ textAlign: 'center' }}>
-              или
-            </Typography>
+            <Typography sx={{ textAlign: 'center' }}>или</Typography>
             <YandexIdButton
               onClick={() => location()}
-              startIcon={<YandexIcon/>}>
+              startIcon={<YandexIcon />}>
               Войти c Яндекс ID
             </YandexIdButton>
             <Stack spacing={1} sx={{ textAlign: 'center' }}>

@@ -3,8 +3,8 @@ import { useAppDispatch } from '@store/index'
 
 export const useServiceId = () => {
   const dispatch = useAppDispatch()
-  const REDIRECT_URI = 'http://localhost:3001'
-  // const REDIRECT_URI =`http://localhost:${__CLIENT_PORT__}`
+  const REDIRECT_URI = 'http://localhost:3000'
+
   return () => {
     dispatch(getServiceId()).then(res => {
       if (res.payload.service_id) {

@@ -1,21 +1,25 @@
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useUser } from '../hooks/useUser'
 import { fetchUser } from '../store/actions/UserActionCreators'
 import { useAppDispatch } from '../store/index'
-import { useUser } from '../hooks/useUser'
-import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
   const user = useUser()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  
+  const { pathname } = useLocation()
+
   return () => {
-    if (!user.id) {
+    if (!user.userData?.id) {
       dispatch(fetchUser()).then(res => {
-        if (res.type === 'auth/fetch/rejected') {
+        if (res.type === '/user/fetchUser/rejected') {
           return navigate('/auth')
         }
       })
+    } else if (pathname === '/') {
+      navigate('/game/start')
     }
+
     return
   }
 }
