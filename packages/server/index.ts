@@ -69,6 +69,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
           'https://ya-praktikum.tech/api/v2/user/profile',
           'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
         ],
+        'img-src': ["'self'", 'https://ya-praktikum.tech/api/v2/resources/'],
       },
     })
   )
