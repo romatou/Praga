@@ -1,10 +1,10 @@
-import { StaticRouter } from 'react-router-dom/server'
+import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
-import { setupStore } from './store'
+import { StaticRouter } from 'react-router-dom/server'
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
-import React from 'react'
+import { setupStore } from './store'
 
 export const store = setupStore()
 

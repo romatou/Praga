@@ -9,15 +9,14 @@ import { useAppDispatch } from '../../store/index'
 import styles from './styles'
 
 export default function Intro() {
-  console
-  // const getAuth = useAuth()
   const getOAuth = useOAuth()
+  const getAuth = useAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchUser())
     getOAuth()
-    }, [])
+  }, [])
 
   return (
     <Box sx={{ ...styles.page }}>
@@ -29,17 +28,16 @@ export default function Intro() {
               flexGrow: '2',
               alignItems: 'flex-start',
             }}>
-              <Link to='/game/start'>
+            <Link to="/game/start">
               <Button
-              // onClick={getAuth}
-              sx={{ marginBottom: '1rem' }}
-              variant="contained"
-              size="large"
-              color="secondary">
-              Начать игру
-            </Button>
-              </Link>
-            
+                // onClick={getAuth}
+                sx={{ marginBottom: '1rem' }}
+                variant="contained"
+                size="large"
+                color="secondary">
+                Начать игру
+              </Button>
+            </Link>
             <Typography sx={{ color: 'black' }}>
               Для игры требуется регистрация
             </Typography>

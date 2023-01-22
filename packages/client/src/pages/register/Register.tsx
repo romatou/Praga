@@ -1,15 +1,11 @@
-import React from 'react'
 import {
-  Container,
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Stack,
+  Box, Button, Container, Stack, TextField,
+  Typography
 } from '@mui/material'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { UserData } from '../../store/types'
 import { useRegister } from '../../hooks/useRegister'
+import { UserData } from '../../store/types'
 
 export default function Register() {
   const register = useRegister()

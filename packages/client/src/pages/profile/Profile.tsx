@@ -44,7 +44,6 @@ const Profile = () => {
   useEffect(() => {
     isAuth()
     dispatch(fetchUser())
-    
   }, [])
   useEffect(() => {
     getAlert(requestData.editAvatar, 'Аватар: ')
@@ -145,9 +144,9 @@ const Profile = () => {
             alt="avatar"
             src={
               userData.avatar
-              ? YA_URL_API  + '/resources' + userData.avatar
-                // ? 'https://ya-praktikum.tech/api/v2/resources' + userData.avatar
-                : avatarDummy
+                ? YA_URL_API + '/resources' + userData.avatar
+                : // ? 'https://ya-praktikum.tech/api/v2/resources' + userData.avatar
+                avatarDummy
             }
           />
         </RB.IconButton>
@@ -217,7 +216,6 @@ const Profile = () => {
               dispatch(resetUser())
               navigate('/auth')
             })
-
           }}>
           Выйти из профиля
         </RB.Button>

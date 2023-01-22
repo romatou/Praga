@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { TopicModel, UserModel, TopicCommentModel, LikeModel } from '../models'
+import { LikeModel, TopicCommentModel, TopicModel, UserModel } from '../models'
 
 export const addTopic = async (req: Request, res: Response) => {
   try {
@@ -29,11 +29,8 @@ export const addTopic = async (req: Request, res: Response) => {
   }
 }
 
-export const getAll = async (req: Request, res: Response) => {
+export const getAll = async (_: Request, res: Response) => {
   try {
-    const { body } = req
-    console.log(body)
-
     const data = await TopicModel.findAll()
     res.send({
       topics: data,

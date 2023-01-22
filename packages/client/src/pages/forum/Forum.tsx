@@ -1,14 +1,14 @@
-import React, { useEffect, useCallback } from 'react'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import * as RB from '@mui/material'
 import { styled } from '@mui/material/styles'
+import React, { useCallback, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ModalThemeNew from '../../components/ModalThemeNew'
+import { useAuth } from '../../hooks/useAuth'
+import { createTopic, getTopics } from '../../store/actions/ForumActionCreators'
 import { useAppDispatch, useAppSelector } from '../../store/index'
-import { getTopics, createTopic } from '../../store/actions/ForumActionCreators'
 import { selectForumData } from '../../store/slices/ForumSlice'
 import { forumThemeType } from './types'
-import { useAuth } from '../../hooks/useAuth'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 const Item = styled(RB.Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#fff' : '#000',
@@ -23,7 +23,7 @@ const Forum = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { topics, comments, error, status } = useAppSelector(selectForumData)
+  const { topics, status } = useAppSelector(selectForumData)
   const [open, setOpen] = React.useState(false)
   const handleClose = () => {
     setOpen(false)
@@ -34,7 +34,7 @@ const Forum = () => {
     dispatch(getTopics())
   }, [])
   const onSubmitSaveTheme = useCallback((value: forumThemeType) => {
-    dispatch(createTopic(value)).then(function () {
+    dispatch(createTopic(value)).then(function() {
       return dispatch(getTopics())
     })
   }, [])
@@ -46,25 +46,24 @@ const Forum = () => {
         position: 'relative',
         height: '100vh',
         width: '100vw',
-        background: '#D5D5D5',
       }}>
-
       <RB.Button
         variant="text"
         onClick={() => navigate('/game/start')}
         startIcon={<ArrowBackIcon />}>
         На главную
       </RB.Button>
-      
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
+          item
+          xs={12}
           spacing={2}
           marginTop={4}
           direction="column"
           justifyContent="center"
           alignItems="center">
-          <RB.Grid  item xs={12} sx={{ width: '478px' }}>
+          <RB.Grid container item xs={12} sx={{ width: '478px' }} spacing={12}>
             <RB.Grid
               container
               direction="row"

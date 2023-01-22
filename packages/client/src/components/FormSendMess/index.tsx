@@ -1,12 +1,11 @@
-import { useCallback } from 'react'
-import { Link } from 'react-router-dom'
 import * as RB from '@mui/material'
-import { useForm, FormProvider } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../store/index'
+import { useCallback } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import {
-  getComments,
   createComment,
+  getComments
 } from '../../store/actions/ForumActionCreators'
+import { useAppDispatch, useAppSelector } from '../../store/index'
 import { selectUserData } from '../../store/slices/UserSlice'
 
 interface Props {
@@ -33,14 +32,14 @@ const FormMessange = (props: Props) => {
         userLogin: userData.login,
         comment: value.comment,
       })
-    ).then(function () {
+    ).then(function() {
       return dispatch(getComments({ id: props.topicId }))
     })
     reset()
   }, [])
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmitMessange)}>
+      <RB.Box component="form" onSubmit={handleSubmit(onSubmitMessange)}>
         <RB.Grid container spacing={2} marginTop={1}>
           <RB.Grid item xs={12}>
             <RB.Typography gutterBottom variant="subtitle2" component="div">
@@ -48,10 +47,11 @@ const FormMessange = (props: Props) => {
             </RB.Typography>
           </RB.Grid>
           <RB.Grid item xs={8}>
-            <RB.Paper
-              component="form"
-              sx={{ p: '2px 4px', alignItems: 'center' }}>
-              <RB.InputBase {...register('comment')} />
+            <RB.Paper sx={{ p: '4px 6px', alignItems: 'center' }}>
+              <RB.InputBase
+                sx={{ width: '100%', height: '100%' }}
+                {...register('comment')}
+              />
             </RB.Paper>
           </RB.Grid>
           <RB.Grid
@@ -70,7 +70,7 @@ const FormMessange = (props: Props) => {
             </RB.Button>
           </RB.Grid>
         </RB.Grid>
-      </form>
+      </RB.Box>
     </FormProvider>
   )
 }
