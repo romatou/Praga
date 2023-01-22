@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
   app:
-    container_name: praga-app
-    image: romatou/praga
+    container_name: app
+    image: romatou/praga-app
     restart: always
     expose:
       - '${SERVER_PORT}'
