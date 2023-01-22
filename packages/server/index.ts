@@ -59,6 +59,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   }
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
+
   app.use(
     '/yandex-api',
     createProxyMiddleware({
@@ -89,6 +90,13 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
             'https://ya-praktikum.tech/api/v2/auth/user',
             'https://ya-praktikum.tech/api/v2/user/profile',
             'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
+            'https://ya-praktikum.tech/api/v2/resources/',
+          ],
+
+          'img-src': [
+            `'self'`,
+            `data:`,
+            `https://ya-praktikum.tech/api/v2/resources/`,
           ],
         },
       })
