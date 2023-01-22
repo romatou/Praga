@@ -56,6 +56,8 @@ const Forum = () => {
       <RB.Container sx={{ display: 'flex', flexDirection: 'column' }}>
         <RB.Grid
           container
+          item
+          xs={12}
           spacing={2}
           marginTop={4}
           direction="column"

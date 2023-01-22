@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express'
 import fs from 'fs'
 import path from 'path'
 
+import helmet from 'helmet'
 import type { ViteDevServer } from 'vite'
 import { createServer as createViteServer } from 'vite'
 import router from './router'
@@ -54,6 +55,24 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   }
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
+
+  app.use(
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      directives: {
+        'default-src':
+          helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
+        'script-src': [
+          "'self'",
+          "https: 'unsafe-inline'",
+          'https://ya-praktikum.tech/api/v2/auth/user',
+          'https://ya-praktikum.tech/api/v2/user/profile',
+          'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
+        ],
+      },
+    })
+  )
+
   app.use(router)
   app.use('*', async (req: Request, res: Response) => {
     try {
