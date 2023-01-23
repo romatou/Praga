@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container, Box, Typography } from '@mui/material'
 import { buttonStyles, containerStyles, imageStyles } from './styles'
 import starBadge from '../../../assets/star-badge.png'
+import winSound from '../../../assets/media/win.mp3'
 import ResultsTable from './ResultsTable'
 
 export default function GameResult() {
+  const [winSoundEffect, setWinSoundEffect] = useState<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    setWinSoundEffect(new Audio(winSound))
+  }, [])
+
+  useEffect(() => {
+    if (winSoundEffect) {
+      winSoundEffect.play()
+    }
+
+    return () => {
+      if (winSoundEffect && winSoundEffect.currentTime !== 0) {
+        winSoundEffect.pause();
+        winSoundEffect.currentTime = 0
+      }
+    }
+  }, [winSoundEffect])
+  
   return (
     <Container sx={containerStyles}>
       <Box sx={{ position: 'relative', marginBottom: '2rem' }}>
