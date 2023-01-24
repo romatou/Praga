@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../store/index'
 import styles from './styles'
 
 export default function Intro() {
+  
   const getOAuth = useOAuth()
   const dispatch = useAppDispatch()
 

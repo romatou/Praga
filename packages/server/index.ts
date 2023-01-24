@@ -10,7 +10,6 @@ import { createServer as createViteServer } from 'vite'
 import router from './router'
 import sequelize from './sequelize'
 import htmlescape from 'htmlescape'
-// import { isAuthMiddleware } from './isAuthMiddleware'
 
 dotenv.config()
 
