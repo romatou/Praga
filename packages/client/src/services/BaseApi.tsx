@@ -1,5 +1,5 @@
 import axios from 'axios'
-const http = 'https://ya-praktikum.tech/api/v2'
+const http = '/yandex-api'
 const isClient = () => typeof window !== 'undefined'
 const getLocationOrigin = (): string => location.origin
 const HOST = isClient() ? getLocationOrigin() : ''

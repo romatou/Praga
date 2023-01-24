@@ -8,7 +8,7 @@ import { setupStore } from './store'
 
 export const store = setupStore()
 
-export function render(url: string | Partial<Location>) {
+export function render(url: string | Partial<Location>): string {
   return ReactDOMServer.renderToString(
     <React.StrictMode>
       <ErrorBoundary>
