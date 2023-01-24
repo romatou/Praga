@@ -4,7 +4,6 @@ import { OauthData } from '../store/types'
 import { REDIRECT_URI } from './useServiceId'
 
 export const useOAuth = () => {
-  // console.log('oauth')
 
   const dispatch = useAppDispatch()
   const url = document.location.href

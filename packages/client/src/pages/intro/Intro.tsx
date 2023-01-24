@@ -1,7 +1,6 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
 import { useOAuth } from '../../hooks/useOAuth'
 import { fetchUser } from '../../store/actions/UserActionCreators'
 import { useAppDispatch } from '../../store/index'
@@ -10,7 +9,6 @@ import styles from './styles'
 
 export default function Intro() {
   const getOAuth = useOAuth()
-  const getAuth = useAuth()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -30,7 +28,6 @@ export default function Intro() {
             }}>
             <Link to="/game/start">
               <Button
-                // onClick={getAuth}
                 sx={{ marginBottom: '1rem' }}
                 variant="contained"
                 size="large"

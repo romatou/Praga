@@ -13,9 +13,8 @@ declare global {
     __PRELOADED_STATE__: RootState
   }
 }
-
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
       .then(registration => {
@@ -27,8 +26,8 @@ window.addEventListener('load', () => {
       .catch((error: string) => {
         console.log('ServiceWorker registration failed: ', error)
       })
-  }
-})
+  })
+}
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
