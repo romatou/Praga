@@ -53,6 +53,7 @@ services:
 volumes:
   db:
   pgadmin:
+  client-data:
 
 networks:
   praga:

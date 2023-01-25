@@ -8,7 +8,7 @@ import {
   Typography
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { fetchUser } from '@store/actions/AuthActionCreators'
+import { fetchUser } from '@store/actions/UserActionCreators'
 import { useAppDispatch } from '@store/index'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'

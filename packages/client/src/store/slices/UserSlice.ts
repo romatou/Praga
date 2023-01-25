@@ -22,7 +22,7 @@ export interface UserState {
   selectedTheme: SelectedTheme
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   userData: {
     avatar: '',
     display_name: '',
