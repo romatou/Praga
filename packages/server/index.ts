@@ -88,7 +88,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       selfHandleResponse: false,
       onProxyReq: fixRequestBody,
       onProxyRes: (proxyRes, req, res) => {
-        // console.log(proxyRes)
         const appHtml =
           proxyRes.statusCode === 401
             ? render('/auth')
@@ -153,7 +152,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   }
   app.use('*', (req, res) => {
     const url = req.originalUrl
-    console.log('app.use')
     const appHtml = render(url)
     renderMiddleware(req, res, appHtml)
   })
