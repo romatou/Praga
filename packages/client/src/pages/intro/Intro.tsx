@@ -27,7 +27,7 @@ export default function Intro() {
               flexGrow: '2',
               alignItems: 'flex-start',
             }}>
-            <Link to="/game/start">
+            <Link to="/game/start" style={styles.link}>
               <Button
                 sx={{ marginBottom: '1rem' }}
                 variant="contained"

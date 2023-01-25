@@ -2,7 +2,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 import fs from 'fs'
-// import helmet from 'helmet'
+import helmet from 'helmet'
 import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware'
 import path from 'path'
 import type { ViteDevServer } from 'vite'
@@ -10,6 +10,7 @@ import { createServer as createViteServer } from 'vite'
 import router from './router'
 import sequelize from './sequelize'
 import htmlescape from 'htmlescape'
+import cookieParser from 'cookie-parser';
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ const port = Number(process.env.SERVER_PORT) || 3001
 
 async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const app = express()
-
+  app.use(cookieParser());
   app.disable('x-powered-by').enable('trust proxy')
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
@@ -36,7 +37,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
   let template = index
   let render: (url: string) => string
   let store: any
-  let appHtml: any
 
   if (isDev) {
     vite = await createViteServer({
@@ -88,85 +88,48 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       cookieDomainRewrite: '',
       selfHandleResponse: false,
       onProxyReq: fixRequestBody,
-      onProxyRes: (proxyRes, req,) => {
-         appHtml =
-          proxyRes.statusCode === 401
-            ? render('/auth')
-            : render(req.originalUrl)
-            // console.log(appHtml)
-            console.log('appHtml')
-
-        // renderMiddleware(req, res, appHtml)
-      },
       onError: (err: Error) => console.error(err),
     })
   )
 
-  // if (!isDev) {
-  //   app.use(
-  //     helmet.contentSecurityPolicy({
-  //       useDefaults: true,
-  //       directives: {
-  //         'default-src':
-  //           helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
-  //         'script-src': [
-  //           "'self'",
-  //           "https: 'unsafe-inline'",
-  //           'https://ya-praktikum.tech/api/v2/auth/user',
-  //           'https://ya-praktikum.tech/api/v2/user/profile',
-  //           'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
-  //           'https://ya-praktikum.tech/api/v2/resources/',
-  //         ],
+  if (!isDev) {
+    app.use(
+      helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+          'default-src':
+            helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
+          'script-src': [
+            "'self'",
+            "https: 'unsafe-inline'",
+            'https://ya-praktikum.tech/api/v2/auth/user',
+            'https://ya-praktikum.tech/api/v2/user/profile',
+            'https://ya-praktikum.tech/api/v2/leaderboard/praga-v2',
+            'https://ya-praktikum.tech/api/v2/resources/',
+          ],
 
-  //         'img-src': [
-  //           `'self'`,
-  //           `data:`,
-  //           `https://ya-praktikum.tech/api/v2/resources/`,
-  //         ],
-  //       },
-  //     })
-  //   )
-  // }
-  // const renderMiddleware = async (
-
-  //   req: Request,
-  //   res: Response,
-  //   appHtml: string
-  // ) => {
-
-  //   try {
-  //     const url = req.originalUrl
-  //     const state = store.getState()
-
-  //     if (isDev) {
-  //       template = await vite.transformIndexHtml(url, template)
-  //     }
-  //     const preloadedState = `<script>window.__PRELOADED_STATE__  = ${htmlescape(
-  //       state
-  //     )}</script>`
-
-  //     const html = template
-  //       .replace(`<!--ssr-->`, appHtml)
-  //       .replace('<!--state-->', preloadedState)
-
-  //     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
-  //   } catch (e) {
-  //     isDev && vite.ssrFixStacktrace(e as Error)
-  //   }
-  // }
-  // app.use('*', (req, res) => {
-  //   console.log()
-  //   // const url = req.originalUrl
-  //   //  appHtml = render(url)
-  //   console.log('app.use')
-  //   renderMiddleware(req, res, appHtml)
-  // })
-
+          'img-src': [
+            `'self'`,
+            `data:`,
+            `https://ya-praktikum.tech/api/v2/resources/`,
+          ],
+        },
+      })
+    )
+  }
+ 
   app.use('*', async (req: Request,res: Response) => {
     try {
       const url = req.originalUrl
       const state = store.getState()
 
+      let appHtml;
+
+      if(!req.cookies.authCookie && !req.cookies.uuid ) {
+         appHtml = render('/auth')
+      } else {
+        appHtml = render(url)
+      }
       if (isDev) {
         template = await vite.transformIndexHtml(url, template)
       }
@@ -177,7 +140,7 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       const html = template
         .replace(`<!--ssr-->`, appHtml)
         .replace('<!--state-->', preloadedState)
-console.log('app.use')
+        
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       isDev && vite.ssrFixStacktrace(e as Error)
