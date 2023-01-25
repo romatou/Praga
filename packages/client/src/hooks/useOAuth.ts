@@ -7,9 +7,9 @@ import location from 'location-href'
 export const useOAuth = () => {
   const dispatch = useAppDispatch()
   const url = location()
-  const token = url.split('token=').pop()
+  const token = url.split('code=').pop()
   return () => {
-    if (/token/.test(url)) {
+    if (/code/.test(url)) {
       dispatch(
         oauthYandex({
           code: token,
