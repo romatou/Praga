@@ -2,13 +2,14 @@ import { fetchUser, oauthYandex } from '../store/actions/AuthActionCreators'
 import { useAppDispatch } from '../store/index'
 import { OauthData } from '../store/types'
 import { REDIRECT_URI } from './useServiceId'
+import location from 'location-href'
 
 export const useOAuth = () => {
   const dispatch = useAppDispatch()
-  const url = document.location.href
-  const token = url.split('token=').pop()
+  const url = location()
+  const token = url.split('code=').pop()
   return () => {
-    if (/token/.test(url)) {
+    if (/code/.test(url)) {
       dispatch(
         oauthYandex({
           code: token,

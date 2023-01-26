@@ -13,7 +13,6 @@ export const containerStyles = {
 
 export const buttonStyles = {
   position: 'relative',
-  backgroundColor: '#000',
   margin: 0,
   display: 'flex',
   alignItems: 'center',

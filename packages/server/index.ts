@@ -10,6 +10,7 @@ import { createServer as createViteServer } from 'vite'
 import router from './router'
 import sequelize from './sequelize'
 import htmlescape from 'htmlescape'
+import cookieParser from 'cookie-parser';
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ const port = Number(process.env.SERVER_PORT) || 3001
 
 async function createServer(isDev = process.env.NODE_ENV === 'development') {
   const app = express()
-
+  app.use(cookieParser());
   app.disable('x-powered-by').enable('trust proxy')
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
@@ -87,15 +88,6 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       cookieDomainRewrite: '',
       selfHandleResponse: false,
       onProxyReq: fixRequestBody,
-      onProxyRes: (proxyRes, req, res) => {
-        // console.log(proxyRes)
-        const appHtml =
-          proxyRes.statusCode === 401
-            ? render('/auth')
-            : render(req.originalUrl)
-
-        renderMiddleware(req, res, appHtml)
-      },
       onError: (err: Error) => console.error(err),
     })
   )
@@ -125,19 +117,22 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       })
     )
   }
-  const renderMiddleware = async (
-    req: Request,
-    res: Response,
-    appHtml: string
-  ) => {
+ 
+  app.use('*', async (req: Request,res: Response) => {
     try {
       const url = req.originalUrl
       const state = store.getState()
 
+      let appHtml;
+
+      if(!req.cookies.authCookie && !req.cookies.uuid ) {
+         appHtml = render('/auth')
+      } else {
+        appHtml = render(url)
+      }
       if (isDev) {
         template = await vite.transformIndexHtml(url, template)
       }
-
       const preloadedState = `<script>window.__PRELOADED_STATE__  = ${htmlescape(
         state
       )}</script>`
@@ -145,19 +140,12 @@ async function createServer(isDev = process.env.NODE_ENV === 'development') {
       const html = template
         .replace(`<!--ssr-->`, appHtml)
         .replace('<!--state-->', preloadedState)
-
+        
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
       isDev && vite.ssrFixStacktrace(e as Error)
     }
-  }
-  app.use('*', (req, res) => {
-    const url = req.originalUrl
-    console.log('app.use')
-    const appHtml = render(url)
-    renderMiddleware(req, res, appHtml)
   })
-
   return { app }
 }
 

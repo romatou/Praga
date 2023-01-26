@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Box, Typography } from '@mui/material'
-import { buttonStyles, containerStyles, imageStyles } from './styles'
+import { Button, Box, Typography } from '@mui/material'
+import { buttonStyles, imageStyles } from './styles'
 import starBadge from '../../../assets/star-badge.png'
 import winSound from '../../../assets/media/win.mp3'
-import ResultsTable from './ResultsTable'
 
 export default function GameResult() {
   const [winSoundEffect, setWinSoundEffect] = useState<HTMLAudioElement | null>(null)
@@ -26,25 +25,8 @@ export default function GameResult() {
   }, [winSoundEffect])
   
   return (
-    <Container sx={containerStyles}>
-      <Box sx={{ position: 'relative', marginBottom: '2rem' }}>
-        <Typography
-          component="span"
-          sx={{
-            left: 0,
-            alignItems: 'center',
-            display: 'flex',
-            right: 0,
-            height: '100%',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            top: '-23px',
-            justifyContent: 'center',
-            position: 'absolute',
-            margin: 'auto',
-          }}>
-          5
-        </Typography>
+    <>
+      <Box sx={{ position: 'relative', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
         <Box
           component="img"
           sx={imageStyles}
@@ -57,7 +39,6 @@ export default function GameResult() {
         sx={{ fontSize: '32px', textAlign: 'center', marginBottom: '4rem' }}>
         Поздравляем с победой
       </Typography>
-      <ResultsTable />
       <Box
         sx={{
           display: 'flex',
@@ -67,19 +48,21 @@ export default function GameResult() {
         <Button
           variant="contained"
           href="/game/play"
+          color="primary"
           sx={{ ...buttonStyles, marginRight: '1rem' }}>
           Играть снова
         </Button>
         <Button
           variant="contained"
           href="/profile"
+          color="primary"
           sx={{ ...buttonStyles, marginRight: '1rem' }}>
           В профиль
         </Button>
-        <Button variant="contained" sx={buttonStyles} href="/ranking">
+        <Button variant="contained" sx={buttonStyles} href="/ranking" color="primary">
           Рейтинг
         </Button>
       </Box>
-    </Container>
+    </>
   )
 }
